@@ -19,11 +19,15 @@ def create_app() -> FastAPI:
         redoc_url=f"{settings.API_V1_STR}/redoc",
     )
 
+    cors_origins = list(settings.CORS_ORIGINS)
+    if settings.FRONTEND_URL and settings.FRONTEND_URL not in cors_origins:
+        cors_origins.append(settings.FRONTEND_URL)
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=["*"],
+        allow_origins=cors_origins if settings.ENVIRONMENT.lower() == "production" else ["*"],
         allow_credentials=True,
-        allow_methods=["*"],
+        allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         allow_headers=["*"],
     )
 

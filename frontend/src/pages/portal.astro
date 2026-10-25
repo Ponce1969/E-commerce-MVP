@@ -2,16 +2,16 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Portal B2B Clientes | 2 Rodríguez Distribuidora" currentNav="portal">
+<BaseLayout title="Área de Clientes | 2 Rodríguez Distribuidora" currentNav="portal">
   <div class="space-y-6">
     <!-- Header -->
     <div class="border-b border-border pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
         <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
-          Portal Privado de Clientes B2B
+          Área Exclusiva de Clientes
         </h1>
         <p class="text-sm text-muted-foreground mt-1">
-          Consulte los aranceles preferenciales de su lista comercial y confirme pedidos con despacho inmediato.
+          Consultá los precios preferenciales de tu cuenta, fichas técnicas y confirmá tus pedidos con despacho prioritario.
         </p>
       </div>
 
@@ -37,59 +37,113 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       </div>
     </div>
 
-    <!-- Login View (shown when unauthenticated) -->
-    <div id="loginView" class="max-w-md mx-auto my-12 p-6 sm:p-8 rounded-2xl border border-border bg-card shadow-sm space-y-6">
-      <div class="text-center space-y-1">
-        <h2 class="text-xl font-bold text-foreground">Ingreso de Clientes</h2>
-        <p class="text-xs text-muted-foreground">
-          Acceda con las credenciales asignadas por Mariana.
-        </p>
+    <!-- Login & Welcome View (shown when unauthenticated) -->
+    <div id="loginView" class="max-w-xl mx-auto my-8 space-y-6">
+      <!-- Login Card -->
+      <div class="p-6 sm:p-8 rounded-2xl border border-border bg-card shadow-sm space-y-6">
+        <div class="text-center space-y-1.5">
+          <div class="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="18" height="11" x="3" y="11" rx="2" ry="2"/>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            Acceso Clientes Registrados
+          </div>
+          <h2 class="text-2xl font-bold text-foreground">Bienvenido al Portal de Pedidos</h2>
+          <p class="text-xs sm:text-sm text-muted-foreground">
+            Ingresá con tu correo y contraseña para acceder a tus tarifas comerciales.
+          </p>
+        </div>
+
+        <form id="loginForm" class="space-y-4">
+          <div class="space-y-1">
+            <label for="loginEmail" class="text-xs font-semibold text-foreground">Correo Electrónico</label>
+            <input
+              type="email"
+              id="loginEmail"
+              required
+              placeholder="cliente@empresa.com"
+              class="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+            />
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex items-center justify-between">
+              <label for="loginPassword" class="text-xs font-semibold text-foreground">Contraseña</label>
+              <button
+                type="button"
+                id="openForgotModalBtn"
+                class="text-[11px] text-primary hover:underline font-medium cursor-pointer"
+              >
+                ¿Olvidaste tu contraseña?
+              </button>
+            </div>
+            <input
+              type="password"
+              id="loginPassword"
+              required
+              placeholder="••••••••"
+              class="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+            />
+          </div>
+
+          <div id="loginError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive"></div>
+
+          <button
+            type="submit"
+            id="loginSubmitBtn"
+            class="w-full inline-flex items-center justify-center rounded-lg bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[44px] cursor-pointer"
+          >
+            Ingresar a Mi Cuenta
+          </button>
+        </form>
       </div>
 
-      <form id="loginForm" class="space-y-4">
-        <div class="space-y-1">
-          <label for="loginEmail" class="text-xs font-semibold text-foreground">Correo Electrónico</label>
-          <input
-            type="email"
-            id="loginEmail"
-            required
-            placeholder="cliente@empresa.com"
-            class="w-full rounded-lg border border-input bg-background px-3.5 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
-          />
+      <!-- Welcome & Benefits Onboarding Card -->
+      <div class="rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card to-emerald-500/5 p-6 sm:p-7 shadow-xs space-y-4">
+        <div class="flex items-start gap-3">
+          <div class="h-10 w-10 shrink-0 rounded-xl bg-emerald-100 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 flex items-center justify-center font-bold text-lg">
+            ✨
+          </div>
+          <div>
+            <h3 class="text-base sm:text-lg font-bold text-foreground">¿Querés ser cliente y acceder a beneficios exclusivos?</h3>
+            <p class="text-xs sm:text-sm text-muted-foreground mt-0.5 leading-relaxed">
+              Si sos empresa, comercio, lavandería, residencial o profesional independiente, te habilitamos tu cuenta comercial en minutos con condiciones preferenciales.
+            </p>
+          </div>
         </div>
 
-        <div class="space-y-1">
-          <label for="loginPassword" class="text-xs font-semibold text-foreground">Contraseña</label>
-          <input
-            type="password"
-            id="loginPassword"
-            required
-            placeholder="••••••••"
-            class="w-full rounded-lg border border-input bg-background px-3.5 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
-          />
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-xs">
+          <div class="flex items-center gap-2 rounded-lg bg-background/80 border border-border p-2.5">
+            <span class="text-emerald-600 font-bold">✓</span>
+            <span class="font-medium text-foreground">Precios mayoristas por volumen</span>
+          </div>
+          <div class="flex items-center gap-2 rounded-lg bg-background/80 border border-border p-2.5">
+            <span class="text-emerald-600 font-bold">✓</span>
+            <span class="font-medium text-foreground">Retiro sin cargo en Paso Molino</span>
+          </div>
+          <div class="flex items-center gap-2 rounded-lg bg-background/80 border border-border p-2.5">
+            <span class="text-emerald-600 font-bold">✓</span>
+            <span class="font-medium text-foreground">Presupuestos formales con RUT</span>
+          </div>
         </div>
 
-        <div id="loginError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive"></div>
-
-        <button
-          type="submit"
-          id="loginSubmitBtn"
-          class="w-full inline-flex items-center justify-center rounded-lg bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[44px] cursor-pointer"
-        >
-          Ingresar al Portal
-        </button>
-      </form>
-
-      <div class="text-center pt-2 border-t border-border text-xs text-muted-foreground">
-        ¿Aún no tiene cuenta habilitada? <br />
-        <a
-          href="https://wa.me/59895250673?text=Hola%20Mariana%2C%20quisiera%20solicitar%20el%20alta%20como%20cliente%20B2B"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-primary font-semibold hover:underline"
-        >
-          Solicitar acceso por WhatsApp
-        </a>
+        <div class="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-border/80">
+          <span class="text-xs text-muted-foreground text-center sm:text-left">
+            Coordinación directa con Mariana para asignarte lista de precios.
+          </span>
+          <a
+            href="https://wa.me/59895250673?text=Hola%20Mariana%2C%20quisiera%20solicitar%20el%20alta%20como%20cliente%20para%20acceder%20a%20precios%20mayoristas"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-colors gap-2 w-full sm:w-auto min-h-[40px]"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+            </svg>
+            <span>Solicitar Alta por WhatsApp</span>
+          </a>
+        </div>
       </div>
     </div>
 
@@ -132,8 +186,8 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           <label class="flex items-start gap-3 p-3 rounded-lg border border-border bg-background cursor-pointer hover:border-primary transition-colors">
             <input type="radio" name="deliveryType" value="PICKUP_PASO_MOLINO" checked class="mt-0.5" />
             <div class="text-xs">
-              <div class="font-bold text-foreground">Retiro en Local Paso Molino (Gratis $0)</div>
-              <div class="text-muted-foreground">Lun a Vie 08:30-12:00 / 13:00-18:00 | Sáb 08:00-13:00</div>
+              <div class="font-bold text-foreground">Retiro en Paso Molino: Ángel Salvo 56 (Gratis $0)</div>
+              <div class="text-muted-foreground">Ferretería al lado de la vía | Lun a Vie 08:00-12:00 / 14:00-18:00 | Sáb 08:00-13:00</div>
             </div>
           </label>
 
@@ -166,18 +220,68 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           </div>
         </div>
 
+        <!-- Payment Method Selection (Beneficio Transferencia vs Mercado Pago) -->
+        <div class="space-y-3 border-t border-border pt-4">
+          <div class="flex items-center justify-between">
+            <div class="text-xs font-bold text-foreground uppercase tracking-wider">Forma de Pago:</div>
+            <span class="text-[10px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-300 dark:border-emerald-800">
+              Transferencia 100% Bonificada
+            </span>
+          </div>
+
+          <!-- Opción Transferencia BROU / Redes -->
+          <label class="flex items-start gap-3 p-3.5 rounded-xl border border-emerald-500/80 bg-emerald-50/20 dark:bg-emerald-950/10 cursor-pointer hover:border-emerald-600 transition-all">
+            <input type="radio" name="paymentMethod" value="TRANSFER_BROU" checked class="mt-1" />
+            <div class="text-xs space-y-1 flex-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-foreground text-sm flex items-center gap-1.5">
+                  🏦 Transferencia BROU / Redes de Cobranza
+                </span>
+                <span class="text-[11px] font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-100 dark:bg-emerald-900/40 px-2 py-0.5 rounded">
+                  Sin arancel ($0)
+                </span>
+              </div>
+              <p class="text-muted-foreground text-[11px] leading-relaxed">
+                Precio de lista oficial sin costo financiero. Acreditación directa a Mariana Moreira (BROU C/A: 110975226-00001 / Abitab - Redpagos: 601-0551790).
+              </p>
+            </div>
+          </label>
+
+          <!-- Opción Mercado Pago -->
+          <label class="flex items-start gap-3 p-3.5 rounded-xl border border-border bg-background cursor-pointer hover:border-primary transition-all">
+            <input type="radio" name="paymentMethod" value="MERCADO_PAGO" class="mt-1" />
+            <div class="text-xs space-y-1 flex-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-foreground text-sm flex items-center gap-1.5">
+                  💳 Mercado Pago (Hasta 12 cuotas)
+                </span>
+                <span class="text-[11px] font-semibold text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/40 px-2 py-0.5 rounded border border-amber-200 dark:border-amber-800">
+                  +7% arancel plataforma
+                </span>
+              </div>
+              <p class="text-muted-foreground text-[11px] leading-relaxed">
+                Aboná con tarjetas de crédito o débito a través de la pasarela segura. Aplica arancel por gestión y procesamiento financiero de Mercado Pago.
+              </p>
+            </div>
+          </label>
+        </div>
+
         <!-- Total Breakdown -->
-        <div class="border-t border-border pt-3 space-y-1 text-xs">
+        <div class="border-t border-border pt-3 space-y-1.5 text-xs">
           <div class="flex justify-between text-muted-foreground">
-            <span>Subtotal Ítems:</span>
-            <span id="cartSubtotal">$0.00</span>
+            <span>Subtotal Ítems (IVA inc):</span>
+            <span id="cartSubtotal" class="font-medium text-foreground">$0.00</span>
           </div>
           <div class="flex justify-between text-muted-foreground">
-            <span>Costo de Entrega:</span>
-            <span id="cartDeliveryCost">$0.00</span>
+            <span>Modalidad de Entrega:</span>
+            <span id="cartDeliveryCost" class="font-medium text-foreground">$0.00</span>
           </div>
-          <div class="flex justify-between text-base font-bold text-primary pt-1 border-t border-border">
-            <span>Total Final (IVA inc):</span>
+          <div id="paymentFeeRow" class="hidden flex justify-between text-amber-700 dark:text-amber-400 font-medium">
+            <span>Arancel financiero Mercado Pago (+7%):</span>
+            <span id="cartPaymentFee">+$0.00</span>
+          </div>
+          <div class="flex justify-between text-base font-black text-primary pt-1.5 border-t border-border">
+            <span>Total a Pagar:</span>
             <span id="cartGrandTotal">$0.00</span>
           </div>
         </div>
@@ -192,10 +296,91 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         </button>
       </div>
     </div>
+
+    <!-- Forgot Password Modal (Resend Email API) -->
+    <div id="forgotModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-3">
+          <h3 class="text-lg font-bold text-foreground">Recuperar Contraseña</h3>
+          <button id="closeForgotModalBtn" class="text-muted-foreground hover:text-foreground text-xl p-1 cursor-pointer">&times;</button>
+        </div>
+
+        <p class="text-xs text-muted-foreground leading-relaxed">
+          Ingresá el correo electrónico asociado a tu cuenta. Te enviaremos un enlace oficial de recuperación vía correo para restablecer tu contraseña.
+        </p>
+
+        <form id="forgotForm" class="space-y-4">
+          <div class="space-y-1">
+            <label for="forgotEmail" class="text-xs font-semibold text-foreground">Correo Registrado</label>
+            <input
+              type="email"
+              id="forgotEmail"
+              required
+              placeholder="cliente@empresa.com"
+              class="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+            />
+          </div>
+
+          <div id="forgotFeedback" class="hidden rounded-lg p-3 text-xs"></div>
+
+          <button
+            type="submit"
+            id="forgotSubmitBtn"
+            class="w-full inline-flex items-center justify-center rounded-lg bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[44px] cursor-pointer"
+          >
+            Enviar Enlace de Recuperación
+          </button>
+        </form>
+
+        <div class="text-center pt-2 border-t border-border text-[11px] text-muted-foreground">
+          ¿Dudas con tu cuenta? Escribinos a <a href="mailto:dosrodriguezdistribuidora@gmail.com" class="text-primary font-medium hover:underline">dosrodriguezdistribuidora@gmail.com</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reset Password Modal (when arriving with ?reset_token=...) -->
+    <div id="resetModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-3">
+          <h3 class="text-lg font-bold text-foreground">Nueva Contraseña</h3>
+          <button id="closeResetModalBtn" class="text-muted-foreground hover:text-foreground text-xl p-1 cursor-pointer">&times;</button>
+        </div>
+
+        <p class="text-xs text-muted-foreground leading-relaxed">
+          Ingresá tu nueva clave de acceso para actualizar tu cuenta.
+        </p>
+
+        <form id="resetForm" class="space-y-4">
+          <div class="space-y-1">
+            <label for="newPassword" class="text-xs font-semibold text-foreground">Nueva Contraseña (mínimo 6 caracteres)</label>
+            <input
+              type="password"
+              id="newPassword"
+              required
+              minlength="6"
+              placeholder="••••••••"
+              class="w-full rounded-lg border border-input bg-background px-3.5 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+            />
+          </div>
+
+          <div id="resetFeedback" class="hidden rounded-lg p-3 text-xs"></div>
+
+          <button
+            type="submit"
+            id="resetSubmitBtn"
+            class="w-full inline-flex items-center justify-center rounded-lg bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[44px] cursor-pointer"
+          >
+            Guardar Nueva Contraseña
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
 
   <script is:inline>
-    const API_URL = 'http://localhost:8000/api/v1';
+    const isLocalDev = window.location.hostname === 'localhost' && window.location.port === '4321';
+    const API_URL = isLocalDev ? 'http://localhost:8000/api/v1' : '/api/v1';
+    const baseOrigin = isLocalDev ? 'http://localhost:8000' : '';
     let customerToken = localStorage.getItem('customer_token') || '';
     let customerEmail = localStorage.getItem('customer_email') || '';
     let cart = []; // { product_id, name, price, quantity }
@@ -317,30 +502,68 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         return;
       }
 
-      portalGrid.innerHTML = products.map((p) => `
-        <div class="rounded-xl border border-border bg-card p-5 flex flex-col justify-between hover:border-primary/50 transition-all">
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-xs">
-              <span class="rounded-full border border-border px-2.5 py-0.5 font-medium text-muted-foreground">${p.category}</span>
-              ${p.presentation ? `<span class="bg-secondary px-2 py-0.5 rounded font-semibold text-foreground">${p.presentation}</span>` : ''}
+      portalGrid.innerHTML = products.map((p) => {
+        const hasImg = Boolean(p.image_url);
+        const imgSrc = hasImg ? (p.image_url.startsWith('http') ? p.image_url : `${baseOrigin}${p.image_url}`) : '';
+        const hasPdf = Boolean(p.tech_sheet_url);
+        const pdfSrc = hasPdf ? (p.tech_sheet_url.startsWith('http') ? p.tech_sheet_url : `${baseOrigin}${p.tech_sheet_url}`) : '';
+
+        return `
+        <div class="rounded-xl border border-border bg-card p-5 flex flex-col justify-between hover:border-primary/50 transition-all shadow-xs group">
+          <div class="space-y-3">
+            <!-- Product Media Container -->
+            <div class="relative w-full h-44 rounded-lg bg-muted/20 border border-border/60 flex items-center justify-center p-2 overflow-hidden">
+              ${hasImg
+                ? `<img src="${imgSrc}" alt="${p.name.replace(/"/g, '&quot;')}" class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105" loading="lazy" onerror="this.style.display='none'; const fb = this.nextElementSibling; if(fb) fb.style.display='flex';" />
+                   <div class="hidden flex-col items-center justify-center text-muted-foreground/40 text-xs gap-1">
+                     <svg class="h-8 w-8 stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                     <span class="text-[10px] uppercase font-semibold">2 Rodríguez</span>
+                   </div>`
+                : `<div class="flex flex-col items-center justify-center text-muted-foreground/40 text-xs gap-1">
+                     <svg class="h-8 w-8 stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                     <span class="text-[10px] uppercase tracking-wider font-semibold">2 Rodríguez</span>
+                   </div>`
+              }
+              ${hasPdf ? `
+                <a
+                  href="${pdfSrc}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="absolute top-2 right-2 inline-flex items-center gap-1 text-[10px] font-semibold text-purple-700 dark:text-purple-300 bg-purple-50/95 dark:bg-purple-950/80 hover:bg-purple-100 dark:hover:bg-purple-900 border border-purple-200 dark:border-purple-800 px-2 py-0.5 rounded shadow-xs transition-colors"
+                  title="Descargar Ficha Técnica PDF"
+                  onclick="event.stopPropagation();"
+                >
+                  <svg class="h-3 w-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                  <span>Ficha PDF</span>
+                </a>
+              ` : ''}
             </div>
-            <h4 class="font-bold text-base text-foreground line-clamp-2">${p.name}</h4>
+
+            <!-- Categories and Badges -->
+            <div class="flex items-center justify-between text-xs gap-2">
+              <span class="rounded-full border border-border px-2.5 py-0.5 font-medium text-muted-foreground truncate max-w-[170px]">${p.category}</span>
+              ${p.presentation ? `<span class="bg-secondary px-2 py-0.5 rounded font-semibold text-foreground text-[11px] whitespace-nowrap">${p.presentation}</span>` : ''}
+            </div>
+
+            <h4 class="font-bold text-base text-foreground line-clamp-2 leading-snug">${p.name}</h4>
           </div>
 
-          <div class="pt-4 mt-4 border-t border-border flex items-center justify-between">
+          <div class="pt-4 mt-4 border-t border-border flex items-center justify-between gap-2">
             <div class="flex flex-col">
-              <span class="text-xs text-muted-foreground">Precio Tu Lista</span>
-              <span class="text-lg font-black text-primary">$${Number(p.price_iva_inc).toFixed(2)}</span>
+              <span class="text-[11px] text-muted-foreground uppercase font-medium">Precio Tu Lista (IVA inc)</span>
+              <span class="text-xl font-black text-primary">$${Number(p.price_iva_inc).toFixed(2)}</span>
             </div>
             <button
               onclick="window.addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price_iva_inc})"
-              class="rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[38px] cursor-pointer"
+              class="rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[38px] cursor-pointer flex items-center gap-1.5"
             >
-              + Agregar
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+              <span>Agregar</span>
             </button>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     portalSearch?.addEventListener('input', (e) => {
@@ -408,10 +631,26 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       const deliveryRadio = document.querySelector('input[name="deliveryType"]:checked');
       const deliveryCost = deliveryRadio?.value === 'CADETERIA_MARCO_POSTAL' ? 250 : 0;
-      const grandTotal = subtotal + deliveryCost;
+
+      const paymentRadio = document.querySelector('input[name="paymentMethod"]:checked');
+      const isMercadoPago = paymentRadio?.value === 'MERCADO_PAGO';
+      const paymentFee = isMercadoPago ? Math.round((subtotal + deliveryCost) * 0.07 * 100) / 100 : 0;
+      const grandTotal = subtotal + deliveryCost + paymentFee;
 
       if (cartSubtotal) cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
       if (cartDeliveryCost) cartDeliveryCost.textContent = `$${deliveryCost.toFixed(2)}`;
+
+      const paymentFeeRow = document.getElementById('paymentFeeRow');
+      const cartPaymentFee = document.getElementById('cartPaymentFee');
+      if (paymentFeeRow && cartPaymentFee) {
+        if (isMercadoPago && paymentFee > 0) {
+          cartPaymentFee.textContent = `+$${paymentFee.toFixed(2)}`;
+          paymentFeeRow.classList.remove('hidden');
+        } else {
+          paymentFeeRow.classList.add('hidden');
+        }
+      }
+
       if (cartGrandTotal) cartGrandTotal.textContent = `$${grandTotal.toFixed(2)}`;
     }
 
@@ -422,6 +661,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         } else {
           addressGroup?.classList.add('hidden');
         }
+        calculateCartTotals();
+      });
+    });
+
+    document.querySelectorAll('input[name="paymentMethod"]').forEach((r) => {
+      r.addEventListener('change', () => {
         calculateCartTotals();
       });
     });
@@ -442,8 +687,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
       orderError?.classList.add('hidden');
       const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value;
+      const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked')?.value || 'TRANSFER_BROU';
+      const isMercadoPago = paymentMethod === 'MERCADO_PAGO';
       const address = orderAddress?.value;
       const notes = orderNotes?.value;
+      const paymentTag = isMercadoPago ? '[Forma de Pago: MERCADO PAGO (+7% arancel)]' : '[Forma de Pago: TRANSFERENCIA BROU (Bonificado)]';
+      const fullNotes = notes ? `${paymentTag} ${notes}` : paymentTag;
 
       if (deliveryType === 'CADETERIA_MARCO_POSTAL' && (!address || !address.trim())) {
         if (orderError) {
@@ -466,7 +715,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           body: JSON.stringify({
             delivery_type: deliveryType,
             delivery_address: address,
-            delivery_notes: notes,
+            delivery_notes: fullNotes,
             items: cart.map((c) => ({ product_id: c.product_id, quantity: c.quantity })),
           }),
         });
@@ -477,7 +726,12 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         }
 
         const order = await res.json();
-        alert(`¡Pedido #${order.id} confirmado con éxito! Total: $${order.total_amount}. Nos comunicaremos a la brevedad.`);
+        if (isMercadoPago) {
+          alert(`¡Pedido #${order.id} registrado con éxito!\n\nModalidad: Mercado Pago (Hasta 12 cuotas)\nTotal estimado: $${order.total_amount}\n\nCoordinaremos a la brevedad por WhatsApp el link de pago oficial de la pasarela.`);
+        } else {
+          alert(`¡Pedido #${order.id} confirmado con éxito!\n\nModalidad: Transferencia BROU / Redes (Precio Bonificado)\nTotal a abonar: $${order.total_amount}\n\nDatos de Pago:\n• Titular: Mariana Moreira\n• Caja de Ahorro BROU: 110975226-00001\n• Redes (Abitab/Redpagos): 601-0551790\n\nPor favor enviá el comprobante al WhatsApp 095 250 673 para agilizar el despacho.`);
+        }
+
         cart = [];
         updateCartUI();
         cartModal?.classList.add('hidden');
@@ -489,6 +743,124 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       } finally {
         confirmOrderBtn.disabled = false;
         confirmOrderBtn.textContent = 'Confirmar y Enviar Pedido';
+      }
+    });
+
+    // Forgot Password & Reset Modal Handlers
+    const openForgotModalBtn = document.getElementById('openForgotModalBtn');
+    const forgotModal = document.getElementById('forgotModal');
+    const closeForgotModalBtn = document.getElementById('closeForgotModalBtn');
+    const forgotForm = document.getElementById('forgotForm');
+    const forgotFeedback = document.getElementById('forgotFeedback');
+    const forgotSubmitBtn = document.getElementById('forgotSubmitBtn');
+
+    const resetModal = document.getElementById('resetModal');
+    const closeResetModalBtn = document.getElementById('closeResetModalBtn');
+    const resetForm = document.getElementById('resetForm');
+    const resetFeedback = document.getElementById('resetFeedback');
+    const resetSubmitBtn = document.getElementById('resetSubmitBtn');
+
+    openForgotModalBtn?.addEventListener('click', () => {
+      forgotFeedback?.classList.add('hidden');
+      forgotModal?.classList.remove('hidden');
+    });
+
+    closeForgotModalBtn?.addEventListener('click', () => {
+      forgotModal?.classList.add('hidden');
+    });
+
+    closeResetModalBtn?.addEventListener('click', () => {
+      resetModal?.classList.add('hidden');
+    });
+
+    forgotForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('forgotEmail')?.value;
+      if (!email) return;
+
+      if (forgotSubmitBtn) {
+        forgotSubmitBtn.disabled = true;
+        forgotSubmitBtn.textContent = 'Enviando...';
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/auth/forgot-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+
+        const data = await res.json().catch(() => ({}));
+        if (forgotFeedback) {
+          forgotFeedback.className = 'rounded-lg p-3 text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300';
+          forgotFeedback.textContent = data.message || 'Si el correo está registrado, recibirás un enlace de recuperación.';
+          forgotFeedback.classList.remove('hidden');
+        }
+      } catch (err) {
+        if (forgotFeedback) {
+          forgotFeedback.className = 'rounded-lg p-3 text-xs bg-destructive/10 border border-destructive/20 text-destructive';
+          forgotFeedback.textContent = 'Ocurrió un error al procesar la solicitud.';
+          forgotFeedback.classList.remove('hidden');
+        }
+      } finally {
+        if (forgotSubmitBtn) {
+          forgotSubmitBtn.disabled = false;
+          forgotSubmitBtn.textContent = 'Enviar Enlace de Recuperación';
+        }
+      }
+    });
+
+    // Check if URL has reset_token
+    const urlParams = new URLSearchParams(window.location.search);
+    const resetToken = urlParams.get('reset_token');
+    if (resetToken) {
+      resetModal?.classList.remove('hidden');
+    }
+
+    resetForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const newPassword = document.getElementById('newPassword')?.value;
+      if (!newPassword || !resetToken) return;
+
+      if (resetSubmitBtn) {
+        resetSubmitBtn.disabled = true;
+        resetSubmitBtn.textContent = 'Actualizando...';
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/auth/reset-password`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ token: resetToken, new_password: newPassword }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al actualizar contraseña.');
+        }
+
+        const data = await res.json();
+        if (resetFeedback) {
+          resetFeedback.className = 'rounded-lg p-3 text-xs bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300';
+          resetFeedback.textContent = data.message || 'Contraseña actualizada.';
+          resetFeedback.classList.remove('hidden');
+        }
+
+        setTimeout(() => {
+          resetModal?.classList.add('hidden');
+          window.location.href = '/portal';
+        }, 2000);
+      } catch (err) {
+        if (resetFeedback) {
+          resetFeedback.className = 'rounded-lg p-3 text-xs bg-destructive/10 border border-destructive/20 text-destructive';
+          resetFeedback.textContent = err.message;
+          resetFeedback.classList.remove('hidden');
+        }
+      } finally {
+        if (resetSubmitBtn) {
+          resetSubmitBtn.disabled = false;
+          resetSubmitBtn.textContent = 'Guardar Nueva Contraseña';
+        }
       }
     });
 

@@ -746,7 +746,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   </div>
 
   <script is:inline>
-    const API_URL = 'http://localhost:8000/api/v1';
+    const isLocalDev = window.location.hostname === 'localhost' && window.location.port === '4321';
+    const API_URL = isLocalDev ? 'http://localhost:8000/api/v1' : '/api/v1';
+    const baseOrigin = isLocalDev ? 'http://localhost:8000' : '';
     let adminToken = localStorage.getItem('admin_token') || '';
     let allProducts = [];
     let activeFilter = 'all';
@@ -1434,7 +1436,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       if (attachProdName) attachProdName.textContent = `#${prod.id} - ${prod.name}`;
       attachFeedback?.classList.add('hidden');
 
-      const baseOrigin = 'http://localhost:8000';
       if (prod.image_url) {
         if (attachPhotoPreview) {
           attachPhotoPreview.src = `${baseOrigin}${prod.image_url}`;

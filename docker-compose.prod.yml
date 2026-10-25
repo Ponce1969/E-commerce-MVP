@@ -1,0 +1,66 @@
+# ==============================================================================
+# 2 Rodríguez Distribuidora — Producción Docker Compose (Orange Pi / Ubuntu Linux)
+# ==============================================================================
+
+services:
+  # Base de Datos PostgreSQL aislada
+  postgres:
+    image: postgres:16-alpine
+    container_name: web_2r_postgres
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 8s
+      timeout: 5s
+      retries: 5
+    networks:
+      - web2r_internal
+
+  # Backend FastAPI con uv y Alembic
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: web_2r_backend
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      POSTGRES_SERVER: postgres
+      POSTGRES_PORT: 5432
+    volumes:
+      - web2r_uploads:/app/uploads
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - web2r_internal
+
+  # Frontend Astro 5 servido por Nginx de alto rendimiento
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: web_2r_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - web2r_internal
+
+# Red interna segura y volúmenes persistentes
+networks:
+  web2r_internal:
+    driver: bridge
+
+volumes:
+  postgres_data:
+    driver: local
+  web2r_uploads:
+    driver: local

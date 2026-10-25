@@ -64,3 +64,41 @@ def decode_access_token(token: str) -> TokenData | None:
         )
     except (jwt.PyJWTError, ValueError, KeyError):
         return None
+
+
+def create_password_reset_token(
+    user_id: int,
+    email: str,
+    role: UserRole,
+    expires_minutes: int = 60,
+) -> str:
+    """Generates a signed JWT specific for password reset with 1 hour expiration."""
+    expire = datetime.now(UTC) + timedelta(minutes=expires_minutes)
+    to_encode = {
+        "sub": str(user_id),
+        "email": email,
+        "role": role.value,
+        "type": "password_reset",
+        "exp": expire,
+    }
+    return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+
+
+def decode_password_reset_token(token: str) -> TokenData | None:
+    """Decodes and validates a password reset JWT."""
+    try:
+        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        if payload.get("type") != "password_reset":
+            return None
+        sub = payload.get("sub")
+        email = payload.get("email")
+        role_str = payload.get("role")
+        if not sub or not email or not role_str:
+            return None
+        return TokenData(
+            user_id=int(sub),
+            email=str(email),
+            role=UserRole(role_str),
+        )
+    except (jwt.PyJWTError, ValueError, KeyError):
+        return None

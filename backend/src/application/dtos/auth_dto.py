@@ -28,3 +28,17 @@ class CustomerRegisterRequest(BaseModel):
     commercial_list_id: int
     reception_notes: str | None = None
     authorized_persons: str | None = None
+
+
+class ForgotPasswordRequest(BaseModel):
+    email: EmailStr
+
+
+class ForgotPasswordResponse(BaseModel):
+    message: str
+    email_sent: bool
+
+
+class ResetPasswordRequest(BaseModel):
+    token: str
+    new_password: str

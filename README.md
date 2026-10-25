@@ -22,7 +22,8 @@
 [![Argon2id](https://img.shields.io/badge/Security-Argon2id%20%2B%20JWT-critical?style=for-the-badge&logo=auth0&logoColor=white)](https://github.com/P-H-C/phc-winner-argon2)
 
 <p align="center">
-  <b>Paso Molino, Montevideo, Uruguay</b> • <b>WhatsApp Comercial: +598 95 250 673</b>
+  <b>Punto de Retiro: Ángel Salvo 56 (Ferretería junto a la vía del tren, Paso Molino, Montevideo)</b><br />
+  <b>Email: dosrodriguezdistribuidora@gmail.com</b> • <b>WhatsApp Comercial: +598 95 250 673</b>
 </p>
 
 </div>
@@ -37,12 +38,12 @@ El negocio operaba históricamente sobre un archivo Excel de 311 productos, con 
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                       Ecosistema 2 Rodríguez                                │
 ├─────────────────────────┬─────────────────────────┬─────────────────────────┤
-│    Catálogo Público     │     Portal Clientes     │    Backoffice Mariana   │
-│   (/ y /catalogo)       │       (/portal)         │        (/admin)         │
+│    Catálogo Público     │     Área de Clientes    │  Gestión Administrativa │
+│   (/ y /catalogo)       │       (/portal)         │        (RBAC / JWT)     │
 ├─────────────────────────┼─────────────────────────┼─────────────────────────┤
-│ • Precios protegidos    │ • Acceso B2B mayorista  │ • Control 311 artículos │
-│ • Pedidos WhatsApp      │ • Precios según lista   │ • Alertas stock crítico │
-│ • Retiro en Paso Molino │ • Checkout c/flete      │ • Rentabilidad mensual  │
+│ • Precios protegidos    │ • Precios mayoristas    │ • Control 311 artículos │
+│ • Pedidos WhatsApp      │ • Despacho prioritario  │ • Alertas stock crítico │
+│ • Retiro en Paso Molino │ • Historial de pedidos  │ • Rentabilidad mensual  │
 │ • Blindaje proveedores  │ • Descuento de stock    │ • Export/Import Excel   │
 └─────────────────────────┴─────────────────────────┴─────────────────────────┘
 ```
@@ -57,7 +58,7 @@ El negocio operaba históricamente sobre un archivo Excel de 311 productos, con 
 - **Ajuste Express**: Modal instantáneo para modificar existencias físicas sin recargar la página.
 
 ### 2. 🛡️ Blindaje de Proveedores & Exportación Excel (Pilar 2)
-- **Secreto Comercial Garantizado**: La información de costos y proveedores (`Moizo`, etc.) está estrictamente restringida al rol `ADMIN`. Los contratos de cliente y público omiten estos campos a nivel de serializador.
+- **Secreto Comercial Garantizado**: La información de costos y proveedores (orígenes de mercadería, listas de costo y márgenes brutos) está estrictamente restringida a nivel de base de datos y serializador. Los contratos de cliente y público omiten estos campos de forma hermética.
 - **Exportación de Catálogo Excel/CSV**: Descarga con formato `UTF-8-BOM` y separador `;`, garantizando apertura limpia en Microsoft Excel sin deformar tildes ni caracteres uruguayos.
 - **Carga Masiva Drag & Drop**: Zona para arrastrar planillas CSV y actualizar cientos de productos en segundos.
 - **Archivos Multimedia**: Carga directa de fotos de artículos y fichas técnicas en PDF por arrastre.
@@ -124,9 +125,30 @@ cd frontend
 pnpm install
 pnpm run dev --host 127.0.0.1 --port 4321
 ```
-- **Catálogo Web**: [http://localhost:4321](http://localhost:4321)
-- **Portal B2B**: [http://localhost:4321/portal](http://localhost:4321/portal)
-- **Backoffice Mariana**: [http://localhost:4321/admin](http://localhost:4321/admin)
+- **Plataforma Web & Catálogo**: [http://localhost:4321](http://localhost:4321)
+- **Área de Clientes**: [http://localhost:4321/portal](http://localhost:4321/portal)
+> *Nota de Seguridad*: La consola administrativa interna y las rutas de gestión se encuentran restringidas y protegidas mediante tokens JWT y control de acceso basado en roles (RBAC).
+
+---
+
+## 🚀 Despliegue en Producción (Orange Pi / Ubuntu Linux)
+
+El stack está preparado y optimizado para ejecutarse en placas **Orange Pi (ARM64)** o servidores Linux con consumo mínimo de RAM:
+
+```bash
+# 1. Generar entorno seguro con claves de alta entropía
+python3 scripts/setup_production_env.py --domain https://tu-dominio.uy
+
+# 2. Configurar la clave de Resend en el archivo protegido
+nano backend/.env  # Colocar tu RESEND_API_KEY=re_...
+
+# 3. Construir y levantar la pila productiva en segundo plano
+docker compose -f docker-compose.prod.yml up -d --build
+```
+
+- **PostgreSQL 16 Alpine**: Base de datos aislada con healthchecks y volumen persistente `postgres_data`.
+- **Backend FastAPI**: Auto-migraciones con Alembic al iniciar y almacenamiento persistente de fotos/PDFs en `web2r_uploads`.
+- **Frontend Nginx + Astro**: Proxy reverso de alto rendimiento en puerto 80 (consumo < 25 MB RAM) con compresión Gzip y ruteo interno a `/api/` sin problemas de CORS.
 
 ---
 
@@ -152,13 +174,10 @@ pnpm run build
 
 ---
 
-## 💳 Formas de Pago Integradas
+## 💳 Formas de Pago Soportadas
 
-- **Transferencia BROU / Redes de Cobranza**:
-  - Titular: Mariana Moreira
-  - Caja de Ahorro en Pesos: `110975226-00001`
-  - Redes (Abitab / Redpagos): `601-0551790`
-- **Mercado Pago**: Hasta 12 cuotas.
+- **Transferencia Bancaria BROU & Redes (Abitab / Redpagos)**: Canal de precio de lista bonificado sin costo financiero para comercios y empresas (datos de cuenta provistos en checkout o confirmación oficial).
+- **Mercado Pago Oficial**: Financiación con tarjetas de crédito en hasta 12 cuotas con cálculo transparente de arancel de plataforma.
 
 ---
 

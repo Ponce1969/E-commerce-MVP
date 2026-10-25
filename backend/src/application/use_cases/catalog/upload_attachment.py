@@ -11,6 +11,7 @@ from src.infrastructure.db.models import ProductORM
 
 UPLOAD_DIR = Path("uploads")
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".pdf"}
+MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB limit
 
 
 class UploadAttachmentUseCase:
@@ -40,6 +41,13 @@ class UploadAttachmentUseCase:
         destination = target_dir / unique_filename
 
         content = await file.read()
+        if len(content) > MAX_FILE_SIZE_BYTES:
+            raise BusinessRuleViolationException(
+                f"El archivo excede el tamaño máximo permitido de 10 MB (tamaño actual: {len(content) / (1024 * 1024):.1f} MB)."
+            )
+        if len(content) == 0:
+            raise BusinessRuleViolationException("El archivo subido está vacío.")
+
         with open(destination, "wb") as f:
             f.write(content)
 
