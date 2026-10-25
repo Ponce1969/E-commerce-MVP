@@ -127,8 +127,9 @@ const categories = Array.from(new Set(catalogData.map((p) => p.categoria))).slic
               <h4 class="font-bold text-base text-foreground leading-snug line-clamp-2">
                 {p.nombre}
               </h4>
-              <p class="text-xs text-muted-foreground">
-                Proveedor certificado: <strong class="text-foreground">{p.proveedor || '2 Rodríguez'}</strong>
+              <p class="text-xs text-muted-foreground flex items-center gap-1.5">
+                <span class="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+                Stock garantizado para entrega o retiro
               </p>
             </div>
 
