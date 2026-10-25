@@ -29,7 +29,13 @@ const {
       <div class="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <!-- Logo -->
         <a href="/" class="flex items-center gap-2.5 transition-opacity hover:opacity-90">
-          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-xl shadow-sm">
+          <img
+            src="/logo.png"
+            alt="2 Rodríguez Distribuidora"
+            class="h-10 w-auto max-w-[120px] object-contain rounded"
+            onerror="this.style.display='none'; const fb = document.getElementById('logoFallback'); if(fb) fb.style.display='flex';"
+          />
+          <div id="logoFallback" class="hidden h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-xl shadow-sm">
             2R
           </div>
           <div class="flex flex-col">
@@ -78,13 +84,13 @@ const {
         <!-- Actions / WhatsApp Call & Mariana Login -->
         <div class="flex items-center gap-3">
           <a
-            href="https://wa.me/59899549330?text=Hola%202%20Rodriguez%2C%20quisiera%20consultar%20por%20precios%20mayoristas"
+            href="https://wa.me/59895250673?text=Hola%202%20Rodriguez%2C%20quisiera%20consultar%20por%20precios%20mayoristas"
             target="_blank"
             rel="noopener noreferrer"
             class="hidden sm:inline-flex items-center justify-center rounded-md bg-emerald-600 px-3.5 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition-colors gap-2 min-h-[40px]"
           >
             <span class="h-2 w-2 rounded-full bg-emerald-200 animate-pulse"></span>
-            WhatsApp 099 549 330
+            WhatsApp 095 250 673
           </a>
           <a
             href="/admin"
@@ -128,7 +134,7 @@ const {
             <h4 class="font-semibold text-sm mb-3 text-foreground uppercase tracking-wider">Contacto & Ventas</h4>
             <p class="text-sm text-muted-foreground leading-relaxed mb-3">
               Consultas comerciales y cotizaciones personalizadas:<br />
-              <strong>WhatsApp:</strong> 099 549 330<br />
+              <strong>WhatsApp:</strong> 095 250 673<br />
               Montevideo, Uruguay
             </p>
             <a

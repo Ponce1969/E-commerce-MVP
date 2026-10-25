@@ -1,6 +1,7 @@
 from datetime import date, timedelta
 from decimal import Decimal
 from io import BytesIO
+from pathlib import Path
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import letter
@@ -8,6 +9,7 @@ from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus import (
     Flowable,
+    Image,
     Paragraph,
     SimpleDocTemplate,
     Spacer,
@@ -146,33 +148,36 @@ class GenerateQuotePdfUseCase:
             fontName="Helvetica-Bold",
         )
 
+        logo_file = Path("data/logo.png")
+        logo_elem: Flowable
+        if logo_file.exists():
+            logo_elem = Image(str(logo_file), width=1.1 * inch, height=1.1 * inch)
+        else:
+            logo_elem = Paragraph("<b>2R</b>", title_style)
+
         # Header section
         header_table_data = [
             [
-                Paragraph("<b>2 RODRÍGUEZ DISTRIBUIDORA</b>", title_style),
+                logo_elem,
+                Paragraph(
+                    "<b>2 RODRÍGUEZ DISTRIBUIDORA</b><br/>"
+                    "<font size=8 color='#4b5563'>Artículos de Limpieza, Higiene y Químicos Profesionales<br/>"
+                    "Paso Molino, Montevideo | WhatsApp: 095 250 673</font>",
+                    styles["Normal"],
+                ),
                 Paragraph(
                     f"<b>Fecha:</b> {date.today().strftime('%d/%m/%Y')}<br/>"
-                    f"<b>Vigencia:</b> {(quote_data.valid_until or (date.today() + timedelta(days=15))).strftime('%d/%m/%Y')}",
-                    header_meta,
-                ),
-            ],
-            [
-                Paragraph(
-                    "Artículos de Limpieza, Higiene y Químicos Profesionales<br/>"
-                    "Paso Molino, Montevideo | Tel / WhatsApp: 099 549 330",
-                    subtitle_style,
-                ),
-                Paragraph(
-                    f"<b>Condición Comercial:</b> {commercial_list.name}",
+                    f"<b>Vigencia:</b> {(quote_data.valid_until or (date.today() + timedelta(days=15))).strftime('%d/%m/%Y')}<br/>"
+                    f"<b>Condición:</b> {commercial_list.name}",
                     header_meta,
                 ),
             ],
         ]
-        header_table = Table(header_table_data, colWidths=[4.0 * inch, 3.0 * inch])
+        header_table = Table(header_table_data, colWidths=[1.3 * inch, 3.2 * inch, 2.5 * inch])
         header_table.setStyle(
             TableStyle(
                 [
-                    ("VALIGN", (0, 0), (-1, -1), "TOP"),
+                    ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
                     ("BOTTOMPADDING", (0, 0), (-1, -1), 4),
                 ]
             )
