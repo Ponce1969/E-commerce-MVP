@@ -1,0 +1,158 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Badge from '@/components/ui/badge.astro';
+import Card from '@/components/ui/card.astro';
+import catalogData from '@/data/catalog.json';
+
+const categories = Array.from(new Set(catalogData.map((p) => p.categoria))).sort();
+const totalCount = catalogData.length;
+---
+
+<BaseLayout title="Catálogo Completo | 2 Rodríguez Distribuidora" currentNav="catalogo">
+  <div class="space-y-6">
+    <!-- Header -->
+    <div class="border-b border-border pb-6">
+      <h1 class="text-2xl sm:text-4xl font-black tracking-tight text-foreground">
+        Catálogo General de Artículos
+      </h1>
+      <p class="text-sm text-muted-foreground mt-2 max-w-2xl">
+        Explore los {totalCount} artículos comercializados por 2 Rodríguez Distribuidora. Para proteger las condiciones arancelarias de nuestros clientes, los precios se informan por WhatsApp o en el portal privado.
+      </p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-card p-4 rounded-xl border border-border">
+      <div class="w-full sm:w-1/2 relative">
+        <input
+          type="text"
+          id="searchInput"
+          placeholder="Buscar por nombre o descripción..."
+          class="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+        />
+      </div>
+
+      <div class="w-full sm:w-auto flex items-center gap-3">
+        <label for="categoryFilter" class="text-xs font-semibold text-muted-foreground whitespace-nowrap">
+          Categoría:
+        </label>
+        <select
+          id="categoryFilter"
+          class="w-full sm:w-auto rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+        >
+          <option value="">Todas las categorías ({totalCount})</option>
+          {categories.map((c) => (
+            <option value={c}>{c}</option>
+          ))}
+        </select>
+      </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {catalogData.map((p) => {
+        const waMsg = encodeURIComponent(`Hola 2 Rodríguez Distribuidora, quisiera consultar el precio del producto: ${p.nombre} (${p.presentacion || 'estándar'})`);
+        return (
+          <div
+            class="product-card"
+            data-name={p.nombre.toLowerCase()}
+            data-category={p.categoria}
+          >
+            <Card class="h-full flex flex-col justify-between p-5 hover:border-primary/50 transition-all">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between gap-2">
+                  <Badge variant="outline" class="text-[11px] font-normal truncate max-w-[180px]">
+                    {p.categoria}
+                  </Badge>
+                  {p.presentacion && (
+                    <span class="text-xs font-semibold text-muted-foreground bg-secondary px-2 py-0.5 rounded">
+                      {p.presentacion}
+                    </span>
+                  )}
+                </div>
+                <h3 class="font-bold text-base text-foreground leading-snug line-clamp-2">
+                  {p.nombre}
+                </h3>
+                <p class="text-xs text-muted-foreground">
+                  Proveedor: <strong class="text-foreground">{p.proveedor || '2 Rodríguez'}</strong>
+                </p>
+              </div>
+
+              <!-- Price Protected CTA -->
+              <div class="pt-5 mt-4 border-t border-border flex items-center justify-between gap-2">
+                <div class="text-xs text-muted-foreground flex flex-col">
+                  <span class="font-semibold text-foreground">Precio Protegido</span>
+                  <span>Consulte su lista</span>
+                </div>
+                <a
+                  href={`https://wa.me/59899549330?text=${waMsg}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center justify-center rounded-md bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white shadow-sm hover:bg-emerald-700 transition-colors gap-1.5 min-h-[40px]"
+                >
+                  WhatsApp Precios
+                </a>
+              </div>
+            </Card>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="hidden text-center py-16 space-y-3">
+      <p class="text-lg font-semibold text-foreground">No encontramos artículos con esos filtros</p>
+      <p class="text-sm text-muted-foreground">Probá con otra palabra o limpiá el filtro de categorías.</p>
+    </div>
+  </div>
+
+  <!-- Client-side filter script -->
+  <script is:inline>
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const productCards = document.querySelectorAll('.product-card');
+    const emptyState = document.getElementById('emptyState');
+
+    // Parse URL params for pre-selected category
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCategory = urlParams.get('categoria');
+    if (initialCategory && categoryFilter) {
+      categoryFilter.value = initialCategory;
+    }
+
+    function filterProducts() {
+      const query = (searchInput?.value || '').toLowerCase().trim();
+      const selectedCategory = categoryFilter?.value || '';
+      let visibleCount = 0;
+
+      productCards.forEach((card) => {
+        const name = card.getAttribute('data-name') || '';
+        const category = card.getAttribute('data-category') || '';
+
+        const matchesQuery = !query || name.includes(query);
+        const matchesCategory = !selectedCategory || category === selectedCategory;
+
+        if (matchesQuery && matchesCategory) {
+          card.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+
+      if (emptyState) {
+        if (visibleCount === 0) {
+          emptyState.classList.remove('hidden');
+        } else {
+          emptyState.classList.add('hidden');
+        }
+      }
+    }
+
+    searchInput?.addEventListener('input', filterProducts);
+    categoryFilter?.addEventListener('change', filterProducts);
+
+    if (initialCategory) {
+      filterProducts();
+    }
+  </script>
+</BaseLayout>

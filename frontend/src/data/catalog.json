@@ -1,0 +1,6626 @@
+[
+  {
+    "id": 1,
+    "nombre": "Bio 100 ED (Detergente No Iónico Biodegradable) 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Limpieza De Pisos",
+    "costo": 328,
+    "recargo": 64.939,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 540.8,
+      "Residenciales": null,
+      "Lavandería profesional": null,
+      "Lavandería domiciliaria": null
+    },
+    "descripcion": "",
+    "origen": [
+      "1:5",
+      "1:25",
+      "2:79",
+      "3:35",
+      "4:40"
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Bio 100 ED (Detergente No Iónico Biodegradable) 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Limpieza De Pisos",
+    "costo": 642,
+    "recargo": 62.4611,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1043.2,
+      "Residenciales": 1043,
+      "Lavandería profesional": 1043,
+      "Lavandería domiciliaria": 1043
+    },
+    "descripcion": "",
+    "origen": [
+      "1:6",
+      "1:26",
+      "2:80",
+      "3:36",
+      "4:41"
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "Detergente ES (uso cocina) 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Limpieza De Pisos",
+    "costo": 216,
+    "recargo": 67.5926,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 362,
+      "Residenciales": 362,
+      "Lavandería profesional": 362,
+      "Lavandería domiciliaria": 362
+    },
+    "descripcion": "",
+    "origen": [
+      "1:7",
+      "1:27",
+      "2:81",
+      "3:37",
+      "4:42"
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "Detergente ES (uso cocina) 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Limpieza De Pisos",
+    "costo": 430,
+    "recargo": 53.4884,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 660,
+      "Residenciales": 660,
+      "Lavandería profesional": 660,
+      "Lavandería domiciliaria": 660
+    },
+    "descripcion": "",
+    "origen": [
+      "1:8",
+      "1:28",
+      "2:82",
+      "3:38",
+      "4:43"
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "Limpiador Desinfectante Biodegradable 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Limpieza De Pisos",
+    "costo": 139,
+    "recargo": 74.1007,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 242,
+      "Residenciales": 242,
+      "Lavandería profesional": 242,
+      "Lavandería domiciliaria": 242
+    },
+    "descripcion": "",
+    "origen": [
+      "1:9",
+      "1:42",
+      "2:83",
+      "3:39",
+      "4:45"
+    ]
+  },
+  {
+    "id": 6,
+    "nombre": "Limpiador Desinfectante Biodegradable 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Limpieza De Pisos",
+    "costo": 273,
+    "recargo": 55.6777,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 424.5,
+      "Residenciales": 425,
+      "Lavandería profesional": 425,
+      "Lavandería domiciliaria": 425
+    },
+    "descripcion": "",
+    "origen": [
+      "1:10",
+      "1:43",
+      "2:84",
+      "3:40",
+      "4:46"
+    ],
+    "conflictos": [
+      "Recargo distinto en Empresas / Limpieza: 55.49%"
+    ]
+  },
+  {
+    "id": 7,
+    "nombre": "Cera al agua acrilica al agua 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Limpieza De Pisos",
+    "costo": 300,
+    "recargo": 55,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 465
+    },
+    "descripcion": "",
+    "origen": [
+      "1:11"
+    ]
+  },
+  {
+    "id": 8,
+    "nombre": "Cera al agua acrilica al agua 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Limpieza De Pisos",
+    "costo": 585,
+    "recargo": 52.6496,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 893
+    },
+    "descripcion": "",
+    "origen": [
+      "1:12"
+    ]
+  },
+  {
+    "id": 9,
+    "nombre": "Hipoclorito de sodio al  40%  Ambar 5 Litros",
+    "proveedor": "PPM",
+    "presentacion": "5 L",
+    "categoria": "Desinfección",
+    "costo": 105,
+    "recargo": 30,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 136.5,
+      "Residenciales": 136.5,
+      "Lavandería profesional": 136.5,
+      "Lavandería domiciliaria": 136.5
+    },
+    "descripcion": "",
+    "origen": [
+      "1:17",
+      "2:91",
+      "3:47",
+      "4:53"
+    ]
+  },
+  {
+    "id": 10,
+    "nombre": "Hipoclorito de sodio al 10% Horizonte 10 Litros",
+    "proveedor": "LUSSAL",
+    "presentacion": "10 L",
+    "categoria": "Desinfección",
+    "costo": 310,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 465,
+      "Residenciales": 464.7,
+      "Lavandería profesional": 464.7,
+      "Lavandería domiciliaria": 464.7
+    },
+    "descripcion": "",
+    "origen": [
+      "1:18",
+      "2:92",
+      "3:48",
+      "4:54"
+    ],
+    "conflictos": [
+      "Costo diferente en Residenciales: $309.8",
+      "Costo diferente en Lavandería profesional: $309.8",
+      "Costo diferente en Lavandería domiciliaria: $309.8"
+    ]
+  },
+  {
+    "id": 11,
+    "nombre": "Cloro en polvo 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 kg",
+    "categoria": "Desinfección",
+    "costo": 0,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": null,
+      "Residenciales": null,
+      "Lavandería profesional": null,
+      "Lavandería domiciliaria": null
+    },
+    "descripcion": "",
+    "origen": [
+      "1:19",
+      "2:101",
+      "3:57",
+      "4:65"
+    ]
+  },
+  {
+    "id": 12,
+    "nombre": "Alcohol al 70% 10 lts",
+    "proveedor": "G AUTOMOTRIZ",
+    "presentacion": "10 L",
+    "categoria": "Desinfección",
+    "costo": 800,
+    "recargo": 40.625,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1125,
+      "Residenciales": 1125,
+      "Lavandería profesional": 1125,
+      "Lavandería domiciliaria": 1125
+    },
+    "descripcion": "",
+    "origen": [
+      "1:20",
+      "2:86",
+      "3:42",
+      "4:48"
+    ]
+  },
+  {
+    "id": 13,
+    "nombre": "Polvo para maquinas Lavavajillas 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 Kg",
+    "categoria": "Cocina",
+    "costo": 422,
+    "recargo": 63.7915,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 691.2,
+      "Residenciales": 691.2,
+      "Lavandería profesional": 691.2,
+      "Lavandería domiciliaria": 691.2
+    },
+    "descripcion": "",
+    "origen": [
+      "1:29",
+      "2:96",
+      "3:52",
+      "4:58"
+    ]
+  },
+  {
+    "id": 14,
+    "nombre": "Abrillantador con sal para máquinas Lavavajillas 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Cocina",
+    "costo": 380,
+    "recargo": 64.2105,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 624,
+      "Residenciales": 624,
+      "Lavandería profesional": 624,
+      "Lavandería domiciliaria": 624
+    },
+    "descripcion": "",
+    "origen": [
+      "1:30",
+      "2:97",
+      "3:53",
+      "4:60"
+    ]
+  },
+  {
+    "id": 15,
+    "nombre": "Limpia vidrios CIF c/ gatillo 500 ml",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Cocina",
+    "costo": 190.77,
+    "recargo": 50.0026,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 286.16
+    },
+    "descripcion": "",
+    "origen": [
+      "1:31"
+    ]
+  },
+  {
+    "id": 16,
+    "nombre": "Limpia vidrios 5 litros",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Cocina",
+    "costo": 380,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 570
+    },
+    "descripcion": "",
+    "origen": [
+      "1:32"
+    ]
+  },
+  {
+    "id": 17,
+    "nombre": "Rollo de cocina Claramax de 400 paños",
+    "proveedor": "PPM",
+    "presentacion": "1 rollo",
+    "categoria": "Cocina",
+    "costo": 105,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 157.5,
+      "Residenciales": 157.5
+    },
+    "descripcion": "",
+    "origen": [
+      "1:33",
+      "2:61"
+    ]
+  },
+  {
+    "id": 18,
+    "nombre": "Toalla de cocina Atualle de 360 paños",
+    "proveedor": "PPM",
+    "presentacion": "1 paquete x 3 unidades",
+    "categoria": "Cocina",
+    "costo": 97,
+    "recargo": 60,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 155.2,
+      "Residenciales": 155.2
+    },
+    "descripcion": "",
+    "origen": [
+      "1:34",
+      "2:62"
+    ]
+  },
+  {
+    "id": 19,
+    "nombre": "Guantes goma amarillos Jupiter",
+    "proveedor": "L y L",
+    "presentacion": "Par",
+    "categoria": "Cocina",
+    "costo": 53.35,
+    "recargo": 50.0094,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 80.03,
+      "Residenciales": 80.03,
+      "Lavandería profesional": 80.03,
+      "Lavandería domiciliaria": 80.03
+    },
+    "descripcion": "",
+    "origen": [
+      "1:35",
+      "1:110",
+      "2:111",
+      "3:67",
+      "4:75"
+    ]
+  },
+  {
+    "id": 20,
+    "nombre": "Guantes goma Sintalc",
+    "proveedor": "L y L",
+    "presentacion": "Par",
+    "categoria": "Cocina",
+    "costo": 118.78,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 178.17,
+      "Residenciales": 178.17,
+      "Lavandería profesional": 178.17,
+      "Lavandería domiciliaria": 178.17
+    },
+    "descripcion": "",
+    "origen": [
+      "1:36",
+      "1:111",
+      "2:112",
+      "3:68",
+      "4:76"
+    ]
+  },
+  {
+    "id": 21,
+    "nombre": "Guantes goma Sintalc reforzados",
+    "proveedor": "L y L",
+    "presentacion": "Par",
+    "categoria": "Cocina",
+    "costo": 216.91,
+    "recargo": 50.0023,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 325.37,
+      "Residenciales": 325.37,
+      "Lavandería profesional": 325.37,
+      "Lavandería domiciliaria": 325.37
+    },
+    "descripcion": "",
+    "origen": [
+      "1:37",
+      "1:112",
+      "2:113",
+      "3:69",
+      "4:77"
+    ]
+  },
+  {
+    "id": 22,
+    "nombre": "Limpiador cremoso CIF 375 ml",
+    "proveedor": "L y L",
+    "presentacion": "",
+    "categoria": "Baños",
+    "costo": 80.85,
+    "recargo": 50.0062,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 121.28
+    },
+    "descripcion": "",
+    "origen": [
+      "1:44"
+    ]
+  },
+  {
+    "id": 23,
+    "nombre": "Limpiador cremoso CIF 750 ml",
+    "proveedor": "L y L",
+    "presentacion": "",
+    "categoria": "Baños",
+    "costo": 146.4,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 219.6
+    },
+    "descripcion": "",
+    "origen": [
+      "1:45"
+    ]
+  },
+  {
+    "id": 24,
+    "nombre": "Jabón para Manos Bactericida 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "1 L",
+    "categoria": "Higiene Personal",
+    "costo": 67,
+    "recargo": 168.6567,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 180,
+      "Residenciales": 180
+    },
+    "descripcion": "",
+    "origen": [
+      "1:50",
+      "2:102"
+    ]
+  },
+  {
+    "id": 25,
+    "nombre": "Jabón para Manos Bactericida 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 L",
+    "categoria": "Higiene Personal",
+    "costo": 184,
+    "recargo": 146.462,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 453.49,
+      "Residenciales": 453
+    },
+    "descripcion": "",
+    "origen": [
+      "1:51",
+      "2:103"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 146.20%"
+    ]
+  },
+  {
+    "id": 26,
+    "nombre": "Jabón para Manos Bactericida 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Higiene Personal",
+    "costo": 280,
+    "recargo": 107.1429,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 580,
+      "Residenciales": 580
+    },
+    "descripcion": "",
+    "origen": [
+      "1:52",
+      "2:104"
+    ]
+  },
+  {
+    "id": 27,
+    "nombre": "Jabón para Manos Bactericida 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Higiene Personal",
+    "costo": 530,
+    "recargo": 102.7547,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1074.6,
+      "Residenciales": 1075
+    },
+    "descripcion": "",
+    "origen": [
+      "1:53",
+      "2:105"
+    ]
+  },
+  {
+    "id": 28,
+    "nombre": "Jabon 2 Rodriguez sin aroma y sin color (para pieles sensibles)",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Higiene Personal",
+    "costo": 408,
+    "recargo": 59.0588,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 648.96,
+      "Residenciales": 648.96,
+      "Lavandería profesional": 648.96,
+      "Lavandería domiciliaria": 648.96
+    },
+    "descripcion": "",
+    "origen": [
+      "1:54",
+      "2:106",
+      "3:62",
+      "4:70"
+    ]
+  },
+  {
+    "id": 29,
+    "nombre": "Shampoo para cabello 2 Rodriguez 5L Bomba de durazno",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Higiene Personal",
+    "costo": 421,
+    "recargo": 25.8907,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 530
+    },
+    "descripcion": "",
+    "origen": [
+      "1:55"
+    ]
+  },
+  {
+    "id": 30,
+    "nombre": "Acondicionador para cabello 5L bomba de durazno 2 Rodríguez",
+    "proveedor": "Lussal",
+    "presentacion": "5 L",
+    "categoria": "Higiene Personal",
+    "costo": 334,
+    "recargo": 25.7485,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 420
+    },
+    "descripcion": "",
+    "origen": [
+      "1:56"
+    ]
+  },
+  {
+    "id": 31,
+    "nombre": "Air sun paquete por 50 unidades adulto",
+    "proveedor": "F y B",
+    "presentacion": "Paquete",
+    "categoria": "Higiene Personal",
+    "costo": 99,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 118.8,
+      "Residenciales": 118.8
+    },
+    "descripcion": "",
+    "origen": [
+      "1:57",
+      "2:42"
+    ]
+  },
+  {
+    "id": 32,
+    "nombre": "Pasta Colgate Calcio x 180 grs",
+    "proveedor": "46227",
+    "presentacion": "",
+    "categoria": "Higiene Personal",
+    "costo": 90,
+    "recargo": 100,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 180
+    },
+    "descripcion": "",
+    "origen": [
+      "1:58"
+    ]
+  },
+  {
+    "id": 33,
+    "nombre": "Pasta Kolynos 180 grs",
+    "proveedor": "46227",
+    "presentacion": "",
+    "categoria": "Higiene Personal",
+    "costo": 64,
+    "recargo": 100,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 128
+    },
+    "descripcion": "",
+    "origen": [
+      "1:59"
+    ]
+  },
+  {
+    "id": 34,
+    "nombre": "Papel Higienico Clara 32 rollos por 30 metros",
+    "proveedor": "PPM",
+    "presentacion": "Funda",
+    "categoria": "Higiene Personal",
+    "costo": 399,
+    "recargo": 30,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 518.7,
+      "Residenciales": 518.7
+    },
+    "descripcion": "",
+    "origen": [
+      "1:60",
+      "2:63"
+    ]
+  },
+  {
+    "id": 35,
+    "nombre": "Papel Higienico Clara 16 rollos por 30 metros",
+    "proveedor": "PPM",
+    "presentacion": "",
+    "categoria": "Higiene Personal",
+    "costo": null,
+    "recargo": null,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 294,
+      "Residenciales": 294
+    },
+    "descripcion": "",
+    "origen": [
+      "1:61",
+      "2:64"
+    ]
+  },
+  {
+    "id": 36,
+    "nombre": "Papel higienico Clarys 32 rollos x 30 metros",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Higiene Personal",
+    "costo": null,
+    "recargo": null,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 364,
+      "Residenciales": 364
+    },
+    "descripcion": "",
+    "origen": [
+      "1:62",
+      "2:65"
+    ]
+  },
+  {
+    "id": 37,
+    "nombre": "Papel Higienico Generico (BR) x 8 rollos 500 metros",
+    "proveedor": "GASMART",
+    "presentacion": "Funda",
+    "categoria": "Higiene Personal",
+    "costo": 840,
+    "recargo": 20,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1008,
+      "Residenciales": 1008
+    },
+    "descripcion": "",
+    "origen": [
+      "1:63",
+      "2:66"
+    ]
+  },
+  {
+    "id": 38,
+    "nombre": "Papel Higienico Generico (BR) x 8 rollos 500 metros 6 fundas o mas",
+    "proveedor": "GASMART",
+    "presentacion": "Funda",
+    "categoria": "Higiene Personal",
+    "costo": 690,
+    "recargo": 20,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 828,
+      "Residenciales": 828
+    },
+    "descripcion": "",
+    "origen": [
+      "1:64",
+      "2:67"
+    ]
+  },
+  {
+    "id": 39,
+    "nombre": "Papel higienico Clarys 24 rollos x 30 metros",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Higiene Personal",
+    "costo": null,
+    "recargo": null,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 273,
+      "Residenciales": 273
+    },
+    "descripcion": "",
+    "origen": [
+      "1:65",
+      "2:68"
+    ]
+  },
+  {
+    "id": 40,
+    "nombre": "Toalla intercalada de 1000 unidades 20 x 21 cm - (Funda de 6 unidades paquetes)",
+    "proveedor": "",
+    "presentacion": "$ Millar",
+    "categoria": "Higiene Personal",
+    "costo": 121,
+    "recargo": 100,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 242
+    },
+    "descripcion": "",
+    "origen": [
+      "1:66"
+    ]
+  },
+  {
+    "id": 41,
+    "nombre": "CÓDIGO IP Y DESCRIPCIÓN",
+    "proveedor": "PROVEEDOR",
+    "presentacion": "PRESENTACIÓN",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": null,
+    "recargo": null,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": null,
+      "Residenciales": null
+    },
+    "descripcion": "",
+    "origen": [
+      "1:70",
+      "2:141"
+    ]
+  },
+  {
+    "id": 42,
+    "nombre": "IP329 PH ELITE PROFESIONAL ALTO METRAJE EXCELLENCE 250 METROS X 4 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "1",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 761.388336,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 951.73542
+    },
+    "descripcion": "",
+    "origen": [
+      "1:71"
+    ]
+  },
+  {
+    "id": 43,
+    "nombre": "IP373 PH ELITE PROFESIONAL ALTO METRAJE PLUS 500 METROS X 6 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "1",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 1135.340784,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1419.17598
+    },
+    "descripcion": "",
+    "origen": [
+      "1:72"
+    ]
+  },
+  {
+    "id": 44,
+    "nombre": "IP374 ELITE PROFESIONAL ALTO METRAJE PLUS 500 METROS X 4 UNIDADES DISPENSADOR DE PH",
+    "proveedor": "ESTUARIO",
+    "presentacion": "1",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 698.1611039999999,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 872.70138
+    },
+    "descripcion": "",
+    "origen": [
+      "1:73"
+    ]
+  },
+  {
+    "id": 45,
+    "nombre": "IP378 PH ELITE PROFESIONAL CLASIC 500 MT X 4 ROLLOS PARA DISPENSADOR DE PH",
+    "proveedor": "ESTUARIO",
+    "presentacion": "1",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 475.6887359999999,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 594.61092
+    },
+    "descripcion": "",
+    "origen": [
+      "1:74"
+    ]
+  },
+  {
+    "id": 46,
+    "nombre": "IP6228 PH CLASIC X 150 METROS X 4 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "6",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 126.0504,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 157.563
+    },
+    "descripcion": "",
+    "origen": [
+      "1:75"
+    ]
+  },
+  {
+    "id": 47,
+    "nombre": "IP6227 TOALLA DE COCINA ELITE CLASIC X 150 X 2 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "6",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 133.20057599999998,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 166.50072
+    },
+    "descripcion": "",
+    "origen": [
+      "1:76"
+    ]
+  },
+  {
+    "id": 48,
+    "nombre": "IP326 TOALLA INTERFOLIADA ELITE PROFESIONAL PLUS 350 PAQUETES X 24 UNIDADES (8400 UNIDADES)",
+    "proveedor": "ESTUARIO",
+    "presentacion": "24",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 89.895456,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 112.36932
+    },
+    "descripcion": "",
+    "origen": [
+      "1:77"
+    ]
+  },
+  {
+    "id": 49,
+    "nombre": "IP1289 PRACTI ROLLO ELITE PROFESIONAL 150 MTS X 6 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "1",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 1616.5986,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 2020.74822
+    },
+    "descripcion": "",
+    "origen": [
+      "1:78"
+    ]
+  },
+  {
+    "id": 50,
+    "nombre": "IP2174 IP2175 IP2176 IP2177 MAXWIPE 80 ROLOS BLANCO Y COLORES  X 1 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "6",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 658.0270079999999,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 822.53376
+    },
+    "descripcion": "",
+    "origen": [
+      "1:79"
+    ]
+  },
+  {
+    "id": 51,
+    "nombre": "IP896 SERVILLETA EXPRESS EN CAJA x 100 UNIDADES CLASIC ELITE PROFESIONAL",
+    "proveedor": "ESTUARIO",
+    "presentacion": "30",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 32.01768,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 40.0221
+    },
+    "descripcion": "",
+    "origen": [
+      "1:80"
+    ]
+  },
+  {
+    "id": 52,
+    "nombre": "IP2144 ALCOHOL SPRAY ANTISEPTICO 1000 ML  ELITE PROFESIONAL PLUS MULTIFLEX PARA DISPENSADOR",
+    "proveedor": "ESTUARIO",
+    "presentacion": "3",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 841.6301759999999,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1052.03772
+    },
+    "descripcion": "",
+    "origen": [
+      "1:81"
+    ]
+  },
+  {
+    "id": 53,
+    "nombre": "IP1972 COBERTOR DESCARTABLE PARA INODORO ELITE PROFESIONAL X 86 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "7",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 261.473328,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 326.84166
+    },
+    "descripcion": "",
+    "origen": [
+      "1:82"
+    ]
+  },
+  {
+    "id": 54,
+    "nombre": "* 50 x 60 gruesas - 250 unidades - 10 kilos",
+    "proveedor": "Fira",
+    "presentacion": "1 Kg",
+    "categoria": "Bolsas Negras",
+    "costo": 110,
+    "recargo": 22.7182,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 134.99,
+      "Residenciales": 134.99,
+      "Lavandería profesional": 134.99,
+      "Lavandería domiciliaria": 134.99
+    },
+    "descripcion": "",
+    "origen": [
+      "1:87",
+      "2:157",
+      "3:94",
+      "4:102"
+    ]
+  },
+  {
+    "id": 55,
+    "nombre": "* 50 x 60 para papelera -1000 unidades",
+    "proveedor": "Fira",
+    "presentacion": "millar",
+    "categoria": "Bolsas Negras",
+    "costo": 1100,
+    "recargo": 45,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1595,
+      "Residenciales": 1595,
+      "Lavandería profesional": 1595,
+      "Lavandería domiciliaria": 1595
+    },
+    "descripcion": "",
+    "origen": [
+      "1:88",
+      "2:158",
+      "3:95",
+      "4:103"
+    ]
+  },
+  {
+    "id": 56,
+    "nombre": "* 70 x 1 mt - 140 unidades - 10 kilos",
+    "proveedor": "Fira",
+    "presentacion": "1 Kg",
+    "categoria": "Bolsas Negras",
+    "costo": 110,
+    "recargo": 22.7182,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 134.99,
+      "Residenciales": 134.99,
+      "Lavandería profesional": 134.99,
+      "Lavandería domiciliaria": 134.99
+    },
+    "descripcion": "",
+    "origen": [
+      "1:89",
+      "2:159",
+      "3:96",
+      "4:104"
+    ]
+  },
+  {
+    "id": 57,
+    "nombre": "* 120 cm x 120 cm - 85 unidades - 10 kilos",
+    "proveedor": "Fira",
+    "presentacion": "1 kg",
+    "categoria": "Bolsas Negras",
+    "costo": 110,
+    "recargo": 22.7182,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 134.99,
+      "Residenciales": 134.99,
+      "Lavandería profesional": 134.99,
+      "Lavandería domiciliaria": 134.99
+    },
+    "descripcion": "",
+    "origen": [
+      "1:90",
+      "2:160",
+      "3:97",
+      "4:105"
+    ]
+  },
+  {
+    "id": 58,
+    "nombre": "* 120 cm x 140 cm - 60 unidades - 10 kilos",
+    "proveedor": "Fira",
+    "presentacion": "1 Kg",
+    "categoria": "Bolsas Negras",
+    "costo": 110,
+    "recargo": 22.7182,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 134.99,
+      "Residenciales": 134.99,
+      "Lavandería profesional": 134.99,
+      "Lavandería domiciliaria": 134.99
+    },
+    "descripcion": "",
+    "origen": [
+      "1:91",
+      "2:161",
+      "3:98",
+      "4:106"
+    ]
+  },
+  {
+    "id": 59,
+    "nombre": "*Bolsa Beige o Caramelo 100 cm x 120 cm 35 micrones  - 100 unidades - 10 kilos",
+    "proveedor": "Fira",
+    "presentacion": "1 Kg",
+    "categoria": "Bolsas Negras",
+    "costo": 125,
+    "recargo": 24,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 155,
+      "Residenciales": 155,
+      "Lavandería profesional": 155,
+      "Lavandería domiciliaria": 155
+    },
+    "descripcion": "",
+    "origen": [
+      "1:93",
+      "2:163",
+      "3:100",
+      "4:108"
+    ]
+  },
+  {
+    "id": 60,
+    "nombre": "* 40 x 60 ( 65 bolsas)",
+    "proveedor": "Castiglioni",
+    "presentacion": "1 Kg",
+    "categoria": "Bolsas Transparentes O Blancas Para Uso De Lavadero",
+    "costo": 296,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 370,
+      "Residenciales": 370,
+      "Lavandería profesional": 370,
+      "Lavandería domiciliaria": 370
+    },
+    "descripcion": "",
+    "origen": [
+      "1:97",
+      "2:167",
+      "3:104",
+      "4:112"
+    ]
+  },
+  {
+    "id": 61,
+    "nombre": "* 60 x 90 ( 30 bolsas)",
+    "proveedor": "Castiglioni",
+    "presentacion": "1 Kg",
+    "categoria": "Bolsas Transparentes O Blancas Para Uso De Lavadero",
+    "costo": 296,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 370,
+      "Residenciales": 370,
+      "Lavandería profesional": 370,
+      "Lavandería domiciliaria": 370
+    },
+    "descripcion": "",
+    "origen": [
+      "1:98",
+      "2:168",
+      "3:105",
+      "4:113"
+    ]
+  },
+  {
+    "id": 62,
+    "nombre": "* 70 x 1 mt ( 10 a 12 bolsas)",
+    "proveedor": "Castiglioni",
+    "presentacion": "1 Kg",
+    "categoria": "Bolsas Transparentes O Blancas Para Uso De Lavadero",
+    "costo": 296,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 370,
+      "Residenciales": 370,
+      "Lavandería profesional": 370,
+      "Lavandería domiciliaria": 370
+    },
+    "descripcion": "",
+    "origen": [
+      "1:99",
+      "2:169",
+      "3:106",
+      "4:114"
+    ]
+  },
+  {
+    "id": 63,
+    "nombre": "* 60 x 130 mt ( 25 bolsas)",
+    "proveedor": "Castiglioni",
+    "presentacion": "1 Kg",
+    "categoria": "Bolsas Transparentes O Blancas Para Uso De Lavadero",
+    "costo": 296,
+    "recargo": 25,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 370,
+      "Residenciales": 370,
+      "Lavandería profesional": 370,
+      "Lavandería domiciliaria": 370
+    },
+    "descripcion": "",
+    "origen": [
+      "1:100",
+      "2:170",
+      "3:107",
+      "4:115"
+    ]
+  },
+  {
+    "id": 64,
+    "nombre": "Bolsas de residuos Jorgito 70 x 100 de 10 unid",
+    "proveedor": "PPM",
+    "presentacion": "",
+    "categoria": "Bolsas Transparentes O Blancas Para Uso De Lavadero",
+    "costo": 37,
+    "recargo": 70,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 62.9,
+      "Residenciales": 62.9
+    },
+    "descripcion": "",
+    "origen": [
+      "1:102",
+      "2:171"
+    ]
+  },
+  {
+    "id": 65,
+    "nombre": "Guantes FUNSA x docena",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Guantes",
+    "costo": 26.6,
+    "recargo": 60,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 42.56
+    },
+    "descripcion": "",
+    "origen": [
+      "1:106"
+    ]
+  },
+  {
+    "id": 66,
+    "nombre": "Tapabocas tricapa x 50 unidades con elastico",
+    "proveedor": "Medilink",
+    "presentacion": "Caja 50 unidades",
+    "categoria": "Guantes",
+    "costo": 46,
+    "recargo": 30,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 57.5,
+      "Residenciales": 59.8,
+      "Lavandería profesional": 57.5,
+      "Lavandería domiciliaria": 57.5
+    },
+    "descripcion": "",
+    "origen": [
+      "1:107",
+      "2:114",
+      "3:70",
+      "4:78"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 30.00%"
+    ]
+  },
+  {
+    "id": 67,
+    "nombre": "Guantes Novomedical latex talles S M L",
+    "proveedor": "Medilink",
+    "presentacion": "",
+    "categoria": "Guantes",
+    "costo": null,
+    "recargo": null,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 0,
+      "Residenciales": 0,
+      "Lavandería profesional": 0,
+      "Lavandería domiciliaria": 0
+    },
+    "descripcion": "",
+    "origen": [
+      "1:108",
+      "2:115",
+      "3:71",
+      "4:79"
+    ]
+  },
+  {
+    "id": 68,
+    "nombre": "Guantes SQL latex talle M unicamente",
+    "proveedor": "Alakazam Paso Molino",
+    "presentacion": "caja x 1oo unidades",
+    "categoria": "Guantes",
+    "costo": 199,
+    "recargo": 23.1155,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria",
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 242.78,
+      "Residenciales": 242.78,
+      "Lavandería profesional": 242.78,
+      "Lavandería domiciliaria": 242.78
+    },
+    "descripcion": "",
+    "origen": [
+      "1:109",
+      "2:116",
+      "3:72",
+      "4:80"
+    ]
+  },
+  {
+    "id": 69,
+    "nombre": "Paño de piso 55 x 50 cm",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 33.67,
+    "recargo": 59.9941,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 53.87,
+      "Residenciales": 53.87,
+      "Lavandería profesional": 53.87,
+      "Lavandería domiciliaria": 53.87
+    },
+    "descripcion": "",
+    "origen": [
+      "1:117",
+      "2:130",
+      "3:86",
+      "4:94"
+    ]
+  },
+  {
+    "id": 70,
+    "nombre": "Rejilla 33 x 35 cm",
+    "proveedor": "24/7",
+    "presentacion": "Unidad",
+    "categoria": "Varios",
+    "costo": 26.18,
+    "recargo": 100,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 41.89,
+      "Residenciales": 42,
+      "Lavandería profesional": 41.89,
+      "Lavandería domiciliaria": 41.89
+    },
+    "descripcion": "",
+    "origen": [
+      "1:118",
+      "2:131",
+      "3:87",
+      "4:95"
+    ],
+    "conflictos": [
+      "Costo diferente en Residenciales: $21.0",
+      "Recargo distinto en Residenciales: 100.00%"
+    ]
+  },
+  {
+    "id": 71,
+    "nombre": "Franela naranja 30 x 40 cm",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 20,
+    "recargo": 60,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 32,
+      "Residenciales": 32,
+      "Lavandería profesional": 32,
+      "Lavandería domiciliaria": 32
+    },
+    "descripcion": "",
+    "origen": [
+      "1:119",
+      "2:132",
+      "3:88",
+      "4:96"
+    ]
+  },
+  {
+    "id": 72,
+    "nombre": "Repasadores 100% algodón x 3 unidades",
+    "proveedor": "24/7",
+    "presentacion": "3 unid",
+    "categoria": "Varios",
+    "costo": 70,
+    "recargo": 100,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 140
+    },
+    "descripcion": "",
+    "origen": [
+      "1:120"
+    ]
+  },
+  {
+    "id": 73,
+    "nombre": "Cuerda nautica para ropa 6 mm x metro",
+    "proveedor": "Javier",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 14,
+    "recargo": 78.5714,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 25,
+      "Residenciales": 25,
+      "Lavandería profesional": 25,
+      "Lavandería domiciliaria": 25
+    },
+    "descripcion": "",
+    "origen": [
+      "1:121",
+      "2:133",
+      "3:89",
+      "4:97"
+    ]
+  },
+  {
+    "id": 74,
+    "nombre": "Palillos de ropa madera x 12 unidades",
+    "proveedor": "Traker SAS",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 45.01,
+    "recargo": 100,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 90.02,
+      "Residenciales": 90.02,
+      "Lavandería profesional": 90.02,
+      "Lavandería domiciliaria": 90.02
+    },
+    "descripcion": "",
+    "origen": [
+      "1:122",
+      "2:134",
+      "3:90",
+      "4:98"
+    ]
+  },
+  {
+    "id": 75,
+    "nombre": "Palo extensible de aluminio 2 metros",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 252,
+    "recargo": 30,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 327.6,
+      "Residenciales": 327.6
+    },
+    "descripcion": "",
+    "origen": [
+      "1:123",
+      "2:135"
+    ]
+  },
+  {
+    "id": 76,
+    "nombre": "Palo extensible de aluminio 3 metros",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 323,
+    "recargo": 30,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 419.9,
+      "Residenciales": 419.9
+    },
+    "descripcion": "",
+    "origen": [
+      "1:124",
+      "2:136"
+    ]
+  },
+  {
+    "id": 77,
+    "nombre": "Lampazo KR Rodo 30 cm goma c/palo",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 56,
+    "recargo": 114.2857,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 120
+    },
+    "descripcion": "",
+    "origen": [
+      "1:125"
+    ]
+  },
+  {
+    "id": 78,
+    "nombre": "Esponja para limpieza de Fibra verde abrasiva Rollo 3m Precio x Rollo",
+    "proveedor": "Gasmart",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 265,
+    "recargo": 88.3019,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 499,
+      "Residenciales": 499
+    },
+    "descripcion": "",
+    "origen": [
+      "1:126",
+      "2:137"
+    ]
+  },
+  {
+    "id": 79,
+    "nombre": "Lustra muebles Jupiter aerosol",
+    "proveedor": "L y L",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 143.43,
+    "recargo": 50.0035,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 215.15
+    },
+    "descripcion": "",
+    "origen": [
+      "1:127"
+    ]
+  },
+  {
+    "id": 80,
+    "nombre": "Removedor de cemento Industrial 10 LT",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "10 L",
+    "categoria": "Varios",
+    "costo": 820,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1230
+    },
+    "descripcion": "",
+    "origen": [
+      "1:128"
+    ]
+  },
+  {
+    "id": 81,
+    "nombre": "Liquido final de obra 5 LT específico para residuos cementicios",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 L",
+    "categoria": "Varios",
+    "costo": 255,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 382.5
+    },
+    "descripcion": "",
+    "origen": [
+      "1:129"
+    ]
+  },
+  {
+    "id": 82,
+    "nombre": "Vinagre de limpieza 5 litros Importado (limpiador de carácter ácido)",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 L",
+    "categoria": "Varios",
+    "costo": 394,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 591
+    },
+    "descripcion": "",
+    "origen": [
+      "1:130"
+    ]
+  },
+  {
+    "id": 83,
+    "nombre": "Lubricante para caminadora 1 L (Reduce la fricción y ayuda al mantenimiento del equipo.)",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "1 L",
+    "categoria": "Varios",
+    "costo": 1105,
+    "recargo": 45,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1602.25
+    },
+    "descripcion": "",
+    "origen": [
+      "1:131"
+    ]
+  },
+  {
+    "id": 84,
+    "nombre": "Alcohol ISOPROPILICO 5 LT",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 L",
+    "categoria": "Varios",
+    "costo": 846,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1269
+    },
+    "descripcion": "",
+    "origen": [
+      "1:132"
+    ]
+  },
+  {
+    "id": 85,
+    "nombre": "Alcohol Azul 5 LT",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 L",
+    "categoria": "Varios",
+    "costo": 450,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 675
+    },
+    "descripcion": "",
+    "origen": [
+      "1:133"
+    ]
+  },
+  {
+    "id": 86,
+    "nombre": "Alcohol Industrial  99º 10 LT",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "10 LT",
+    "categoria": "Varios",
+    "costo": 952,
+    "recargo": 55,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1475.6
+    },
+    "descripcion": "",
+    "origen": [
+      "1:134"
+    ]
+  },
+  {
+    "id": 87,
+    "nombre": "Bioetanol Importado 10 LT",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "10 L",
+    "categoria": "Varios",
+    "costo": 1000,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1500
+    },
+    "descripcion": "",
+    "origen": [
+      "1:135"
+    ]
+  },
+  {
+    "id": 88,
+    "nombre": "Bioetanol Importado 5 LT",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 LT",
+    "categoria": "Varios",
+    "costo": 492,
+    "recargo": 55,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 762.6
+    },
+    "descripcion": "",
+    "origen": [
+      "1:136"
+    ]
+  },
+  {
+    "id": 89,
+    "nombre": "Absorbe humedad 5 KG (Su función es capturar humedad ambiental)",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 k",
+    "categoria": "Varios",
+    "costo": 222,
+    "recargo": 55,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 344.1
+    },
+    "descripcion": "",
+    "origen": [
+      "1:137"
+    ]
+  },
+  {
+    "id": 90,
+    "nombre": "Kerosene 10 LT",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "10 L",
+    "categoria": "Varios",
+    "costo": 1270,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1905
+    },
+    "descripcion": "",
+    "origen": [
+      "1:138"
+    ]
+  },
+  {
+    "id": 91,
+    "nombre": "Kerosene 5 LT",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 L",
+    "categoria": "Varios",
+    "costo": 845,
+    "recargo": 55,
+    "listas": [
+      "Empresas / Limpieza"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1309.75
+    },
+    "descripcion": "",
+    "origen": [
+      "1:139"
+    ]
+  },
+  {
+    "id": 92,
+    "nombre": "Polvo Oxi Activo 2 Rodríguez",
+    "proveedor": "Moizo",
+    "presentacion": "Bolsa 400 g",
+    "categoria": "Nuevo",
+    "costo": 70,
+    "recargo": 298.5714,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 279,
+      "Residenciales": 279,
+      "Lavandería profesional": 279,
+      "Lavandería domiciliaria": 279
+    },
+    "descripcion": "",
+    "origen": [
+      "1:142",
+      "2:231",
+      "3:109",
+      "4:118"
+    ]
+  },
+  {
+    "id": 93,
+    "nombre": "Polvo Oxi Activo 2 Rodríguez",
+    "proveedor": "Moizo",
+    "presentacion": "Pote 400 g",
+    "categoria": "Nuevo",
+    "costo": 110,
+    "recargo": 208.1818,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 339,
+      "Residenciales": 339,
+      "Lavandería profesional": 339,
+      "Lavandería domiciliaria": 339
+    },
+    "descripcion": "",
+    "origen": [
+      "1:143",
+      "2:232",
+      "3:110",
+      "4:119"
+    ]
+  },
+  {
+    "id": 94,
+    "nombre": "Antihongo fungicida",
+    "proveedor": "Gabriel",
+    "presentacion": "1 L",
+    "categoria": "Nuevo",
+    "costo": 78,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 117,
+      "Residenciales": 117
+    },
+    "descripcion": "",
+    "origen": [
+      "1:147",
+      "2:236"
+    ]
+  },
+  {
+    "id": 95,
+    "nombre": "Antihongo fungicida",
+    "proveedor": "Gabriel",
+    "presentacion": "5 L",
+    "categoria": "Nuevo",
+    "costo": 292,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 438,
+      "Residenciales": 408.8
+    },
+    "descripcion": "",
+    "origen": [
+      "1:148",
+      "2:237"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 40.00%"
+    ]
+  },
+  {
+    "id": 96,
+    "nombre": "Cloruro de benzalconio 1%",
+    "proveedor": "Gabriel",
+    "presentacion": "10 L",
+    "categoria": "Nuevo",
+    "costo": 510,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 765,
+      "Residenciales": 714
+    },
+    "descripcion": "",
+    "origen": [
+      "1:149",
+      "2:238"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 40.00%"
+    ]
+  },
+  {
+    "id": 97,
+    "nombre": "Amonio cuaternario (5 L + 1 L de regalo)",
+    "proveedor": "Gabriel",
+    "presentacion": "5 L + 1 L",
+    "categoria": "Nuevo",
+    "costo": 300,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 450,
+      "Residenciales": 420
+    },
+    "descripcion": "",
+    "origen": [
+      "1:150",
+      "2:239"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 40.00%"
+    ]
+  },
+  {
+    "id": 98,
+    "nombre": "Percarbonato de sodio puro",
+    "proveedor": "Gabriel",
+    "presentacion": "1 kg",
+    "categoria": "Nuevo",
+    "costo": 190,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 285,
+      "Residenciales": 285,
+      "Lavandería profesional": 285,
+      "Lavandería domiciliaria": 285
+    },
+    "descripcion": "",
+    "origen": [
+      "1:151",
+      "2:240",
+      "3:114",
+      "4:123"
+    ]
+  },
+  {
+    "id": 99,
+    "nombre": "Percarbonato de sodio puro",
+    "proveedor": "Gabriel",
+    "presentacion": "5 kg",
+    "categoria": "Nuevo",
+    "costo": 840,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 1260,
+      "Residenciales": 1176,
+      "Lavandería profesional": 1176,
+      "Lavandería domiciliaria": 1260
+    },
+    "descripcion": "",
+    "origen": [
+      "1:152",
+      "2:241",
+      "3:115",
+      "4:124"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 40.00%",
+      "Recargo distinto en Lavandería profesional: 40.00%"
+    ]
+  },
+  {
+    "id": 100,
+    "nombre": "Bicarbonato de sodio",
+    "proveedor": "Gabriel",
+    "presentacion": "1 kg",
+    "categoria": "Nuevo",
+    "costo": 85,
+    "recargo": 65,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 127.5,
+      "Residenciales": 127.5,
+      "Lavandería profesional": 127.5,
+      "Lavandería domiciliaria": 127.5
+    },
+    "descripcion": "",
+    "origen": [
+      "1:153",
+      "2:242",
+      "3:116",
+      "4:125"
+    ]
+  },
+  {
+    "id": 101,
+    "nombre": "Bicarbonato de sodio",
+    "proveedor": "Gabriel",
+    "presentacion": "5 kg",
+    "categoria": "Nuevo",
+    "costo": 400,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 600,
+      "Residenciales": 560,
+      "Lavandería profesional": 560,
+      "Lavandería domiciliaria": 600
+    },
+    "descripcion": "",
+    "origen": [
+      "1:154",
+      "2:243",
+      "3:117",
+      "4:126"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 40.00%",
+      "Recargo distinto en Lavandería profesional: 40.00%"
+    ]
+  },
+  {
+    "id": 102,
+    "nombre": "Hipoclorito de sodio 60%",
+    "proveedor": "Gabriel",
+    "presentacion": "10 L",
+    "categoria": "Nuevo",
+    "costo": 299,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 448.5,
+      "Residenciales": 418.6
+    },
+    "descripcion": "",
+    "origen": [
+      "1:155",
+      "2:244"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 40.00%"
+    ]
+  },
+  {
+    "id": 103,
+    "nombre": "Hipoclorito (concentración por confirmar)",
+    "proveedor": "Gabriel",
+    "presentacion": "Pack 2 × 20 L",
+    "categoria": "Nuevo",
+    "costo": 1400,
+    "recargo": 50,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 2100,
+      "Residenciales": 1960
+    },
+    "descripcion": "",
+    "origen": [
+      "1:156",
+      "2:245"
+    ],
+    "conflictos": [
+      "Recargo distinto en Residenciales: 40.00%"
+    ]
+  },
+  {
+    "id": 104,
+    "nombre": "Papel higiénico genérico – Sin marca. Elaborado a partir de extremos de bobinas. Funda de 64 rollos de 30 metros cada uno. Compra mínima: 10 fundas cerradas.",
+    "proveedor": "24/7",
+    "presentacion": "Funda de 64 rollos × 30 m",
+    "categoria": "Nuevo",
+    "costo": 190,
+    "recargo": 157.8947,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Empresas / Limpieza": 490,
+      "Residenciales": 490
+    },
+    "descripcion": "",
+    "origen": [
+      "1:157",
+      "2:246"
+    ]
+  },
+  {
+    "id": 105,
+    "nombre": "Apositos Indasec Hombre Normal x 10",
+    "proveedor": "Medilink",
+    "presentacion": "paquete de 10 unidades",
+    "categoria": "Incontinencia",
+    "costo": 312,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 390
+    },
+    "descripcion": "",
+    "origen": [
+      "2:5"
+    ]
+  },
+  {
+    "id": 106,
+    "nombre": "Apositos Indasec Discreet Normal x 12 (Pieles sensibles)",
+    "proveedor": "Medilink",
+    "presentacion": "paquete",
+    "categoria": "Incontinencia",
+    "costo": 235,
+    "recargo": 25.5319,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 295
+    },
+    "descripcion": "",
+    "origen": [
+      "2:6"
+    ]
+  },
+  {
+    "id": 107,
+    "nombre": "Apositos Cotidian x 40 unidades",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Incontinencia",
+    "costo": 1057.4838,
+    "recargo": 25.4705,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": null
+    },
+    "descripcion": "",
+    "origen": [
+      "2:7",
+      "2:10"
+    ]
+  },
+  {
+    "id": 108,
+    "nombre": "Apositos masculino Ready Sec Men x 15 unidades",
+    "proveedor": "SAGRIN",
+    "presentacion": "",
+    "categoria": "Incontinencia",
+    "costo": 151,
+    "recargo": 25.8278,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 190
+    },
+    "descripcion": "",
+    "origen": [
+      "2:8"
+    ]
+  },
+  {
+    "id": 109,
+    "nombre": "Apositos femenino Abosrbex Ready x 15 unidades",
+    "proveedor": "SAGRIN",
+    "presentacion": "",
+    "categoria": "Incontinencia",
+    "costo": 83.49,
+    "recargo": 25.7636,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 105
+    },
+    "descripcion": "",
+    "origen": [
+      "2:9"
+    ]
+  },
+  {
+    "id": 110,
+    "nombre": "Apositos Cotidian largos x 20 unidades",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Incontinencia",
+    "costo": 1576.8622,
+    "recargo": 25.0001,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1971.08
+    },
+    "descripcion": "",
+    "origen": [
+      "2:11"
+    ]
+  },
+  {
+    "id": 111,
+    "nombre": "Ready x 24",
+    "proveedor": "FYB",
+    "presentacion": "M",
+    "categoria": "Incontinencia",
+    "costo": 489,
+    "recargo": 30,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 635.7
+    },
+    "descripcion": "",
+    "origen": [
+      "2:12"
+    ]
+  },
+  {
+    "id": 112,
+    "nombre": "Ready x 24",
+    "proveedor": "FYB",
+    "presentacion": "G",
+    "categoria": "Incontinencia",
+    "costo": 517,
+    "recargo": 30,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 672.1
+    },
+    "descripcion": "",
+    "origen": [
+      "2:13"
+    ]
+  },
+  {
+    "id": 113,
+    "nombre": "Ready x 24 NOCTURNO talle G",
+    "proveedor": "FYB",
+    "presentacion": "N G",
+    "categoria": "Incontinencia",
+    "costo": 566,
+    "recargo": 30,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 735.8
+    },
+    "descripcion": "",
+    "origen": [
+      "2:14"
+    ]
+  },
+  {
+    "id": 114,
+    "nombre": "Ready x 24 NOCTURNO talle G",
+    "proveedor": "FYB",
+    "presentacion": "M",
+    "categoria": "Incontinencia",
+    "costo": 879,
+    "recargo": 30,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1142.7
+    },
+    "descripcion": "",
+    "origen": [
+      "2:15"
+    ]
+  },
+  {
+    "id": 115,
+    "nombre": "Ready Mod x 56",
+    "proveedor": "FYB",
+    "presentacion": "G",
+    "categoria": "Incontinencia",
+    "costo": 920,
+    "recargo": 30,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1196
+    },
+    "descripcion": "",
+    "origen": [
+      "2:16"
+    ]
+  },
+  {
+    "id": 116,
+    "nombre": "Ready Mod x 56",
+    "proveedor": "FYB",
+    "presentacion": "XG",
+    "categoria": "Incontinencia",
+    "costo": 1075,
+    "recargo": 30,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1397.5
+    },
+    "descripcion": "",
+    "origen": [
+      "2:17"
+    ]
+  },
+  {
+    "id": 117,
+    "nombre": "Ready Mod x 56",
+    "proveedor": "ESTUARIO",
+    "presentacion": "M",
+    "categoria": "Incontinencia",
+    "costo": 692.21444,
+    "recargo": 15.5726,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 800.01
+    },
+    "descripcion": "",
+    "origen": [
+      "2:18"
+    ]
+  },
+  {
+    "id": 118,
+    "nombre": "Incoprotect x 30",
+    "proveedor": "ESTUARIO",
+    "presentacion": "G",
+    "categoria": "Incontinencia",
+    "costo": 739.3859,
+    "recargo": 14.9995,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 850.29
+    },
+    "descripcion": "",
+    "origen": [
+      "2:19"
+    ]
+  },
+  {
+    "id": 119,
+    "nombre": "Incoprotect x 30",
+    "proveedor": "ESTUARIO",
+    "presentacion": "XG",
+    "categoria": "Incontinencia",
+    "costo": 888.57958,
+    "recargo": 15.3526,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1025
+    },
+    "descripcion": "",
+    "origen": [
+      "2:20"
+    ]
+  },
+  {
+    "id": 120,
+    "nombre": "Incoprotect x 30",
+    "proveedor": "ESTUARIO",
+    "presentacion": "M",
+    "categoria": "Incontinencia",
+    "costo": 832.6319,
+    "recargo": 15.297,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 960
+    },
+    "descripcion": "",
+    "origen": [
+      "2:21"
+    ]
+  },
+  {
+    "id": 121,
+    "nombre": "Incoprotect nocturno x 30",
+    "proveedor": "ESTUARIO",
+    "presentacion": "G",
+    "categoria": "Incontinencia",
+    "costo": 890.77358,
+    "recargo": 15.0685,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1025
+    },
+    "descripcion": "",
+    "origen": [
+      "2:22"
+    ]
+  },
+  {
+    "id": 122,
+    "nombre": "Incoprotect nocturno x 30",
+    "proveedor": "ESTUARIO",
+    "presentacion": "XG",
+    "categoria": "Incontinencia",
+    "costo": 1066.29547,
+    "recargo": 15.3517,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1229.99
+    },
+    "descripcion": "",
+    "origen": [
+      "2:23"
+    ]
+  },
+  {
+    "id": 123,
+    "nombre": "Cotidian CLASICO ajuste perfecto x 36",
+    "proveedor": "ESTUARIO",
+    "presentacion": "M",
+    "categoria": "Incontinencia",
+    "costo": 913.26,
+    "recargo": 15.0001,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1050.25
+    },
+    "descripcion": "",
+    "origen": [
+      "2:24"
+    ]
+  },
+  {
+    "id": 124,
+    "nombre": "Cotidian CLASICO ajuste perfecto x 36",
+    "proveedor": "ESTUARIO",
+    "presentacion": "G",
+    "categoria": "Incontinencia",
+    "costo": 977,
+    "recargo": 15.1484,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1125
+    },
+    "descripcion": "",
+    "origen": [
+      "2:25"
+    ]
+  },
+  {
+    "id": 125,
+    "nombre": "Cotidian PLUS ajuste perfecto x 36",
+    "proveedor": "ESTUARIO",
+    "presentacion": "M",
+    "categoria": "Incontinencia",
+    "costo": 1122,
+    "recargo": 18.09,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1324.97
+    },
+    "descripcion": "",
+    "origen": [
+      "2:26"
+    ]
+  },
+  {
+    "id": 126,
+    "nombre": "Cotidian PLUS ajuste perfecto x 36",
+    "proveedor": "ESTUARIO",
+    "presentacion": "G",
+    "categoria": "Incontinencia",
+    "costo": 1200,
+    "recargo": 17.91,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1414.92
+    },
+    "descripcion": "",
+    "origen": [
+      "2:27"
+    ]
+  },
+  {
+    "id": 127,
+    "nombre": "Cotidian PREMIUM ajuste perfecto x 20",
+    "proveedor": "ESTUARIO",
+    "presentacion": "M",
+    "categoria": "Incontinencia",
+    "costo": 836,
+    "recargo": 14.8301,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 959.98
+    },
+    "descripcion": "",
+    "origen": [
+      "2:28"
+    ]
+  },
+  {
+    "id": 128,
+    "nombre": "Cotidian PREMIUM ajuste perfecto x 20",
+    "proveedor": "ESTUARIO",
+    "presentacion": "G",
+    "categoria": "Incontinencia",
+    "costo": 894,
+    "recargo": 18,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1054.92
+    },
+    "descripcion": "",
+    "origen": [
+      "2:29"
+    ]
+  },
+  {
+    "id": 129,
+    "nombre": "Pant´s P/M - G/XG - XXG x 14 unidades ( bulto por 4) Incoprotec",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Incontinencia",
+    "costo": 1448.055,
+    "recargo": 20.128,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1739.52
+    },
+    "descripcion": "",
+    "origen": [
+      "2:30"
+    ]
+  },
+  {
+    "id": 130,
+    "nombre": "Pant´s G/XG x 32 unidades ( bulto por 4) Incoprotec",
+    "proveedor": "ESTUARIO",
+    "presentacion": "G/XG",
+    "categoria": "Incontinencia",
+    "costo": 2993.4536,
+    "recargo": 22.1001,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 3655.01
+    },
+    "descripcion": "",
+    "origen": [
+      "2:31"
+    ]
+  },
+  {
+    "id": 131,
+    "nombre": "Pant´s x 16 unidades Sak (bulto por 4)",
+    "proveedor": "FYB",
+    "presentacion": "",
+    "categoria": "Incontinencia",
+    "costo": 1260,
+    "recargo": 40.0794,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1765
+    },
+    "descripcion": "",
+    "origen": [
+      "2:32"
+    ]
+  },
+  {
+    "id": 132,
+    "nombre": "Pant´s x 14 unidades Ready (bulto por 4)",
+    "proveedor": "FYB",
+    "presentacion": "",
+    "categoria": "Incontinencia",
+    "costo": 1152,
+    "recargo": 51.0399,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1739.98
+    },
+    "descripcion": "",
+    "origen": [
+      "2:33"
+    ]
+  },
+  {
+    "id": 133,
+    "nombre": "Sabanilla Cotidian 90 cm x 60 cm  x 8 unidades",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Incontinencia",
+    "costo": 296,
+    "recargo": 30,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 0
+    },
+    "descripcion": "",
+    "origen": [
+      "2:34",
+      "2:35"
+    ],
+    "conflictos": [
+      "Costo diferente en Residenciales: $0.0",
+      "Recargo distinto en Residenciales: 20.00%"
+    ]
+  },
+  {
+    "id": 134,
+    "nombre": "Cold Crem de 3k",
+    "proveedor": "Paysandu",
+    "presentacion": "Pote",
+    "categoria": "Higiene Personal",
+    "costo": 804,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 924.6
+    },
+    "descripcion": "",
+    "origen": [
+      "2:39"
+    ]
+  },
+  {
+    "id": 135,
+    "nombre": "Shampoo Dos Rodriguez 5L Bomba de durazno",
+    "proveedor": "LUSSAL",
+    "presentacion": "",
+    "categoria": "Higiene Personal",
+    "costo": 421,
+    "recargo": 25.8907,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 530
+    },
+    "descripcion": "",
+    "origen": [
+      "2:40"
+    ]
+  },
+  {
+    "id": 136,
+    "nombre": "Acondicionador para cabello Dos Rodriguez 5L",
+    "proveedor": "LUSSAL",
+    "presentacion": "",
+    "categoria": "Higiene Personal",
+    "costo": 334,
+    "recargo": 25.7485,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 420
+    },
+    "descripcion": "",
+    "origen": [
+      "2:41"
+    ]
+  },
+  {
+    "id": 137,
+    "nombre": "Colgate Calcio x 180 grs",
+    "proveedor": "F Y B",
+    "presentacion": "",
+    "categoria": "Higiene Personal",
+    "costo": 90,
+    "recargo": 100,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 180
+    },
+    "descripcion": "",
+    "origen": [
+      "2:43"
+    ]
+  },
+  {
+    "id": 138,
+    "nombre": "Kolynos 180 grs",
+    "proveedor": "F Y B",
+    "presentacion": "Unidad",
+    "categoria": "Higiene Personal",
+    "costo": 64,
+    "recargo": 100,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 128
+    },
+    "descripcion": "",
+    "origen": [
+      "2:44"
+    ]
+  },
+  {
+    "id": 139,
+    "nombre": "Frasco Esteril urocultivo 100 cc con tapa rosca",
+    "proveedor": "Medilink",
+    "presentacion": "unidad",
+    "categoria": "Enfermeria",
+    "costo": 15.86,
+    "recargo": 200,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 47.58
+    },
+    "descripcion": "",
+    "origen": [
+      "2:48"
+    ]
+  },
+  {
+    "id": 140,
+    "nombre": "Guantes de Nitrilo caja S M L XL x 100",
+    "proveedor": "Medilink",
+    "presentacion": "",
+    "categoria": "Enfermeria",
+    "costo": null,
+    "recargo": null,
+    "listas": [
+      "Residenciales",
+      "limpieza"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 264.5
+    },
+    "descripcion": "",
+    "origen": [
+      "2:49"
+    ]
+  },
+  {
+    "id": 141,
+    "nombre": "Guantes de latex SQL por 100  talles M",
+    "proveedor": "Alakazam Paso Molino",
+    "presentacion": "caja x 1oo unidades",
+    "categoria": "Enfermeria",
+    "costo": 199,
+    "recargo": 23.1132,
+    "listas": [
+      "Empresas / Limpieza",
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria",
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 242.78
+    },
+    "descripcion": "",
+    "origen": [
+      "2:50"
+    ],
+    "inactivo": true
+  },
+  {
+    "id": 142,
+    "nombre": "Guantes de latex NOVOMEDICAL por 100  talles XS S M L",
+    "proveedor": "Medilink",
+    "presentacion": "",
+    "categoria": "Enfermeria",
+    "costo": null,
+    "recargo": null,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 0
+    },
+    "descripcion": "",
+    "origen": [
+      "2:51"
+    ]
+  },
+  {
+    "id": 143,
+    "nombre": "Guantes de nylon 100 unidades",
+    "proveedor": "Medilink",
+    "presentacion": "",
+    "categoria": "Enfermeria",
+    "costo": 77,
+    "recargo": 50,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 115.5
+    },
+    "descripcion": "",
+    "origen": [
+      "2:52"
+    ]
+  },
+  {
+    "id": 144,
+    "nombre": "Tapabocas quirurgico c/ elastico caja de 50 unidades",
+    "proveedor": "Medilink",
+    "presentacion": "",
+    "categoria": "Enfermeria",
+    "costo": 101.26,
+    "recargo": 25.0049,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 126.58
+    },
+    "descripcion": "",
+    "origen": [
+      "2:53"
+    ]
+  },
+  {
+    "id": 145,
+    "nombre": "Algodón Espuma 500g",
+    "proveedor": "F Y B",
+    "presentacion": "500 g",
+    "categoria": "Enfermeria",
+    "costo": 224,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 313.6
+    },
+    "descripcion": "",
+    "origen": [
+      "2:54"
+    ]
+  },
+  {
+    "id": 146,
+    "nombre": "Algodón Espuma 1 Kg",
+    "proveedor": "F Y B",
+    "presentacion": "1 kilo",
+    "categoria": "Enfermeria",
+    "costo": 460,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 644
+    },
+    "descripcion": "",
+    "origen": [
+      "2:55"
+    ]
+  },
+  {
+    "id": 147,
+    "nombre": "Curitas x 80 Ready",
+    "proveedor": "F Y B",
+    "presentacion": "caja x 80 unidades",
+    "categoria": "Enfermeria",
+    "costo": 176,
+    "recargo": 41.47,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 246.4
+    },
+    "descripcion": "",
+    "origen": [
+      "2:56"
+    ]
+  },
+  {
+    "id": 148,
+    "nombre": "Termometro Digital",
+    "proveedor": "F Y B",
+    "presentacion": "",
+    "categoria": "Enfermeria",
+    "costo": 120,
+    "recargo": 50,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 180
+    },
+    "descripcion": "",
+    "origen": [
+      "2:57"
+    ]
+  },
+  {
+    "id": 149,
+    "nombre": "Toalla intercalada de 1000 unidades 20 x 21 cm - (Funda de 8 unidades)",
+    "proveedor": "Gasmart",
+    "presentacion": "millar",
+    "categoria": "Limpieza Profesional",
+    "costo": 121,
+    "recargo": 100,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 242
+    },
+    "descripcion": "",
+    "origen": [
+      "2:69"
+    ]
+  },
+  {
+    "id": 150,
+    "nombre": "Esponja Lana de acero, 8 unidades x paquete",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Limpieza Profesional",
+    "costo": 30,
+    "recargo": 78.4333,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 53.53
+    },
+    "descripcion": "",
+    "origen": [
+      "2:72"
+    ]
+  },
+  {
+    "id": 151,
+    "nombre": "Esponja Salvauñas c/u",
+    "proveedor": "",
+    "presentacion": "",
+    "categoria": "Limpieza Profesional",
+    "costo": 14.01,
+    "recargo": 78.444,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 25
+    },
+    "descripcion": "",
+    "origen": [
+      "2:73"
+    ]
+  },
+  {
+    "id": 152,
+    "nombre": "Desodorante de Ambiente Jupiter 360ml",
+    "proveedor": "PPM",
+    "presentacion": "",
+    "categoria": "Limpieza Profesional",
+    "costo": 62,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 86.8
+    },
+    "descripcion": "",
+    "origen": [
+      "2:75"
+    ]
+  },
+  {
+    "id": 153,
+    "nombre": "Vinagre de limpieza 5 litros importado",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Profesional",
+    "costo": 394,
+    "recargo": 50,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 591
+    },
+    "descripcion": "",
+    "origen": [
+      "2:85"
+    ]
+  },
+  {
+    "id": 154,
+    "nombre": "Amoniaco 22% 1 litro (consulte descuento por 6 unidades)",
+    "proveedor": "Paysandu",
+    "presentacion": "1 L",
+    "categoria": "Limpieza Profesional",
+    "costo": 216,
+    "recargo": 20,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 248.4,
+      "Lavandería profesional": 259.2,
+      "Lavandería domiciliaria": 259.2
+    },
+    "descripcion": "",
+    "origen": [
+      "2:87",
+      "3:43",
+      "4:49"
+    ],
+    "conflictos": [
+      "Recargo distinto en Lavandería profesional: 20.00%",
+      "Recargo distinto en Lavandería domiciliaria: 20.00%"
+    ]
+  },
+  {
+    "id": 155,
+    "nombre": "Formol 1 litro (consulte descuento por 6 unidades)",
+    "proveedor": "Paysandu",
+    "presentacion": "1 L",
+    "categoria": "Limpieza Profesional",
+    "costo": 201,
+    "recargo": 15,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 231.15,
+      "Lavandería profesional": 241.2,
+      "Lavandería domiciliaria": 241.2
+    },
+    "descripcion": "",
+    "origen": [
+      "2:88",
+      "3:44",
+      "4:50"
+    ],
+    "conflictos": [
+      "Recargo distinto en Lavandería profesional: 20.00%",
+      "Recargo distinto en Lavandería domiciliaria: 20.00%"
+    ]
+  },
+  {
+    "id": 156,
+    "nombre": "Agua oxigenada 200 volúmenes 1 litro  (consulte descuento por 6 uds.)",
+    "proveedor": "Paysandu",
+    "presentacion": "1 L",
+    "categoria": "Limpieza Profesional",
+    "costo": 223,
+    "recargo": 15,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 256.45
+    },
+    "descripcion": "",
+    "origen": [
+      "2:89"
+    ]
+  },
+  {
+    "id": 157,
+    "nombre": "Agua oxigenada 200 volúmenes 5 litros  (consulte descuento por 6 uds.)",
+    "proveedor": "Paysandu",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Profesional",
+    "costo": 771,
+    "recargo": 15,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 886.65
+    },
+    "descripcion": "",
+    "origen": [
+      "2:90"
+    ]
+  },
+  {
+    "id": 158,
+    "nombre": "Guantes Ambar multiuso todos los talles",
+    "proveedor": "PPM",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 26.6,
+    "recargo": 60,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 42.56
+    },
+    "descripcion": "",
+    "origen": [
+      "2:110"
+    ]
+  },
+  {
+    "id": 159,
+    "nombre": "Palangana N°1 28 cm ancho x 10 cm altura",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 90,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 108
+    },
+    "descripcion": "",
+    "origen": [
+      "2:117"
+    ]
+  },
+  {
+    "id": 160,
+    "nombre": "Palangana N°2 32 cm ancho x 11 cm altura",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 126,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 151.2
+    },
+    "descripcion": "",
+    "origen": [
+      "2:118"
+    ]
+  },
+  {
+    "id": 161,
+    "nombre": "Palangana N°3 36 cm ancho x 11 cm altura",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 162,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 194.4
+    },
+    "descripcion": "",
+    "origen": [
+      "2:119"
+    ]
+  },
+  {
+    "id": 162,
+    "nombre": "Palangana Lebrillo 33 cm ancho x 17 cm altura",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 198,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 237.6
+    },
+    "descripcion": "",
+    "origen": [
+      "2:120"
+    ]
+  },
+  {
+    "id": 163,
+    "nombre": "Palangana China 42 cm ancho x 12 cm altura",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 180,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 216
+    },
+    "descripcion": "",
+    "origen": [
+      "2:121"
+    ]
+  },
+  {
+    "id": 164,
+    "nombre": "Latón 32 litros 46 cm ancho x 24 cm altura",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 315,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 378
+    },
+    "descripcion": "",
+    "origen": [
+      "2:122"
+    ]
+  },
+  {
+    "id": 165,
+    "nombre": "Basurero con tapa 30 litros",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 270,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 324
+    },
+    "descripcion": "",
+    "origen": [
+      "2:123"
+    ]
+  },
+  {
+    "id": 166,
+    "nombre": "Balde negro común",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 90,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 108
+    },
+    "descripcion": "",
+    "origen": [
+      "2:124"
+    ]
+  },
+  {
+    "id": 167,
+    "nombre": "Canasto de ropa alto con tapa Color negro",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 315,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 378
+    },
+    "descripcion": "",
+    "origen": [
+      "2:125"
+    ]
+  },
+  {
+    "id": 168,
+    "nombre": "Balde de albañil colores negro, verde, rojo o azul",
+    "proveedor": "",
+    "presentacion": "Omar Carlos María Ramirez",
+    "categoria": "Varios",
+    "costo": 252,
+    "recargo": 20,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 302.4
+    },
+    "descripcion": "",
+    "origen": [
+      "2:126"
+    ]
+  },
+  {
+    "id": 169,
+    "nombre": "Balde de plastico 7.5 litros",
+    "proveedor": "",
+    "presentacion": "Boyerco",
+    "categoria": "Varios",
+    "costo": 79,
+    "recargo": 50,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 118.5
+    },
+    "descripcion": "",
+    "origen": [
+      "2:127"
+    ]
+  },
+  {
+    "id": 170,
+    "nombre": "Balde de plastico 13 litros",
+    "proveedor": "",
+    "presentacion": "Boyerco",
+    "categoria": "Varios",
+    "costo": 125,
+    "recargo": 50,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 187.5
+    },
+    "descripcion": "",
+    "origen": [
+      "2:128"
+    ]
+  },
+  {
+    "id": 171,
+    "nombre": "Tacho de basura 30 litros",
+    "proveedor": "",
+    "presentacion": "Boyerco",
+    "categoria": "Varios",
+    "costo": 218,
+    "recargo": 53.7982,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 335.28
+    },
+    "descripcion": "",
+    "origen": [
+      "2:129"
+    ]
+  },
+  {
+    "id": 172,
+    "nombre": "IP329 PH ELITE PROFESIONAL ALTO METRAJE EXCELLENCE 250 METROS X 4 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 761.388336,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 951.73542
+    },
+    "descripcion": "",
+    "origen": [
+      "2:142"
+    ]
+  },
+  {
+    "id": 173,
+    "nombre": "IP373 PH ELITE PROFESIONAL ALTO METRAJE PLUS 500 METROS X 6 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 1135.340784,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1419.17598
+    },
+    "descripcion": "",
+    "origen": [
+      "2:143"
+    ]
+  },
+  {
+    "id": 174,
+    "nombre": "IP374 ELITE PROFESIONAL ALTO METRAJE PLUS 500 METROS X 4 UNIDADES DISPENSADOR DE PH",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 698.1611039999999,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 872.70138
+    },
+    "descripcion": "",
+    "origen": [
+      "2:144"
+    ]
+  },
+  {
+    "id": 175,
+    "nombre": "IP378 PH ELITE PROFESIONAL CLASIC 500 MT X 4 ROLLOS PARA DISPENSADOR DE PH",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 475.6887359999999,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 594.61092
+    },
+    "descripcion": "",
+    "origen": [
+      "2:145"
+    ]
+  },
+  {
+    "id": 176,
+    "nombre": "IP6228 PH CLASIC X 150 METROS X 4 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 126.0504,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 157.563
+    },
+    "descripcion": "",
+    "origen": [
+      "2:146"
+    ]
+  },
+  {
+    "id": 177,
+    "nombre": "IP6227 TOALLA DE COCINA ELITE CLASIC X 150 X 2 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 133.20057599999998,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 166.50072
+    },
+    "descripcion": "",
+    "origen": [
+      "2:147"
+    ]
+  },
+  {
+    "id": 178,
+    "nombre": "IP326 TOALLA INTERFOLIADA ELITE PROFESIONAL PLUS 350 PAQUETES X 24 UNIDADES (8400 UNIDADES)",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 89.895456,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 112.36932
+    },
+    "descripcion": "",
+    "origen": [
+      "2:148"
+    ]
+  },
+  {
+    "id": 179,
+    "nombre": "IP1289 PRACTI ROLLO ELITE PROKFESIONAL 150 MTS X 6 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 1616.5985759999999,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 2020.74822
+    },
+    "descripcion": "",
+    "origen": [
+      "2:149"
+    ]
+  },
+  {
+    "id": 180,
+    "nombre": "IP2174 IP2175 IP2176 IP2177 MAXWIPE 80 ROLOS BLANCO Y COLORES  X 1 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 658.0270079999999,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 822.53376
+    },
+    "descripcion": "",
+    "origen": [
+      "2:150"
+    ]
+  },
+  {
+    "id": 181,
+    "nombre": "IP896 SERVILLETA EXPRESS EN CAJA x 100 UNIDADES CLASIC ELITE PROFESIONAL",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 32.01768,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 40.0221
+    },
+    "descripcion": "",
+    "origen": [
+      "2:151"
+    ]
+  },
+  {
+    "id": 182,
+    "nombre": "IP2144 ALCOHOL SPRAY ANTISEPTICO 1000 ML  ELITE PROFESIONAL PLUS MULTIFLEX PARA DISPENSADOR",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 841.6301759999999,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1052.03772
+    },
+    "descripcion": "",
+    "origen": [
+      "2:152"
+    ]
+  },
+  {
+    "id": 183,
+    "nombre": "IP1972 COBERTOR DESCARTABLE PARA INODORO ELITE PROFESIONAL X 86 UNIDADES",
+    "proveedor": "ESTUARIO",
+    "presentacion": "",
+    "categoria": "Artículos Elite – Línea Empresarial",
+    "costo": 261.473328,
+    "recargo": 25,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 326.84166
+    },
+    "descripcion": "",
+    "origen": [
+      "2:153"
+    ]
+  },
+  {
+    "id": 184,
+    "nombre": "Jabón en polvo Pre-lavado 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 kg",
+    "categoria": "Prelavado",
+    "costo": 112,
+    "recargo": 83.03,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 351,
+      "Lavandería profesional": 204.99
+    },
+    "descripcion": "",
+    "origen": [
+      "2:176",
+      "3:6"
+    ],
+    "conflictos": [
+      "Recargo distinto en Lavandería profesional: 83.03%"
+    ]
+  },
+  {
+    "id": 185,
+    "nombre": "Desengrasante Biodegradable Pre-lavado 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Prelavado",
+    "costo": 310,
+    "recargo": 80.645,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 544,
+      "Lavandería profesional": 544,
+      "Lavandería domiciliaria": 544
+    },
+    "descripcion": "",
+    "origen": [
+      "2:177",
+      "3:8",
+      "4:7"
+    ]
+  },
+  {
+    "id": 186,
+    "nombre": "Desengrasante Biodegradable Pre-lavado 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Prelavado",
+    "costo": 609,
+    "recargo": 52.7094,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 930,
+      "Lavandería profesional": 930,
+      "Lavandería domiciliaria": 930
+    },
+    "descripcion": "",
+    "origen": [
+      "2:178",
+      "3:9",
+      "4:8"
+    ]
+  },
+  {
+    "id": 187,
+    "nombre": "Jabón en Polvo Premium con carbonato de sodio 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 kg",
+    "categoria": "Lavado Principal",
+    "costo": 212,
+    "recargo": 58.0189,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 335,
+      "Lavandería profesional": null,
+      "Lavandería domiciliaria": 335
+    },
+    "descripcion": "",
+    "origen": [
+      "2:182",
+      "3:13",
+      "4:13"
+    ]
+  },
+  {
+    "id": 188,
+    "nombre": "Jabón en Polvo Premium con carbonato de sodio 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 kg",
+    "categoria": "Lavado Principal",
+    "costo": 325,
+    "recargo": 46.1538,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 475,
+      "Lavandería profesional": 475,
+      "Lavandería domiciliaria": 475
+    },
+    "descripcion": "",
+    "origen": [
+      "2:183",
+      "3:14",
+      "4:14"
+    ]
+  },
+  {
+    "id": 189,
+    "nombre": "Jabón de ropa Granby 3 Litros (caja de 4 unidades)",
+    "proveedor": "PPM",
+    "presentacion": "",
+    "categoria": "Lavado Principal",
+    "costo": 652,
+    "recargo": 40.0307,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 913,
+      "Lavandería profesional": 913,
+      "Lavandería domiciliaria": 913
+    },
+    "descripcion": "",
+    "origen": [
+      "2:184",
+      "3:15",
+      "4:15"
+    ]
+  },
+  {
+    "id": 190,
+    "nombre": "Jabon de ropa Insuperable 3 kilos (caja de 6 unidades)",
+    "proveedor": "PPM",
+    "presentacion": "",
+    "categoria": "Lavado Principal",
+    "costo": 1082,
+    "recargo": 40.0185,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1515,
+      "Lavandería profesional": 1515,
+      "Lavandería domiciliaria": 1515
+    },
+    "descripcion": "",
+    "origen": [
+      "2:185",
+      "3:16",
+      "4:16"
+    ]
+  },
+  {
+    "id": 191,
+    "nombre": "Jabón Líquido Lavarropas Biodegradable 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Lavado Principal",
+    "costo": 202,
+    "recargo": 58.4158,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 320,
+      "Lavandería profesional": 320,
+      "Lavandería domiciliaria": 320
+    },
+    "descripcion": "",
+    "origen": [
+      "2:186",
+      "3:17",
+      "4:17"
+    ]
+  },
+  {
+    "id": 192,
+    "nombre": "Jabón Líquido Lavarropas Biodegradable 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Lavado Principal",
+    "costo": 382,
+    "recargo": 53.1414,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 585,
+      "Lavandería profesional": 585,
+      "Lavandería domiciliaria": 585
+    },
+    "descripcion": "",
+    "origen": [
+      "2:187",
+      "3:18",
+      "4:18"
+    ]
+  },
+  {
+    "id": 193,
+    "nombre": "Blanqueador oxigenado 2 Rodriguez",
+    "proveedor": "Lussal",
+    "presentacion": "10 L",
+    "categoria": "Lavado Principal",
+    "costo": 321,
+    "recargo": 50,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 481.5,
+      "Lavandería profesional": 481.5,
+      "Lavandería domiciliaria": 481.5
+    },
+    "descripcion": "",
+    "origen": [
+      "2:188",
+      "3:19",
+      "4:20"
+    ]
+  },
+  {
+    "id": 194,
+    "nombre": "Polvo Oxi Activo 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "1 Kg",
+    "categoria": "Lavado Principal",
+    "costo": 123,
+    "recargo": 134.9593,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 289,
+      "Lavandería profesional": 289,
+      "Lavandería domiciliaria": 289
+    },
+    "descripcion": "",
+    "origen": [
+      "2:189",
+      "3:20",
+      "4:21"
+    ]
+  },
+  {
+    "id": 195,
+    "nombre": "Polvo Oxi Activo 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 kg",
+    "categoria": "Lavado Principal",
+    "costo": 584,
+    "recargo": 120.8904,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1290,
+      "Lavandería profesional": 1290,
+      "Lavandería domiciliaria": 1290
+    },
+    "descripcion": "",
+    "origen": [
+      "2:190",
+      "3:21",
+      "4:22"
+    ]
+  },
+  {
+    "id": 196,
+    "nombre": "Percarbonato BI 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 kg",
+    "categoria": "Lavado Principal",
+    "costo": 665,
+    "recargo": 153.8346,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1688,
+      "Lavandería profesional": 1688,
+      "Lavandería domiciliaria": 1688
+    },
+    "descripcion": "",
+    "origen": [
+      "2:191",
+      "3:22",
+      "4:23"
+    ]
+  },
+  {
+    "id": 197,
+    "nombre": "Precarbonato de Sodio",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 Kg",
+    "categoria": "Lavado Principal",
+    "costo": 950,
+    "recargo": 30.36,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1094.97,
+      "Lavandería profesional": 1095,
+      "Lavandería domiciliaria": 1095
+    },
+    "descripcion": "",
+    "origen": [
+      "2:192",
+      "3:23",
+      "4:25"
+    ],
+    "conflictos": [
+      "Costo diferente en Lavandería profesional: $840.0",
+      "Recargo distinto en Lavandería profesional: 30.36%",
+      "Costo diferente en Lavandería domiciliaria: $840.0",
+      "Recargo distinto en Lavandería domiciliaria: 30.36%"
+    ]
+  },
+  {
+    "id": 198,
+    "nombre": "Oxi Gel C 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Lavado Principal",
+    "costo": 346,
+    "recargo": 126.3006,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 783,
+      "Lavandería profesional": 783,
+      "Lavandería domiciliaria": 783
+    },
+    "descripcion": "",
+    "origen": [
+      "2:193",
+      "3:24",
+      "4:26"
+    ]
+  },
+  {
+    "id": 199,
+    "nombre": "Oxi Gel C 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Lavado Principal",
+    "costo": 680,
+    "recargo": 116.3235,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1471,
+      "Lavandería profesional": 1471,
+      "Lavandería domiciliaria": 1471
+    },
+    "descripcion": "",
+    "origen": [
+      "2:194",
+      "3:25",
+      "4:27"
+    ]
+  },
+  {
+    "id": 200,
+    "nombre": "Suavizante PREMIUM fragancia Black 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 184,
+    "recargo": 1.7391,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": null,
+      "Lavandería profesional": null,
+      "Lavandería domiciliaria": null
+    },
+    "descripcion": "",
+    "origen": [
+      "2:198",
+      "3:29",
+      "4:32"
+    ]
+  },
+  {
+    "id": 201,
+    "nombre": "Suavizante PREMIUM fragancia Black 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 359,
+    "recargo": 62.9526,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 585,
+      "Lavandería profesional": 585,
+      "Lavandería domiciliaria": 585
+    },
+    "descripcion": "",
+    "origen": [
+      "2:199",
+      "3:30",
+      "4:33"
+    ]
+  },
+  {
+    "id": 202,
+    "nombre": "Perfumador Textil Black o Joy Essence 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 758,
+    "recargo": 51.5831,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 1149,
+      "Lavandería profesional": 1149,
+      "Lavandería domiciliaria": 1149
+    },
+    "descripcion": "",
+    "origen": [
+      "2:200",
+      "3:31",
+      "4:35"
+    ]
+  },
+  {
+    "id": 203,
+    "nombre": "Balde de plastico 7.5 litros",
+    "proveedor": "Boyerco",
+    "presentacion": "",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 79,
+    "recargo": 40,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 110.6,
+      "Lavandería profesional": 118.5,
+      "Lavandería domiciliaria": 118.5
+    },
+    "descripcion": "",
+    "origen": [
+      "2:201",
+      "3:83",
+      "4:91"
+    ],
+    "conflictos": [
+      "Recargo distinto en Lavandería profesional: 50.00%",
+      "Recargo distinto en Lavandería domiciliaria: 50.00%"
+    ]
+  },
+  {
+    "id": 204,
+    "nombre": "Balde de plastico 13 litros",
+    "proveedor": "Boyerco",
+    "presentacion": "",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 125,
+    "recargo": 40,
+    "listas": [
+      "Residenciales",
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 175,
+      "Lavandería profesional": 187.5,
+      "Lavandería domiciliaria": 187.5
+    },
+    "descripcion": "",
+    "origen": [
+      "2:202",
+      "3:84",
+      "4:92"
+    ],
+    "conflictos": [
+      "Recargo distinto en Lavandería profesional: 50.00%",
+      "Recargo distinto en Lavandería domiciliaria: 50.00%"
+    ]
+  },
+  {
+    "id": 205,
+    "nombre": "Perifar Flex",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 158.4,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 221.76
+    },
+    "descripcion": "",
+    "origen": [
+      "2:206"
+    ]
+  },
+  {
+    "id": 206,
+    "nombre": "Perifar Migra",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 196.44,
+    "recargo": 40.002,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 275.02
+    },
+    "descripcion": "",
+    "origen": [
+      "2:207"
+    ]
+  },
+  {
+    "id": 207,
+    "nombre": "Perifar 600",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 119,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 166.6
+    },
+    "descripcion": "",
+    "origen": [
+      "2:208"
+    ]
+  },
+  {
+    "id": 208,
+    "nombre": "Espasmo Perifar",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 242,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 338.8
+    },
+    "descripcion": "",
+    "origen": [
+      "2:209"
+    ]
+  },
+  {
+    "id": 209,
+    "nombre": "Perifar Infantil",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 110.29,
+    "recargo": 40.0036,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 154.41
+    },
+    "descripcion": "",
+    "origen": [
+      "2:210"
+    ]
+  },
+  {
+    "id": 210,
+    "nombre": "Perifar 400",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 85.25,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 119.35
+    },
+    "descripcion": "",
+    "origen": [
+      "2:211"
+    ]
+  },
+  {
+    "id": 211,
+    "nombre": "ACF Grip",
+    "proveedor": "24/7",
+    "presentacion": "8 comprimidos",
+    "categoria": "Medicamentos",
+    "costo": 132.13,
+    "recargo": 40.0136,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 185
+    },
+    "descripcion": "",
+    "origen": [
+      "2:212"
+    ]
+  },
+  {
+    "id": 212,
+    "nombre": "Eleadol 10 mg",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 350,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 490
+    },
+    "descripcion": "",
+    "origen": [
+      "2:213"
+    ]
+  },
+  {
+    "id": 213,
+    "nombre": "Flodigrip Descongestivo Antigripal soluble",
+    "proveedor": "24/7",
+    "presentacion": "5 sobres",
+    "categoria": "Medicamentos",
+    "costo": 167,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 233.8
+    },
+    "descripcion": "",
+    "origen": [
+      "2:214"
+    ]
+  },
+  {
+    "id": 214,
+    "nombre": "Moxifar 500",
+    "proveedor": "24/7",
+    "presentacion": "16 comprimidos",
+    "categoria": "Medicamentos",
+    "costo": 158.4,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 221.76
+    },
+    "descripcion": "",
+    "origen": [
+      "2:215"
+    ]
+  },
+  {
+    "id": 215,
+    "nombre": "Bio Grip C Soluble",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 43.28,
+    "recargo": 39.9954,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 60.59
+    },
+    "descripcion": "",
+    "origen": [
+      "2:216"
+    ]
+  },
+  {
+    "id": 216,
+    "nombre": "Novemina Fuerte",
+    "proveedor": "24/7",
+    "presentacion": "",
+    "categoria": "Medicamentos",
+    "costo": 87,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 121.8
+    },
+    "descripcion": "",
+    "origen": [
+      "2:217"
+    ]
+  },
+  {
+    "id": 217,
+    "nombre": "Pastillero semanal 28 compartimentos (4 tomas diarias)",
+    "proveedor": "Casa de Nylon",
+    "presentacion": "1 unidad",
+    "categoria": "Enfermería / Accesorios Para Medicación",
+    "costo": 170,
+    "recargo": 30,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 221
+    },
+    "descripcion": "",
+    "origen": [
+      "2:221"
+    ]
+  },
+  {
+    "id": 218,
+    "nombre": "Adobo 1 kilo",
+    "proveedor": "L y L",
+    "presentacion": "1 kilo",
+    "categoria": "Condimentos",
+    "costo": 310,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 434
+    },
+    "descripcion": "",
+    "origen": [
+      "2:225"
+    ]
+  },
+  {
+    "id": 219,
+    "nombre": "Ajo y Perejil 1 kilo",
+    "proveedor": "L y L",
+    "presentacion": "1 kilo",
+    "categoria": "Condimentos",
+    "costo": 371,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 519.4
+    },
+    "descripcion": "",
+    "origen": [
+      "2:226"
+    ]
+  },
+  {
+    "id": 220,
+    "nombre": "Oregano 1 kilo",
+    "proveedor": "L y L",
+    "presentacion": "1 kilo",
+    "categoria": "Condimentos",
+    "costo": 268,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 375.2
+    },
+    "descripcion": "",
+    "origen": [
+      "2:227"
+    ]
+  },
+  {
+    "id": 221,
+    "nombre": "Pimenton 1 kilo",
+    "proveedor": "L y L",
+    "presentacion": "1 kilo",
+    "categoria": "Condimentos",
+    "costo": 343,
+    "recargo": 40,
+    "listas": [
+      "Residenciales"
+    ],
+    "preciosOriginales": {
+      "Residenciales": 480.2
+    },
+    "descripcion": "",
+    "origen": [
+      "2:228"
+    ]
+  },
+  {
+    "id": 222,
+    "nombre": "Jabón en polvo Pre-lavado 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 kg",
+    "categoria": "Prelavado",
+    "costo": 225,
+    "recargo": 56,
+    "listas": [
+      "Lavandería profesional"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 351
+    },
+    "descripcion": "",
+    "origen": [
+      "3:7"
+    ]
+  },
+  {
+    "id": 223,
+    "nombre": "Vinagre 5 litros importado",
+    "proveedor": "Gabriel Quim. Autom",
+    "presentacion": "5 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 394,
+    "recargo": 50,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 591,
+      "Lavandería domiciliaria": 591
+    },
+    "descripcion": "",
+    "origen": [
+      "3:41",
+      "4:47"
+    ]
+  },
+  {
+    "id": 224,
+    "nombre": "Agua oxigenada 200 volúmenes 1 litro  (consulte descuento por 6 unidades)",
+    "proveedor": "Paysandu",
+    "presentacion": "1 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 223,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 267.6,
+      "Lavandería domiciliaria": 267.6
+    },
+    "descripcion": "",
+    "origen": [
+      "3:45",
+      "4:51"
+    ]
+  },
+  {
+    "id": 225,
+    "nombre": "Agua oxigenada 200 volúmenes 5 litros  (consulte descuento por 6 unidades)",
+    "proveedor": "Paysandu",
+    "presentacion": "5 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 771,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 925.2,
+      "Lavandería domiciliaria": 925.2
+    },
+    "descripcion": "",
+    "origen": [
+      "3:46",
+      "4:52"
+    ]
+  },
+  {
+    "id": 226,
+    "nombre": "Jabón para Manos Desinfectante 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "1 L",
+    "categoria": "Complementarios",
+    "costo": 67,
+    "recargo": 168.6567,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 180,
+      "Lavandería domiciliaria": 180
+    },
+    "descripcion": "",
+    "origen": [
+      "3:58",
+      "4:66"
+    ]
+  },
+  {
+    "id": 227,
+    "nombre": "Jabón para Manos Desinfectante 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 L",
+    "categoria": "Complementarios",
+    "costo": 184,
+    "recargo": 146.1957,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 453,
+      "Lavandería domiciliaria": 453
+    },
+    "descripcion": "",
+    "origen": [
+      "3:59",
+      "4:67"
+    ]
+  },
+  {
+    "id": 228,
+    "nombre": "Jabón para Manos Desinfectante 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "5 L",
+    "categoria": "Complementarios",
+    "costo": 280,
+    "recargo": 107.1429,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 580,
+      "Lavandería domiciliaria": 580
+    },
+    "descripcion": "",
+    "origen": [
+      "3:60",
+      "4:68"
+    ]
+  },
+  {
+    "id": 229,
+    "nombre": "Jabón para Manos Desinfectante 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "10 L",
+    "categoria": "Complementarios",
+    "costo": 530,
+    "recargo": 102.8302,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 1075,
+      "Lavandería domiciliaria": 1075
+    },
+    "descripcion": "",
+    "origen": [
+      "3:61",
+      "4:69"
+    ]
+  },
+  {
+    "id": 230,
+    "nombre": "Guantes Ambar multiuso todos los talles ( Consultar estock )",
+    "proveedor": "PPM",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 26.6,
+    "recargo": 60,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 42.56,
+      "Lavandería domiciliaria": 42.56
+    },
+    "descripcion": "",
+    "origen": [
+      "3:66",
+      "4:74"
+    ]
+  },
+  {
+    "id": 231,
+    "nombre": "Palangana N°1 28 cm ancho x 10 cm altura",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 90,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 108,
+      "Lavandería domiciliaria": 108
+    },
+    "descripcion": "",
+    "origen": [
+      "3:73",
+      "4:81"
+    ]
+  },
+  {
+    "id": 232,
+    "nombre": "Palangana N°2 32 cm ancho x 11 cm altura",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 126,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 151.2,
+      "Lavandería domiciliaria": 151.2
+    },
+    "descripcion": "",
+    "origen": [
+      "3:74",
+      "4:82"
+    ]
+  },
+  {
+    "id": 233,
+    "nombre": "Palangana N°3 36 cm ancho x 11 cm altura",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 162,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 194.4,
+      "Lavandería domiciliaria": 194.4
+    },
+    "descripcion": "",
+    "origen": [
+      "3:75",
+      "4:83"
+    ]
+  },
+  {
+    "id": 234,
+    "nombre": "Palangana Lebrillo 33 cm ancho x 17 cm altura",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 198,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 237.6,
+      "Lavandería domiciliaria": 237.6
+    },
+    "descripcion": "",
+    "origen": [
+      "3:76",
+      "4:84"
+    ]
+  },
+  {
+    "id": 235,
+    "nombre": "Palangana China 42 cm ancho x 12 cm altura",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 180,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 216,
+      "Lavandería domiciliaria": 216
+    },
+    "descripcion": "",
+    "origen": [
+      "3:77",
+      "4:85"
+    ]
+  },
+  {
+    "id": 236,
+    "nombre": "Latón 32 litros 46 cm ancho x 24 cm altura",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 315,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 378,
+      "Lavandería domiciliaria": 378
+    },
+    "descripcion": "",
+    "origen": [
+      "3:78",
+      "4:86"
+    ]
+  },
+  {
+    "id": 237,
+    "nombre": "Basurero con tapa 30 litros",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 270,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 324,
+      "Lavandería domiciliaria": 324
+    },
+    "descripcion": "",
+    "origen": [
+      "3:79",
+      "4:87"
+    ]
+  },
+  {
+    "id": 238,
+    "nombre": "Balde negro común",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 90,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 108,
+      "Lavandería domiciliaria": 108
+    },
+    "descripcion": "",
+    "origen": [
+      "3:80",
+      "4:88"
+    ]
+  },
+  {
+    "id": 239,
+    "nombre": "Canasto de ropa alto con tapa Color negro",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 315,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 378,
+      "Lavandería domiciliaria": 378
+    },
+    "descripcion": "",
+    "origen": [
+      "3:81",
+      "4:89"
+    ]
+  },
+  {
+    "id": 240,
+    "nombre": "Balde de albañil colores negro, verde, rojo o azul",
+    "proveedor": "Omar Carlos María Ramirez",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 252,
+    "recargo": 20,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 302.4,
+      "Lavandería domiciliaria": 302.4
+    },
+    "descripcion": "",
+    "origen": [
+      "3:82",
+      "4:90"
+    ]
+  },
+  {
+    "id": 241,
+    "nombre": "Tacho de basura 30 litros",
+    "proveedor": "Boyerco",
+    "presentacion": "",
+    "categoria": "Varios",
+    "costo": 218,
+    "recargo": 53.7982,
+    "listas": [
+      "Lavandería profesional",
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería profesional": 335.28,
+      "Lavandería domiciliaria": 335.28
+    },
+    "descripcion": "",
+    "origen": [
+      "3:85",
+      "4:93"
+    ]
+  },
+  {
+    "id": 242,
+    "nombre": "Jabón en polvo estándar Pre-lavado 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 kg",
+    "categoria": "Prelavado",
+    "costo": 112,
+    "recargo": 213.3929,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 351
+    },
+    "descripcion": "",
+    "origen": [
+      "4:6"
+    ]
+  },
+  {
+    "id": 243,
+    "nombre": "Desengrasante Biodegradable Pre-lavado 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 L",
+    "categoria": "Prelavado",
+    "costo": 192,
+    "recargo": 84.375,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 354
+    },
+    "descripcion": "",
+    "origen": [
+      "4:9"
+    ]
+  },
+  {
+    "id": 244,
+    "nombre": "Jabón Líquido Lavarropas Biodegradable 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 L",
+    "categoria": "Lavado Principal",
+    "costo": 138,
+    "recargo": 84.7826,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 255
+    },
+    "descripcion": "",
+    "origen": [
+      "4:19"
+    ]
+  },
+  {
+    "id": 245,
+    "nombre": "Percarbonato BI 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "1 kg",
+    "categoria": "Lavado Principal",
+    "costo": 136,
+    "recargo": 200.7353,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 409
+    },
+    "descripcion": "",
+    "origen": [
+      "4:24"
+    ]
+  },
+  {
+    "id": 246,
+    "nombre": "Oxi Gel C 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 L",
+    "categoria": "Lavado Principal",
+    "costo": 215,
+    "recargo": 139.5349,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 515
+    },
+    "descripcion": "",
+    "origen": [
+      "4:28"
+    ]
+  },
+  {
+    "id": 247,
+    "nombre": "Suavizante PREMIUM fragancia Black 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 118,
+    "recargo": 90.678,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 225
+    },
+    "descripcion": "",
+    "origen": [
+      "4:34"
+    ]
+  },
+  {
+    "id": 248,
+    "nombre": "Perfumador Textil Black o Joy Essence 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 475,
+    "recargo": 73.6842,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 825
+    },
+    "descripcion": "",
+    "origen": [
+      "4:36"
+    ]
+  },
+  {
+    "id": 249,
+    "nombre": "Detergente ES (uso cocina) 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "3 L",
+    "categoria": "Suavizado Y Perfumado",
+    "costo": 149,
+    "recargo": 84.5638,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 275
+    },
+    "descripcion": "",
+    "origen": [
+      "4:44"
+    ]
+  },
+  {
+    "id": 250,
+    "nombre": "Polvo para maquinas Lavavajillas 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "1 Kg",
+    "categoria": "Cocina Y Lavavajillas",
+    "costo": 91,
+    "recargo": 100,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 182
+    },
+    "descripcion": "",
+    "origen": [
+      "4:59"
+    ]
+  },
+  {
+    "id": 251,
+    "nombre": "Abrillantador con sal para máquinas Lavavajillas 2 Rodriguez",
+    "proveedor": "Moizo",
+    "presentacion": "1 L",
+    "categoria": "Cocina Y Lavavajillas",
+    "costo": 81,
+    "recargo": 124.6914,
+    "listas": [
+      "Lavandería domiciliaria"
+    ],
+    "preciosOriginales": {
+      "Lavandería domiciliaria": 182
+    },
+    "descripcion": "",
+    "origen": [
+      "4:61"
+    ]
+  },
+  {
+    "id": 252,
+    "nombre": "Desengrasante de motores MK1",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Desengrasantes",
+    "costo": 400,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 600
+    },
+    "descripcion": "",
+    "origen": [
+      "5:4"
+    ]
+  },
+  {
+    "id": 253,
+    "nombre": "Desengrasante de motores MK2 (más potente)",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "10 L",
+    "categoria": "Desengrasantes",
+    "costo": 700,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1050
+    },
+    "descripcion": "",
+    "origen": [
+      "5:5"
+    ]
+  },
+  {
+    "id": 254,
+    "nombre": "Limpiador removedor de insectos",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Desengrasantes",
+    "costo": 460,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 690
+    },
+    "descripcion": "",
+    "origen": [
+      "5:6"
+    ]
+  },
+  {
+    "id": 255,
+    "nombre": "Limpia llantas",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Desengrasantes",
+    "costo": 580,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 870
+    },
+    "descripcion": "",
+    "origen": [
+      "5:7"
+    ]
+  },
+  {
+    "id": 256,
+    "nombre": "Limpia llantas",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "500 ml",
+    "categoria": "Desengrasantes",
+    "costo": 225,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 337.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:8"
+    ]
+  },
+  {
+    "id": 257,
+    "nombre": "Desengrasante fuerte concentrado",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Desengrasantes",
+    "costo": 842,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1263
+    },
+    "descripcion": "",
+    "origen": [
+      "5:9"
+    ]
+  },
+  {
+    "id": 258,
+    "nombre": "Desengrasante limpia motor",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Desengrasantes",
+    "costo": 600,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 900
+    },
+    "descripcion": "",
+    "origen": [
+      "5:10"
+    ]
+  },
+  {
+    "id": 259,
+    "nombre": "Desengrasante limpia motor",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "500 ml",
+    "categoria": "Desengrasantes",
+    "costo": 270,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 405
+    },
+    "descripcion": "",
+    "origen": [
+      "5:11"
+    ]
+  },
+  {
+    "id": 260,
+    "nombre": "Desengrasante biodegradable",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "10 L",
+    "categoria": "Desengrasantes",
+    "costo": 1240,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1860
+    },
+    "descripcion": "",
+    "origen": [
+      "5:12"
+    ]
+  },
+  {
+    "id": 261,
+    "nombre": "Silicona de tableros blanca aromatizada",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 300,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 450
+    },
+    "descripcion": "",
+    "origen": [
+      "5:14"
+    ]
+  },
+  {
+    "id": 262,
+    "nombre": "Silicona Premium",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 365,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 547.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:15"
+    ]
+  },
+  {
+    "id": 263,
+    "nombre": "Silicona Premium",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 2000,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 3000
+    },
+    "descripcion": "",
+    "origen": [
+      "5:16"
+    ]
+  },
+  {
+    "id": 264,
+    "nombre": "Renovador de plásticos sin silicona",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "500 ml",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 400,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 600
+    },
+    "descripcion": "",
+    "origen": [
+      "5:17"
+    ]
+  },
+  {
+    "id": 265,
+    "nombre": "Renovador de plásticos crema",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "500 g",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 480,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 720
+    },
+    "descripcion": "",
+    "origen": [
+      "5:18"
+    ]
+  },
+  {
+    "id": 266,
+    "nombre": "Silicona blanca",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "3 L",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 724,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1086
+    },
+    "descripcion": "",
+    "origen": [
+      "5:19"
+    ]
+  },
+  {
+    "id": 267,
+    "nombre": "Silicona blanca",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 1200,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1800
+    },
+    "descripcion": "",
+    "origen": [
+      "5:20"
+    ]
+  },
+  {
+    "id": 268,
+    "nombre": "Abrillantador de plásticos aromatizada",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "500 ml",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 425,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 637.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:21"
+    ]
+  },
+  {
+    "id": 269,
+    "nombre": "Abrillantador de plásticos aromatizada",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "3 L",
+    "categoria": "Siliconas Y Tableros",
+    "costo": 1550,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2325
+    },
+    "descripcion": "",
+    "origen": [
+      "5:22"
+    ]
+  },
+  {
+    "id": 270,
+    "nombre": "Shampoo con cera",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 506,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 759
+    },
+    "descripcion": "",
+    "origen": [
+      "5:24"
+    ]
+  },
+  {
+    "id": 271,
+    "nombre": "Shampoo con cera",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "20 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 1400,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2100
+    },
+    "descripcion": "",
+    "origen": [
+      "5:25"
+    ]
+  },
+  {
+    "id": 272,
+    "nombre": "Shampoo extra brillo",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "20 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 850,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1275
+    },
+    "descripcion": "",
+    "origen": [
+      "5:26"
+    ]
+  },
+  {
+    "id": 273,
+    "nombre": "Cera líquida para autos",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 820,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1230
+    },
+    "descripcion": "",
+    "origen": [
+      "5:27"
+    ]
+  },
+  {
+    "id": 274,
+    "nombre": "Shampoo para tratamientos cerámicos pH neutro",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 761,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1141.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:28"
+    ]
+  },
+  {
+    "id": 275,
+    "nombre": "Shampoo para tratamientos cerámicos pH neutro",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "20 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 1620,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2430
+    },
+    "descripcion": "",
+    "origen": [
+      "5:29"
+    ]
+  },
+  {
+    "id": 276,
+    "nombre": "Espuma activa Kircorner con cera",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 690,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1035
+    },
+    "descripcion": "",
+    "origen": [
+      "5:30"
+    ]
+  },
+  {
+    "id": 277,
+    "nombre": "Cera líquida para autos",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "500 ml",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 280,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 420
+    },
+    "descripcion": "",
+    "origen": [
+      "5:31"
+    ]
+  },
+  {
+    "id": 278,
+    "nombre": "Espuma activa",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 680,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1020
+    },
+    "descripcion": "",
+    "origen": [
+      "5:32"
+    ]
+  },
+  {
+    "id": 279,
+    "nombre": "Espuma activa",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "10 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 1350,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2025
+    },
+    "descripcion": "",
+    "origen": [
+      "5:33"
+    ]
+  },
+  {
+    "id": 280,
+    "nombre": "Renovador de neumáticos",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 225,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 337.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:34"
+    ]
+  },
+  {
+    "id": 281,
+    "nombre": "Renovador de neumáticos",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 599,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 898.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:35"
+    ]
+  },
+  {
+    "id": 282,
+    "nombre": "Cera líquida para autos, fórmula brillo extra",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 990,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1485
+    },
+    "descripcion": "",
+    "origen": [
+      "5:36"
+    ]
+  },
+  {
+    "id": 283,
+    "nombre": "Hidratador para cueros",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "250 g",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 305,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 457.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:37"
+    ]
+  },
+  {
+    "id": 284,
+    "nombre": "Limpiador multipropósito APC",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 690,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 1035
+    },
+    "descripcion": "",
+    "origen": [
+      "5:38"
+    ]
+  },
+  {
+    "id": 285,
+    "nombre": "Repelente de agua para parabrisas",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "120 ml",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 153,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 229.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:39"
+    ]
+  },
+  {
+    "id": 286,
+    "nombre": "Removedor de lluvia ácida",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "500 ml",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 374,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 561
+    },
+    "descripcion": "",
+    "origen": [
+      "5:40"
+    ]
+  },
+  {
+    "id": 287,
+    "nombre": "Removedor de alquitrán",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 350,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 525
+    },
+    "descripcion": "",
+    "origen": [
+      "5:41"
+    ]
+  },
+  {
+    "id": 288,
+    "nombre": "Lubricante de bisagras",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 1350,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2025
+    },
+    "descripcion": "",
+    "origen": [
+      "5:42"
+    ]
+  },
+  {
+    "id": 289,
+    "nombre": "Anti empañante",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "120 ml",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 160,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 240
+    },
+    "descripcion": "",
+    "origen": [
+      "5:43"
+    ]
+  },
+  {
+    "id": 290,
+    "nombre": "Lubricante de bisagras",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "60 ml",
+    "categoria": "Limpieza Y Cuidado Automotriz",
+    "costo": 150,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 225
+    },
+    "descripcion": "",
+    "origen": [
+      "5:44"
+    ]
+  },
+  {
+    "id": 291,
+    "nombre": "Líquido limpia inyectores base agua",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Inyectores",
+    "costo": 655,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 982.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:46"
+    ]
+  },
+  {
+    "id": 292,
+    "nombre": "Líquido limpia inyectores base petróleo",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Inyectores",
+    "costo": 2000,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 3000
+    },
+    "descripcion": "",
+    "origen": [
+      "5:47"
+    ]
+  },
+  {
+    "id": 293,
+    "nombre": "Líquido para prueba de inyectores base petróleo",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Inyectores",
+    "costo": 2050,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 3075
+    },
+    "descripcion": "",
+    "origen": [
+      "5:48"
+    ]
+  },
+  {
+    "id": 294,
+    "nombre": "Aromatizador para autos — Vainilla",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Aromatizadores",
+    "costo": 340,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 510
+    },
+    "descripcion": "",
+    "origen": [
+      "5:50"
+    ]
+  },
+  {
+    "id": 295,
+    "nombre": "Aromatizador para autos — Auto Nuevo",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Aromatizadores",
+    "costo": 340,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 510
+    },
+    "descripcion": "",
+    "origen": [
+      "5:51"
+    ]
+  },
+  {
+    "id": 296,
+    "nombre": "Aromatizador para autos — Limón",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Aromatizadores",
+    "costo": 340,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 510
+    },
+    "descripcion": "",
+    "origen": [
+      "5:52"
+    ]
+  },
+  {
+    "id": 297,
+    "nombre": "Aromatizador para autos — Tutti Frutti",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "1 L",
+    "categoria": "Aromatizadores",
+    "costo": 340,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 510
+    },
+    "descripcion": "",
+    "origen": [
+      "5:53"
+    ]
+  },
+  {
+    "id": 298,
+    "nombre": "Aromatizador para autos — Vainilla",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aromatizadores",
+    "costo": 1890,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2835
+    },
+    "descripcion": "",
+    "origen": [
+      "5:54"
+    ]
+  },
+  {
+    "id": 299,
+    "nombre": "Aromatizador para autos — Auto Nuevo",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aromatizadores",
+    "costo": 1610,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2415
+    },
+    "descripcion": "",
+    "origen": [
+      "5:55"
+    ]
+  },
+  {
+    "id": 300,
+    "nombre": "Aromatizador para autos — Limón",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aromatizadores",
+    "costo": 1890,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2835
+    },
+    "descripcion": "",
+    "origen": [
+      "5:56"
+    ]
+  },
+  {
+    "id": 301,
+    "nombre": "Aromatizador para autos — Tutti Frutti",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aromatizadores",
+    "costo": 1890,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 2835
+    },
+    "descripcion": "",
+    "origen": [
+      "5:57"
+    ]
+  },
+  {
+    "id": 302,
+    "nombre": "Aditivo para radiador verde",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 149,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 223.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:59"
+    ]
+  },
+  {
+    "id": 303,
+    "nombre": "Aditivo para radiador rojo",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 175,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 262.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:60"
+    ]
+  },
+  {
+    "id": 304,
+    "nombre": "Aditivo para radiador (rojo o verde)",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "20 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 499,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 748.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:61"
+    ]
+  },
+  {
+    "id": 305,
+    "nombre": "Agua bidemineralizada incolora",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 140,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 210
+    },
+    "descripcion": "",
+    "origen": [
+      "5:62"
+    ]
+  },
+  {
+    "id": 306,
+    "nombre": "Agua bidemineralizada amarilla",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 140,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 210
+    },
+    "descripcion": "",
+    "origen": [
+      "5:63"
+    ]
+  },
+  {
+    "id": 307,
+    "nombre": "Líquido para lavaparabrisas",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "3 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 130,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 195
+    },
+    "descripcion": "",
+    "origen": [
+      "5:64"
+    ]
+  },
+  {
+    "id": 308,
+    "nombre": "Pack × 4 líquido para lavaparabrisas",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "4 × 3 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 445,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 667.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:65"
+    ]
+  },
+  {
+    "id": 309,
+    "nombre": "OYAK anticorrosivo para motores — Rosa",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 325,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 487.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:66"
+    ]
+  },
+  {
+    "id": 310,
+    "nombre": "OYAK anticorrosivo para motores — Verde",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 325,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 487.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:67"
+    ]
+  },
+  {
+    "id": 311,
+    "nombre": "OYAK anticorrosivo para motores — Azul",
+    "proveedor": "Gabriel Automotriz",
+    "presentacion": "5 L",
+    "categoria": "Aguas Y Refrigeración",
+    "costo": 325,
+    "recargo": 50,
+    "listas": [
+      "Automotriz"
+    ],
+    "preciosOriginales": {
+      "Automotriz": 487.5
+    },
+    "descripcion": "",
+    "origen": [
+      "5:68"
+    ]
+  }
+]

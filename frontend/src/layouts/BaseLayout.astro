@@ -1,0 +1,149 @@
+---
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  currentNav?: 'home' | 'catalogo' | 'portal' | 'admin';
+}
+
+const {
+  title = '2 Rodríguez Distribuidora | Catálogo Mayorista y B2B',
+  description = 'Distribuidora de productos de limpieza, higiene y químicos profesionales en Montevideo. Retiro en Paso Molino y envíos a todo el país.',
+  currentNav = 'home',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body class="flex min-h-full flex-col bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
+    <!-- Header / Navbar -->
+    <header class="sticky top-0 z-40 w-full border-b border-border bg-background/95 backdrop-blur-md">
+      <div class="container mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+        <!-- Logo -->
+        <a href="/" class="flex items-center gap-2.5 transition-opacity hover:opacity-90">
+          <div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-primary-foreground font-black text-xl shadow-sm">
+            2R
+          </div>
+          <div class="flex flex-col">
+            <span class="font-bold tracking-tight text-base sm:text-lg leading-tight">2 Rodríguez</span>
+            <span class="text-xs text-muted-foreground uppercase font-medium tracking-wider">Distribuidora</span>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex items-center gap-6 text-sm font-medium">
+          <a
+            href="/"
+            class:list={[
+              'transition-colors hover:text-primary',
+              currentNav === 'home' ? 'text-primary font-semibold' : 'text-muted-foreground',
+            ]}
+          >
+            Inicio
+          </a>
+          <a
+            href="/catalogo"
+            class:list={[
+              'transition-colors hover:text-primary',
+              currentNav === 'catalogo' ? 'text-primary font-semibold' : 'text-muted-foreground',
+            ]}
+          >
+            Catálogo
+          </a>
+          <a
+            href="/#retiro"
+            class="text-muted-foreground transition-colors hover:text-primary"
+          >
+            Paso Molino
+          </a>
+          <a
+            href="/portal"
+            class:list={[
+              'transition-colors hover:text-primary',
+              currentNav === 'portal' ? 'text-primary font-semibold' : 'text-muted-foreground',
+            ]}
+          >
+            Portal B2B
+          </a>
+        </nav>
+
+        <!-- Actions / WhatsApp Call & Mariana Login -->
+        <div class="flex items-center gap-3">
+          <a
+            href="https://wa.me/59899549330?text=Hola%202%20Rodriguez%2C%20quisiera%20consultar%20por%20precios%20mayoristas"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hidden sm:inline-flex items-center justify-center rounded-md bg-emerald-600 px-3.5 py-2 text-xs sm:text-sm font-semibold text-white shadow-sm hover:bg-emerald-700 transition-colors gap-2 min-h-[40px]"
+          >
+            <span class="h-2 w-2 rounded-full bg-emerald-200 animate-pulse"></span>
+            WhatsApp 099 549 330
+          </a>
+          <a
+            href="/admin"
+            class:list={[
+              'inline-flex items-center justify-center rounded-md border border-input bg-background px-3 py-2 text-xs font-medium shadow-sm hover:bg-accent hover:text-accent-foreground transition-colors min-h-[40px]',
+              currentNav === 'admin' ? 'border-primary ring-1 ring-primary' : '',
+            ]}
+          >
+            Mariana (Admin)
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Slot -->
+    <main class="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
+      <slot />
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border bg-card text-card-foreground mt-auto">
+      <div class="container mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <div class="flex items-center gap-2 mb-3">
+              <span class="font-bold text-lg text-primary">2 Rodríguez Distribuidora</span>
+            </div>
+            <p class="text-sm text-muted-foreground leading-relaxed">
+              Abastecimiento integral para empresas, residenciales, lavanderías y particulares. Artículos de limpieza, desinfección y químicos con stock garantizado.
+            </p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-sm mb-3 text-foreground uppercase tracking-wider">Punto de Retiro Paso Molino</h4>
+            <p class="text-sm text-muted-foreground leading-relaxed">
+              <strong>Lunes a Viernes:</strong> 08:30 a 12:00 y 13:00 a 18:00 hs<br />
+              <strong>Sábados:</strong> 08:00 a 13:00 hs<br />
+              <span class="text-emerald-700 font-medium">Retiro sin costo de despacho</span>
+            </p>
+          </div>
+          <div>
+            <h4 class="font-semibold text-sm mb-3 text-foreground uppercase tracking-wider">Contacto & Ventas</h4>
+            <p class="text-sm text-muted-foreground leading-relaxed mb-3">
+              Consultas comerciales y cotizaciones personalizadas:<br />
+              <strong>WhatsApp:</strong> 099 549 330<br />
+              Montevideo, Uruguay
+            </p>
+            <a
+              href="/portal"
+              class="inline-block text-xs text-primary font-medium underline underline-offset-4 hover:text-primary/80"
+            >
+              Ingresar al Portal B2B de Clientes &rarr;
+            </a>
+          </div>
+        </div>
+        <div class="border-t border-border mt-8 pt-4 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground">
+          <span>&copy; {new Date().getFullYear()} 2 Rodríguez Distribuidora. Todos los derechos reservados.</span>
+          <span class="mt-2 sm:mt-0">Montevideo - Uruguay</span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

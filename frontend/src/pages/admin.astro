@@ -1,0 +1,685 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Backoffice Mariana | 2 Rodríguez Distribuidora" currentNav="admin">
+  <div class="space-y-6">
+    <!-- Admin Header -->
+    <div class="border-b border-border pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
+          Panel de Administración
+          <span class="text-xs bg-primary/10 text-primary border border-primary/20 px-2.5 py-0.5 rounded-full font-semibold">
+            Mariana
+          </span>
+        </h1>
+        <p class="text-sm text-muted-foreground mt-1">
+          Gestión centralizada del catálogo maestro, control de márgenes confidenciales y emisión de presupuestos.
+        </p>
+      </div>
+
+      <div id="adminUserBar" class="hidden flex-wrap items-center gap-3">
+        <button
+          id="openQuoteModalBtn"
+          class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white shadow hover:bg-emerald-700 transition-colors min-h-[40px] gap-2 cursor-pointer"
+        >
+          <span>Emitir Presupuesto PDF</span>
+        </button>
+        <button
+          id="openNewProductBtn"
+          class="inline-flex items-center justify-center rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
+        >
+          + Nuevo Artículo
+        </button>
+        <button
+          id="adminLogoutBtn"
+          class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors min-h-[40px] cursor-pointer"
+        >
+          Salir
+        </button>
+      </div>
+    </div>
+
+    <!-- Admin Login (if unauthenticated) -->
+    <div id="adminLoginView" class="max-w-md mx-auto my-12 p-6 sm:p-8 rounded-2xl border border-border bg-card shadow-sm space-y-6">
+      <div class="text-center space-y-1">
+        <h2 class="text-xl font-bold text-foreground">Acceso Administradora</h2>
+        <p class="text-xs text-muted-foreground">
+          Ingrese con su cuenta de Mariana 2 Rodríguez.
+        </p>
+      </div>
+
+      <form id="adminLoginForm" class="space-y-4">
+        <div class="space-y-1">
+          <label for="adminEmail" class="text-xs font-semibold text-foreground">Usuario / Correo</label>
+          <input
+            type="email"
+            id="adminEmail"
+            required
+            value="mariana@2rodriguez.uy"
+            class="w-full rounded-lg border border-input bg-background px-3.5 py-2 text-sm text-foreground min-h-[44px]"
+          />
+        </div>
+
+        <div class="space-y-1">
+          <label for="adminPassword" class="text-xs font-semibold text-foreground">Contraseña</label>
+          <input
+            type="password"
+            id="adminPassword"
+            required
+            value="Admin2Rodriguez!2026"
+            class="w-full rounded-lg border border-input bg-background px-3.5 py-2 text-sm text-foreground min-h-[44px]"
+          />
+        </div>
+
+        <div id="adminLoginError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive"></div>
+
+        <button
+          type="submit"
+          class="w-full inline-flex items-center justify-center rounded-lg bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[44px] cursor-pointer"
+        >
+          Acceder al Backoffice
+        </button>
+      </form>
+    </div>
+
+    <!-- Admin Dashboard (when authenticated) -->
+    <div id="adminDashboard" class="hidden space-y-6">
+      <!-- 4 Top KPI Cards (Spec Section 7) -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+          <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Artículos Maestros</div>
+          <div class="text-2xl sm:text-3xl font-black text-foreground mt-1">311</div>
+          <div class="text-[11px] text-muted-foreground mt-0.5">Catálogo consolidado</div>
+        </div>
+
+        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+          <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Fichas Incompletas</div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-600 mt-1">57</div>
+          <div class="text-[11px] text-muted-foreground mt-0.5">Requieren costo/recargo</div>
+        </div>
+
+        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+          <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Proveedor Moizo</div>
+          <div class="text-2xl sm:text-3xl font-black text-primary mt-1">49</div>
+          <div class="text-[11px] text-muted-foreground mt-0.5">Artículos de línea directa</div>
+        </div>
+
+        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+          <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Conflictos Históricos</div>
+          <div class="text-2xl sm:text-3xl font-black text-destructive mt-1">19</div>
+          <div class="text-[11px] text-muted-foreground mt-0.5">Márgenes protegidos intactos</div>
+        </div>
+      </div>
+
+      <!-- Filters Bar -->
+      <div class="flex flex-col sm:flex-row gap-3 items-center justify-between bg-card p-4 rounded-xl border border-border">
+        <input
+          type="text"
+          id="adminSearchInput"
+          placeholder="Buscar por ID o nombre del producto..."
+          class="w-full sm:w-80 rounded-lg border border-input bg-background px-3.5 py-2 text-xs sm:text-sm text-foreground focus:ring-2 focus:ring-primary min-h-[40px]"
+        />
+
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <button
+            onclick="window.applyFilter('all')"
+            class="filter-pill rounded-full border border-border bg-background px-3 py-1 text-xs font-semibold hover:border-primary cursor-pointer active"
+            data-filter="all"
+          >
+            Todos
+          </button>
+          <button
+            onclick="window.applyFilter('conflicts')"
+            class="filter-pill rounded-full border border-destructive/30 bg-destructive/5 text-destructive px-3 py-1 text-xs font-semibold hover:bg-destructive/10 cursor-pointer"
+            data-filter="conflicts"
+          >
+            19 Conflictos
+          </button>
+          <button
+            onclick="window.applyFilter('incomplete')"
+            class="filter-pill rounded-full border border-amber-300 bg-amber-50 text-amber-800 px-3 py-1 text-xs font-semibold hover:bg-amber-100 cursor-pointer"
+            data-filter="incomplete"
+          >
+            Incompletos
+          </button>
+          <button
+            onclick="window.applyFilter('moizo')"
+            class="filter-pill rounded-full border border-primary/30 bg-primary/5 text-primary px-3 py-1 text-xs font-semibold hover:bg-primary/10 cursor-pointer"
+            data-filter="moizo"
+          >
+            Moizo (49)
+          </button>
+          <button
+            onclick="window.applyFilter('published')"
+            class="filter-pill rounded-full border border-emerald-300 bg-emerald-50 text-emerald-800 px-3 py-1 text-xs font-semibold hover:bg-emerald-100 cursor-pointer"
+            data-filter="published"
+          >
+            Publicados
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabular Interface (Modernized Table) -->
+      <div class="rounded-xl border border-border bg-card overflow-hidden shadow-xs">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="border-b border-border bg-secondary/50 font-semibold text-muted-foreground uppercase tracking-wider">
+              <tr>
+                <th class="py-3 px-3 w-12 text-center">ID</th>
+                <th class="py-3 px-3">Artículo / Categoría</th>
+                <th class="py-3 px-3">Pres.</th>
+                <th class="py-3 px-3">Proveedor</th>
+                <th class="py-3 px-3">Precios por Lista</th>
+                <th class="py-3 px-3 text-center">Publicación</th>
+                <th class="py-3 px-3 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="productsTableBody" class="divide-y divide-border">
+              <tr>
+                <td colspan="7" class="py-12 text-center text-muted-foreground">
+                  Cargando catálogo administrativo...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Edit Prices -->
+    <div id="priceModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <h3 class="font-bold text-foreground text-sm">Editar Condiciones de Precio</h3>
+          <button onclick="document.getElementById('priceModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <div class="space-y-1">
+          <div id="priceModalProdName" class="font-bold text-sm text-foreground"></div>
+          <div class="text-xs text-muted-foreground">Ajuste de costo con IVA y margen de recargo en Decimal.</div>
+        </div>
+
+        <form id="priceEditForm" class="space-y-3">
+          <input type="hidden" id="editProdId" />
+          
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-foreground">Lista Comercial</label>
+            <select id="editListId" class="w-full rounded border border-input bg-background p-2 text-xs">
+              <option value="1">Empresas / Limpieza</option>
+              <option value="2">Residenciales</option>
+              <option value="3">Lavandería profesional</option>
+              <option value="4">Lavandería domiciliaria</option>
+              <option value="5">Automotriz</option>
+            </select>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Costo c/IVA ($)</label>
+              <input type="number" step="0.01" id="editCost" required class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Recargo (%)</label>
+              <input type="number" step="0.0001" id="editMarkup" required class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="rounded-lg bg-secondary/50 p-3 text-xs flex justify-between items-center">
+            <span class="text-muted-foreground">Precio Venta Resultante:</span>
+            <span id="previewCalculatedPrice" class="font-bold text-primary text-sm">$0.00</span>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-primary py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
+          >
+            Guardar Condición de Precio
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: New Product -->
+    <div id="newProductModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <h3 class="font-bold text-foreground text-sm">Alta de Producto Maestro</h3>
+          <button onclick="document.getElementById('newProductModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <form id="newProductForm" class="space-y-3">
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-foreground">Nombre Comercial</label>
+            <input type="text" id="newProdName" required placeholder="Ej: Detergente Multiuso 2 Rodríguez" class="w-full rounded border border-input bg-background p-2 text-xs" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Presentación</label>
+              <input type="text" id="newProdPres" placeholder="Ej: 5 L, Bidón 10 L" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Proveedor</label>
+              <input type="text" id="newProdProv" placeholder="Ej: Moizo, Gabriel" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-foreground">Categoría</label>
+            <input type="text" id="newProdCat" value="Limpieza General" class="w-full rounded border border-input bg-background p-2 text-xs" />
+          </div>
+
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-primary py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
+          >
+            Dar de Alta
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Modal: Presupuesto PDF -->
+    <div id="quoteModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <h3 class="font-bold text-foreground text-sm">Emitir Presupuesto Formal PDF</h3>
+          <button onclick="document.getElementById('quoteModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <form id="quotePdfForm" class="space-y-3">
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Cliente / Razón Social</label>
+              <input type="text" id="quoteClientName" required placeholder="Ej: Residencial El Prado" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Teléfono / WhatsApp</label>
+              <input type="text" id="quoteClientPhone" placeholder="099 123 456" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-foreground">Lista Comercial Aplicada</label>
+            <select id="quoteListId" class="w-full rounded border border-input bg-background p-2 text-xs">
+              <option value="1">Empresas / Limpieza</option>
+              <option value="2">Residenciales</option>
+              <option value="3">Lavandería profesional</option>
+              <option value="4">Lavandería domiciliaria</option>
+              <option value="5">Automotriz</option>
+            </select>
+          </div>
+
+          <div class="space-y-2 border-t border-border pt-2">
+            <label class="text-xs font-semibold text-foreground">Línea de Cotización</label>
+            <div class="grid grid-cols-3 gap-2">
+              <input type="number" id="quoteProdId" placeholder="ID Producto (Ej: 1)" required class="rounded border border-input bg-background p-2 text-xs" />
+              <input type="number" id="quoteQty" value="5" min="1" placeholder="Cantidad" required class="rounded border border-input bg-background p-2 text-xs" />
+              <input type="number" id="quoteDiscount" value="0" min="0" max="100" placeholder="Desc %" class="rounded border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="rounded-lg bg-amber-50 border border-amber-200 p-2.5 text-[11px] text-amber-800">
+            El PDF excluye costos y recargos internos, mostrando precios finales con IVA y membrete corporativo.
+          </div>
+
+          <button
+            type="submit"
+            id="quoteSubmitBtn"
+            class="w-full rounded-lg bg-emerald-600 py-2.5 text-xs font-semibold text-white shadow hover:bg-emerald-700 transition-colors min-h-[40px] cursor-pointer"
+          >
+            Descargar Presupuesto PDF
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const API_URL = 'http://localhost:8000/api/v1';
+    let adminToken = localStorage.getItem('admin_token') || '';
+    let allProducts = [];
+    let activeFilter = 'all';
+
+    const adminLoginView = document.getElementById('adminLoginView');
+    const adminDashboard = document.getElementById('adminDashboard');
+    const adminUserBar = document.getElementById('adminUserBar');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminLoginError = document.getElementById('adminLoginError');
+    const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+    const productsTableBody = document.getElementById('productsTableBody');
+    const adminSearchInput = document.getElementById('adminSearchInput');
+
+    function checkAdminAuth() {
+      if (adminToken) {
+        adminLoginView?.classList.add('hidden');
+        adminDashboard?.classList.remove('hidden');
+        adminUserBar?.classList.remove('hidden');
+        loadAdminProducts();
+      } else {
+        adminLoginView?.classList.remove('hidden');
+        adminDashboard?.classList.add('hidden');
+        adminUserBar?.classList.add('hidden');
+      }
+    }
+
+    adminLoginForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      adminLoginError?.classList.add('hidden');
+      const email = document.getElementById('adminEmail')?.value;
+      const password = document.getElementById('adminPassword')?.value;
+
+      try {
+        const res = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Credenciales incorrectas');
+        }
+
+        const data = await res.json();
+        if (data.role !== 'ADMIN') {
+          throw new Error('Esta cuenta no posee privilegios de Administrador.');
+        }
+
+        adminToken = data.access_token;
+        localStorage.setItem('admin_token', adminToken);
+        checkAdminAuth();
+      } catch (err) {
+        if (adminLoginError) {
+          adminLoginError.textContent = err.message;
+          adminLoginError.classList.remove('hidden');
+        }
+      }
+    });
+
+    adminLogoutBtn?.addEventListener('click', () => {
+      adminToken = '';
+      localStorage.removeItem('admin_token');
+      checkAdminAuth();
+    });
+
+    async function loadAdminProducts() {
+      if (!adminToken) return;
+
+      try {
+        const res = await fetch(`${API_URL}/admin/products?limit=350`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+
+        if (!res.ok) throw new Error('Error al consultar catálogo.');
+        allProducts = await res.json();
+        renderProductsTable();
+      } catch (err) {
+        if (productsTableBody) {
+          productsTableBody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-destructive">${err.message}</td></tr>`;
+        }
+      }
+    }
+
+    window.applyFilter = function(filter) {
+      activeFilter = filter;
+      document.querySelectorAll('.filter-pill').forEach((btn) => {
+        if (btn.getAttribute('data-filter') === filter) {
+          btn.classList.add('ring-2', 'ring-primary');
+        } else {
+          btn.classList.remove('ring-2', 'ring-primary');
+        }
+      });
+      renderProductsTable();
+    };
+
+    function renderProductsTable() {
+      if (!productsTableBody) return;
+      const query = (adminSearchInput?.value || '').toLowerCase().trim();
+
+      const filtered = allProducts.filter((p) => {
+        const matchesQuery = !query || p.name.toLowerCase().includes(query) || String(p.id).includes(query);
+        if (!matchesQuery) return false;
+
+        if (activeFilter === 'conflicts') {
+          return p.prices.some((pr) => pr.has_conflict);
+        }
+        if (activeFilter === 'incomplete') {
+          return p.is_pending_draft;
+        }
+        if (activeFilter === 'moizo') {
+          return (p.provider || '').toLowerCase().includes('moizo');
+        }
+        if (activeFilter === 'published') {
+          return p.is_published;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        productsTableBody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-muted-foreground">No se encontraron artículos con ese criterio.</td></tr>';
+        return;
+      }
+
+      productsTableBody.innerHTML = filtered.map((p) => {
+        const hasConflict = p.prices.some((pr) => pr.has_conflict);
+        const conflictDetail = p.prices.find((pr) => pr.has_conflict)?.conflict_detail || '';
+
+        return `
+          <tr class="hover:bg-muted/40 transition-colors">
+            <td class="py-2.5 px-3 font-mono font-bold text-center text-muted-foreground">${p.id}</td>
+            <td class="py-2.5 px-3">
+              <div class="font-bold text-foreground text-xs leading-snug">${p.name}</div>
+              <div class="text-[11px] text-muted-foreground flex items-center gap-2 mt-0.5">
+                <span>${p.category}</span>
+                ${hasConflict ? `<span class="bg-destructive/10 text-destructive px-1.5 py-0.2 rounded font-semibold text-[10px]" title="${conflictDetail}">Conflicto Histórico</span>` : ''}
+                ${p.is_pending_draft ? '<span class="bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-semibold text-[10px]">Ficha Incompleta</span>' : ''}
+              </div>
+            </td>
+            <td class="py-2.5 px-3 font-medium text-foreground whitespace-nowrap">${p.presentation || '<span class="text-amber-600">-</span>'}</td>
+            <td class="py-2.5 px-3 text-muted-foreground whitespace-nowrap">${p.provider || '<span class="text-amber-600">-</span>'}</td>
+            <td class="py-2.5 px-3">
+              <div class="flex flex-wrap gap-1 max-w-xs">
+                ${p.prices.map((pr) => `
+                  <span class="inline-block border border-border bg-background px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap font-mono">
+                    ${pr.commercial_list_name.slice(0, 3)}: <strong>$${pr.price_iva_inc ? Number(pr.price_iva_inc).toFixed(2) : '-'}</strong>
+                  </span>
+                `).join('')}
+              </div>
+            </td>
+            <td class="py-2.5 px-3 text-center">
+              <button
+                onclick="window.togglePublish(${p.id}, ${!p.is_published})"
+                class="rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition-colors cursor-pointer ${
+                  p.is_published
+                    ? 'bg-emerald-100 text-emerald-800 border border-emerald-300 hover:bg-emerald-200'
+                    : 'bg-muted text-muted-foreground border border-border hover:bg-muted/80'
+                }"
+              >
+                ${p.is_published ? 'Publicado' : 'Oculto'}
+              </button>
+            </td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap">
+              <button
+                onclick="window.openPriceModal(${p.id})"
+                class="inline-block rounded border border-input bg-background px-2.5 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
+              >
+                Editar Precios
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    adminSearchInput?.addEventListener('input', renderProductsTable);
+
+    window.togglePublish = async function(id, newState) {
+      try {
+        const res = await fetch(`${API_URL}/admin/products/${id}/publish`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ is_published: newState }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'No se pudo cambiar el estado.');
+        }
+
+        const prod = allProducts.find((p) => p.id === id);
+        if (prod) prod.is_published = newState;
+        renderProductsTable();
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    window.openPriceModal = function(id) {
+      const prod = allProducts.find((p) => p.id === id);
+      if (!prod) return;
+
+      document.getElementById('editProdId').value = prod.id;
+      document.getElementById('priceModalProdName').textContent = `#${prod.id} - ${prod.name}`;
+      
+      const firstPrice = prod.prices[0] || {};
+      document.getElementById('editCost').value = firstPrice.cost_iva_inc || '';
+      document.getElementById('editMarkup').value = firstPrice.markup_percentage || '';
+      calcPreview();
+
+      document.getElementById('priceModal').classList.remove('hidden');
+    };
+
+    function calcPreview() {
+      const cost = parseFloat(document.getElementById('editCost').value) || 0;
+      const markup = parseFloat(document.getElementById('editMarkup').value) || 0;
+      const res = cost * (1 + markup / 100);
+      document.getElementById('previewCalculatedPrice').textContent = `$${res.toFixed(2)}`;
+    }
+
+    document.getElementById('editCost')?.addEventListener('input', calcPreview);
+    document.getElementById('editMarkup')?.addEventListener('input', calcPreview);
+
+    document.getElementById('priceEditForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('editProdId').value, 10);
+      const listId = parseInt(document.getElementById('editListId').value, 10);
+      const cost = parseFloat(document.getElementById('editCost').value);
+      const markup = parseFloat(document.getElementById('editMarkup').value);
+
+      try {
+        const res = await fetch(`${API_URL}/admin/products/${id}/prices`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({
+            prices: [{ commercial_list_id: listId, cost_iva_inc: cost, markup_percentage: markup }],
+          }),
+        });
+
+        if (!res.ok) throw new Error('Error al actualizar precios.');
+        alert('Condición de precio actualizada con éxito.');
+        document.getElementById('priceModal').classList.add('hidden');
+        loadAdminProducts();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // New Product
+    document.getElementById('openNewProductBtn')?.addEventListener('click', () => {
+      document.getElementById('newProductModal')?.classList.remove('hidden');
+    });
+
+    document.getElementById('newProductForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('newProdName')?.value;
+      const presentation = document.getElementById('newProdPres')?.value;
+      const provider = document.getElementById('newProdProv')?.value;
+      const category = document.getElementById('newProdCat')?.value;
+
+      try {
+        const res = await fetch(`${API_URL}/admin/products`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ name, presentation, provider, category }),
+        });
+
+        if (!res.ok) throw new Error('Error al crear producto.');
+        alert('Producto creado con éxito.');
+        document.getElementById('newProductModal')?.classList.add('hidden');
+        loadAdminProducts();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    // Quote PDF
+    document.getElementById('openQuoteModalBtn')?.addEventListener('click', () => {
+      document.getElementById('quoteModal')?.classList.remove('hidden');
+    });
+
+    document.getElementById('quotePdfForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const clientName = document.getElementById('quoteClientName')?.value;
+      const clientPhone = document.getElementById('quoteClientPhone')?.value;
+      const listId = parseInt(document.getElementById('quoteListId')?.value, 10);
+      const prodId = parseInt(document.getElementById('quoteProdId')?.value, 10);
+      const qty = parseInt(document.getElementById('quoteQty')?.value, 10);
+      const discount = parseFloat(document.getElementById('quoteDiscount')?.value) || 0;
+
+      try {
+        const submitBtn = document.getElementById('quoteSubmitBtn');
+        submitBtn.textContent = 'Compilando PDF...';
+        submitBtn.disabled = true;
+
+        const res = await fetch(`${API_URL}/admin/quotes/pdf`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({
+            commercial_list_id: listId,
+            client_name: clientName,
+            client_phone: clientPhone,
+            items: [{ product_id: prodId, quantity: qty, discount_percentage: discount }],
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al emitir presupuesto.');
+        }
+
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Presupuesto_${clientName.replace(/\s+/g, '_')}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        document.getElementById('quoteModal')?.classList.add('hidden');
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        const submitBtn = document.getElementById('quoteSubmitBtn');
+        submitBtn.textContent = 'Descargar Presupuesto PDF';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Check auth on page load
+    checkAdminAuth();
+  </script>
+</BaseLayout>

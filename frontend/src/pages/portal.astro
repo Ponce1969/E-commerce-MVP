@@ -1,0 +1,498 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Portal B2B Clientes | 2 Rodríguez Distribuidora" currentNav="portal">
+  <div class="space-y-6">
+    <!-- Header -->
+    <div class="border-b border-border pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground">
+          Portal Privado de Clientes B2B
+        </h1>
+        <p class="text-sm text-muted-foreground mt-1">
+          Consulte los aranceles preferenciales de su lista comercial y confirme pedidos con despacho inmediato.
+        </p>
+      </div>
+
+      <!-- User Bar (when logged in) -->
+      <div id="userBar" class="hidden flex-wrap items-center gap-3">
+        <div class="flex items-center gap-2 rounded-lg border border-border bg-card px-3 py-1.5 text-xs">
+          <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+          <span id="userEmail" class="font-medium text-foreground"></span>
+        </div>
+        <button
+          id="cartBtn"
+          class="relative inline-flex items-center justify-center rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] gap-2 cursor-pointer"
+        >
+          <span>Carrito</span>
+          <span id="cartCount" class="rounded-full bg-white text-primary px-1.5 py-0.2 text-[11px] font-bold">0</span>
+        </button>
+        <button
+          id="logoutBtn"
+          class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors min-h-[40px] cursor-pointer"
+        >
+          Cerrar Sesión
+        </button>
+      </div>
+    </div>
+
+    <!-- Login View (shown when unauthenticated) -->
+    <div id="loginView" class="max-w-md mx-auto my-12 p-6 sm:p-8 rounded-2xl border border-border bg-card shadow-sm space-y-6">
+      <div class="text-center space-y-1">
+        <h2 class="text-xl font-bold text-foreground">Ingreso de Clientes</h2>
+        <p class="text-xs text-muted-foreground">
+          Acceda con las credenciales asignadas por Mariana.
+        </p>
+      </div>
+
+      <form id="loginForm" class="space-y-4">
+        <div class="space-y-1">
+          <label for="loginEmail" class="text-xs font-semibold text-foreground">Correo Electrónico</label>
+          <input
+            type="email"
+            id="loginEmail"
+            required
+            placeholder="cliente@empresa.com"
+            class="w-full rounded-lg border border-input bg-background px-3.5 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+          />
+        </div>
+
+        <div class="space-y-1">
+          <label for="loginPassword" class="text-xs font-semibold text-foreground">Contraseña</label>
+          <input
+            type="password"
+            id="loginPassword"
+            required
+            placeholder="••••••••"
+            class="w-full rounded-lg border border-input bg-background px-3.5 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+          />
+        </div>
+
+        <div id="loginError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-3 text-xs text-destructive"></div>
+
+        <button
+          type="submit"
+          id="loginSubmitBtn"
+          class="w-full inline-flex items-center justify-center rounded-lg bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[44px] cursor-pointer"
+        >
+          Ingresar al Portal
+        </button>
+      </form>
+
+      <div class="text-center pt-2 border-t border-border text-xs text-muted-foreground">
+        ¿Aún no tiene cuenta habilitada? <br />
+        <a
+          href="https://wa.me/59899549330?text=Hola%20Mariana%2C%20quisiera%20solicitar%20el%20alta%20como%20cliente%20B2B"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-primary font-semibold hover:underline"
+        >
+          Solicitar acceso por WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <!-- Portal Catalog View (shown when authenticated) -->
+    <div id="catalogView" class="hidden space-y-6">
+      <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-card p-4 rounded-xl border border-border">
+        <input
+          type="text"
+          id="portalSearch"
+          placeholder="Filtrar productos autorizados..."
+          class="w-full sm:w-1/2 rounded-lg border border-input bg-background px-3.5 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-primary min-h-[44px]"
+        />
+        <div class="text-xs text-muted-foreground font-medium">
+          Lista Comercial Asignada: <strong id="portalListName" class="text-primary">Activa</strong>
+        </div>
+      </div>
+
+      <div id="portalLoading" class="text-center py-12 text-sm text-muted-foreground">
+        Cargando catálogo arancelario...
+      </div>
+
+      <div id="portalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </div>
+
+    <!-- Cart / Checkout Modal -->
+    <div id="cartModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl space-y-5 max-h-[90vh] flex flex-col">
+        <div class="flex items-center justify-between border-b border-border pb-3">
+          <h3 class="text-lg font-bold text-foreground">Confirmar Orden de Pedido</h3>
+          <button id="closeCartBtn" class="text-muted-foreground hover:text-foreground text-xl p-1 cursor-pointer">&times;</button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cartItemsList" class="flex-1 overflow-y-auto space-y-3 pr-1"></div>
+
+        <!-- Logistics Selection (Regla 7) -->
+        <div class="space-y-3 border-t border-border pt-4">
+          <div class="text-xs font-bold text-foreground uppercase tracking-wider">Modalidad de Entrega:</div>
+          
+          <label class="flex items-start gap-3 p-3 rounded-lg border border-border bg-background cursor-pointer hover:border-primary transition-colors">
+            <input type="radio" name="deliveryType" value="PICKUP_PASO_MOLINO" checked class="mt-0.5" />
+            <div class="text-xs">
+              <div class="font-bold text-foreground">Retiro en Local Paso Molino (Gratis $0)</div>
+              <div class="text-muted-foreground">Lun a Vie 08:30-12:00 / 13:00-18:00 | Sáb 08:00-13:00</div>
+            </div>
+          </label>
+
+          <label class="flex items-start gap-3 p-3 rounded-lg border border-border bg-background cursor-pointer hover:border-primary transition-colors">
+            <input type="radio" name="deliveryType" value="CADETERIA_MARCO_POSTAL" class="mt-0.5" />
+            <div class="text-xs">
+              <div class="font-bold text-foreground">Cadetería Marco Postal (+$250)</div>
+              <div class="text-muted-foreground">Despacho tercerizado con entrega en puerta en Montevideo.</div>
+            </div>
+          </label>
+
+          <div id="addressGroup" class="hidden space-y-1 pt-1">
+            <label for="orderAddress" class="text-xs font-semibold text-foreground">Dirección de Entrega</label>
+            <input
+              type="text"
+              id="orderAddress"
+              placeholder="Calle, número de puerta, esquina o apto"
+              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-xs text-foreground min-h-[40px]"
+            />
+          </div>
+
+          <div class="space-y-1">
+            <label for="orderNotes" class="text-xs font-semibold text-foreground">Observaciones / Recepción</label>
+            <input
+              type="text"
+              id="orderNotes"
+              placeholder="Horario preferido, persona autorizada a recibir, etc."
+              class="w-full rounded-lg border border-input bg-background px-3 py-2 text-xs text-foreground min-h-[40px]"
+            />
+          </div>
+        </div>
+
+        <!-- Total Breakdown -->
+        <div class="border-t border-border pt-3 space-y-1 text-xs">
+          <div class="flex justify-between text-muted-foreground">
+            <span>Subtotal Ítems:</span>
+            <span id="cartSubtotal">$0.00</span>
+          </div>
+          <div class="flex justify-between text-muted-foreground">
+            <span>Costo de Entrega:</span>
+            <span id="cartDeliveryCost">$0.00</span>
+          </div>
+          <div class="flex justify-between text-base font-bold text-primary pt-1 border-t border-border">
+            <span>Total Final (IVA inc):</span>
+            <span id="cartGrandTotal">$0.00</span>
+          </div>
+        </div>
+
+        <div id="orderError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-2.5 text-xs text-destructive"></div>
+
+        <button
+          id="confirmOrderBtn"
+          class="w-full inline-flex items-center justify-center rounded-lg bg-primary py-2.5 text-sm font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[44px] cursor-pointer"
+        >
+          Confirmar y Enviar Pedido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+    const API_URL = 'http://localhost:8000/api/v1';
+    let customerToken = localStorage.getItem('customer_token') || '';
+    let customerEmail = localStorage.getItem('customer_email') || '';
+    let cart = []; // { product_id, name, price, quantity }
+
+    const loginView = document.getElementById('loginView');
+    const catalogView = document.getElementById('catalogView');
+    const userBar = document.getElementById('userBar');
+    const userEmailEl = document.getElementById('userEmail');
+    const loginForm = document.getElementById('loginForm');
+    const loginError = document.getElementById('loginError');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const portalGrid = document.getElementById('portalGrid');
+    const portalLoading = document.getElementById('portalLoading');
+    const portalSearch = document.getElementById('portalSearch');
+    const cartBtn = document.getElementById('cartBtn');
+    const cartCount = document.getElementById('cartCount');
+    const cartModal = document.getElementById('cartModal');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+    const cartItemsList = document.getElementById('cartItemsList');
+    const cartSubtotal = document.getElementById('cartSubtotal');
+    const cartDeliveryCost = document.getElementById('cartDeliveryCost');
+    const cartGrandTotal = document.getElementById('cartGrandTotal');
+    const addressGroup = document.getElementById('addressGroup');
+    const orderAddress = document.getElementById('orderAddress');
+    const orderNotes = document.getElementById('orderNotes');
+    const confirmOrderBtn = document.getElementById('confirmOrderBtn');
+    const orderError = document.getElementById('orderError');
+
+    let allCatalog = [];
+
+    function updateAuthState() {
+      if (customerToken) {
+        loginView?.classList.add('hidden');
+        catalogView?.classList.remove('hidden');
+        userBar?.classList.remove('hidden');
+        if (userEmailEl) userEmailEl.textContent = customerEmail;
+        loadCatalog();
+      } else {
+        loginView?.classList.remove('hidden');
+        catalogView?.classList.add('hidden');
+        userBar?.classList.add('hidden');
+      }
+    }
+
+    loginForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      loginError?.classList.add('hidden');
+      const email = document.getElementById('loginEmail')?.value;
+      const password = document.getElementById('loginPassword')?.value;
+
+      try {
+        const res = await fetch(`${API_URL}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Credenciales incorrectas');
+        }
+
+        const data = await res.json();
+        if (data.role !== 'CUSTOMER') {
+          throw new Error('Esta cuenta pertenece a Administración. Ingrese por la sección Mariana (Admin).');
+        }
+
+        customerToken = data.access_token;
+        customerEmail = data.email;
+        localStorage.setItem('customer_token', customerToken);
+        localStorage.setItem('customer_email', customerEmail);
+        updateAuthState();
+      } catch (err) {
+        if (loginError) {
+          loginError.textContent = err.message;
+          loginError.classList.remove('hidden');
+        }
+      }
+    });
+
+    logoutBtn?.addEventListener('click', () => {
+      customerToken = '';
+      customerEmail = '';
+      cart = [];
+      localStorage.removeItem('customer_token');
+      localStorage.removeItem('customer_email');
+      updateCartUI();
+      updateAuthState();
+    });
+
+    async function loadCatalog() {
+      if (!customerToken) return;
+      if (portalLoading) portalLoading.classList.remove('hidden');
+
+      try {
+        const res = await fetch(`${API_URL}/portal/catalog?limit=200`, {
+          headers: { Authorization: `Bearer ${customerToken}` },
+        });
+
+        if (!res.ok) {
+          throw new Error('Error al obtener catálogo arancelario.');
+        }
+
+        allCatalog = await res.json();
+        renderPortalProducts(allCatalog);
+      } catch (err) {
+        if (portalGrid) {
+          portalGrid.innerHTML = `<div class="col-span-full text-center text-sm text-destructive py-8">${err.message}</div>`;
+        }
+      } finally {
+        if (portalLoading) portalLoading.classList.add('hidden');
+      }
+    }
+
+    function renderPortalProducts(products) {
+      if (!portalGrid) return;
+      if (products.length === 0) {
+        portalGrid.innerHTML = '<div class="col-span-full text-center text-sm text-muted-foreground py-8">No hay artículos publicados en tu lista comercial por el momento.</div>';
+        return;
+      }
+
+      portalGrid.innerHTML = products.map((p) => `
+        <div class="rounded-xl border border-border bg-card p-5 flex flex-col justify-between hover:border-primary/50 transition-all">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs">
+              <span class="rounded-full border border-border px-2.5 py-0.5 font-medium text-muted-foreground">${p.category}</span>
+              ${p.presentation ? `<span class="bg-secondary px-2 py-0.5 rounded font-semibold text-foreground">${p.presentation}</span>` : ''}
+            </div>
+            <h4 class="font-bold text-base text-foreground line-clamp-2">${p.name}</h4>
+          </div>
+
+          <div class="pt-4 mt-4 border-t border-border flex items-center justify-between">
+            <div class="flex flex-col">
+              <span class="text-xs text-muted-foreground">Precio Tu Lista</span>
+              <span class="text-lg font-black text-primary">$${Number(p.price_iva_inc).toFixed(2)}</span>
+            </div>
+            <button
+              onclick="window.addToCart(${p.id}, '${p.name.replace(/'/g, "\\'")}', ${p.price_iva_inc})"
+              class="rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[38px] cursor-pointer"
+            >
+              + Agregar
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    portalSearch?.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      const filtered = allCatalog.filter((p) => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+      renderPortalProducts(filtered);
+    });
+
+    window.addToCart = function(id, name, price) {
+      const existing = cart.find((item) => item.product_id === id);
+      if (existing) {
+        existing.quantity += 1;
+      } else {
+        cart.push({ product_id: id, name, price: Number(price), quantity: 1 });
+      }
+      updateCartUI();
+    };
+
+    function updateCartUI() {
+      const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+      if (cartCount) cartCount.textContent = count;
+
+      if (!cartItemsList) return;
+      if (cart.length === 0) {
+        cartItemsList.innerHTML = '<div class="text-center text-xs text-muted-foreground py-6">Tu carrito está vacío.</div>';
+      } else {
+        cartItemsList.innerHTML = cart.map((it, idx) => `
+          <div class="flex items-center justify-between p-2.5 rounded-lg border border-border bg-background text-xs">
+            <div class="flex flex-col flex-1 truncate pr-2">
+              <span class="font-semibold text-foreground truncate">${it.name}</span>
+              <span class="text-muted-foreground">$${it.price.toFixed(2)} c/u</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <input
+                type="number"
+                min="1"
+                value="${it.quantity}"
+                onchange="window.updateCartQty(${idx}, this.value)"
+                class="w-14 rounded border border-input px-2 py-1 text-center text-xs bg-background"
+              />
+              <span class="font-bold text-foreground w-16 text-right">$${(it.price * it.quantity).toFixed(2)}</span>
+              <button onclick="window.removeCartItem(${idx})" class="text-destructive font-bold px-1">&times;</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      calculateCartTotals();
+    }
+
+    window.updateCartQty = function(idx, val) {
+      const qty = parseInt(val, 10);
+      if (qty > 0) {
+        cart[idx].quantity = qty;
+        updateCartUI();
+      }
+    };
+
+    window.removeCartItem = function(idx) {
+      cart.splice(idx, 1);
+      updateCartUI();
+    };
+
+    function calculateCartTotals() {
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      const deliveryRadio = document.querySelector('input[name="deliveryType"]:checked');
+      const deliveryCost = deliveryRadio?.value === 'CADETERIA_MARCO_POSTAL' ? 250 : 0;
+      const grandTotal = subtotal + deliveryCost;
+
+      if (cartSubtotal) cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+      if (cartDeliveryCost) cartDeliveryCost.textContent = `$${deliveryCost.toFixed(2)}`;
+      if (cartGrandTotal) cartGrandTotal.textContent = `$${grandTotal.toFixed(2)}`;
+    }
+
+    document.querySelectorAll('input[name="deliveryType"]').forEach((r) => {
+      r.addEventListener('change', (e) => {
+        if (e.target.value === 'CADETERIA_MARCO_POSTAL') {
+          addressGroup?.classList.remove('hidden');
+        } else {
+          addressGroup?.classList.add('hidden');
+        }
+        calculateCartTotals();
+      });
+    });
+
+    cartBtn?.addEventListener('click', () => {
+      cartModal?.classList.remove('hidden');
+    });
+
+    closeCartBtn?.addEventListener('click', () => {
+      cartModal?.classList.add('hidden');
+    });
+
+    confirmOrderBtn?.addEventListener('click', async () => {
+      if (cart.length === 0) {
+        alert('El carrito está vacío.');
+        return;
+      }
+
+      orderError?.classList.add('hidden');
+      const deliveryType = document.querySelector('input[name="deliveryType"]:checked')?.value;
+      const address = orderAddress?.value;
+      const notes = orderNotes?.value;
+
+      if (deliveryType === 'CADETERIA_MARCO_POSTAL' && (!address || !address.trim())) {
+        if (orderError) {
+          orderError.textContent = 'Debe indicar una dirección de entrega para envíos por cadetería.';
+          orderError.classList.remove('hidden');
+        }
+        return;
+      }
+
+      try {
+        confirmOrderBtn.disabled = true;
+        confirmOrderBtn.textContent = 'Confirmando Pedido...';
+
+        const res = await fetch(`${API_URL}/portal/orders`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${customerToken}`,
+          },
+          body: JSON.stringify({
+            delivery_type: deliveryType,
+            delivery_address: address,
+            delivery_notes: notes,
+            items: cart.map((c) => ({ product_id: c.product_id, quantity: c.quantity })),
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al procesar la orden.');
+        }
+
+        const order = await res.json();
+        alert(`¡Pedido #${order.id} confirmado con éxito! Total: $${order.total_amount}. Nos comunicaremos a la brevedad.`);
+        cart = [];
+        updateCartUI();
+        cartModal?.classList.add('hidden');
+      } catch (err) {
+        if (orderError) {
+          orderError.textContent = err.message;
+          orderError.classList.remove('hidden');
+        }
+      } finally {
+        confirmOrderBtn.disabled = false;
+        confirmOrderBtn.textContent = 'Confirmar y Enviar Pedido';
+      }
+    });
+
+    // Initialize
+    updateAuthState();
+  </script>
+</BaseLayout>
