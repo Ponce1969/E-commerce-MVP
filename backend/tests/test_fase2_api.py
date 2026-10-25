@@ -89,6 +89,27 @@ async def test_auth_and_admin_portal_workflows() -> None:
         assert publish_ok.status_code == 200
         assert publish_ok.json()["is_published"] is True
 
+        # 4.1 Update Product Stock & Inventory Thresholds
+        stock_update_res = await client.put(
+            f"/api/v1/admin/products/{created_id}/stock",
+            json={"current_stock": 10, "min_stock_alert": 5, "allow_backorder": False},
+            headers=admin_headers,
+        )
+        assert stock_update_res.status_code == 200
+        stock_data = stock_update_res.json()
+        assert stock_data["current_stock"] == 10
+        assert stock_data["min_stock_alert"] == 5
+        assert stock_data["is_low_stock"] is False
+        assert stock_data["is_out_of_stock"] is False
+
+        # Filter products by low stock (stock <= min_stock_alert)
+        low_stock_res = await client.get(
+            "/api/v1/admin/products?stock_status=low&limit=10",
+            headers=admin_headers,
+        )
+        assert low_stock_res.status_code == 200
+        assert all(p["current_stock"] <= p["min_stock_alert"] for p in low_stock_res.json())
+
         # 5. Test Quote PDF Generation
         pdf_res = await client.post(
             "/api/v1/admin/quotes/pdf",
@@ -152,6 +173,18 @@ async def test_auth_and_admin_portal_workflows() -> None:
         items = portal_catalog_res.json()
         assert any(it["id"] == created_id for it in items)
 
+        # 8.1 Customer Order Rejection when Stock is Insufficient
+        insufficient_stock_res = await client.post(
+            "/api/v1/portal/orders",
+            json={
+                "delivery_type": "PICKUP_PASO_MOLINO",
+                "items": [{"product_id": created_id, "quantity": 999}],
+            },
+            headers=cust_headers,
+        )
+        assert insufficient_stock_res.status_code == 400
+        assert "Stock insuficiente" in insufficient_stock_res.json()["detail"]
+
         # 9. Customer Order Creation - Retiro en Paso Molino (Costo 0)
         order_pickup_res = await client.post(
             "/api/v1/portal/orders",
@@ -182,3 +215,12 @@ async def test_auth_and_admin_portal_workflows() -> None:
         cad_data = order_cadeteria_res.json()
         assert Decimal(str(cad_data["delivery_cost"])) == Decimal("250.00")
         assert Decimal(str(cad_data["total_amount"])) == Decimal("400.00")  # 150 + 250
+
+        # 11. Verify Stock Deduction in Admin (Started with 10, deducted 2 + 1 = 7)
+        admin_stock_check = await client.get(
+            "/api/v1/admin/products?search=Detergente Test Validacion",
+            headers=admin_headers,
+        )
+        assert admin_stock_check.status_code == 200
+        checked_prod = next(p for p in admin_stock_check.json() if p["id"] == created_id)
+        assert checked_prod["current_stock"] == 7

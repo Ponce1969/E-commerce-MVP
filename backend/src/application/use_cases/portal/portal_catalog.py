@@ -100,6 +100,7 @@ class PortalCatalogUseCase:
                 ProductORM.is_published == True,  # noqa: E712
                 ProductORM.is_active == True,  # noqa: E712
             )
+            .with_for_update()
         )
         prod_res = await self.session.execute(prod_stmt)
         products_map = {p.id: p for p in prod_res.scalars().all()}
@@ -114,6 +115,12 @@ class PortalCatalogUseCase:
                 raise EntityNotFoundException(
                     f"Producto con ID {item_in.product_id} no disponible en catálogo autorizado."
                 )
+
+            if product.current_stock < item_in.quantity and not product.allow_backorder:
+                raise BusinessRuleViolationException(
+                    f"Stock insuficiente para '{product.name}'. Disponible: {product.current_stock}, solicitado: {item_in.quantity}."
+                )
+            product.current_stock -= item_in.quantity
 
             price_row = next(
                 (pr for pr in product.prices if pr.commercial_list_id == commercial_list_id),

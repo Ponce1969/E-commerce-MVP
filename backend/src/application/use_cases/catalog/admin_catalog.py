@@ -7,6 +7,7 @@ from src.application.dtos.catalog_dto import (
     ProductCreateDTO,
     ProductPriceDetailDTO,
     ProductPriceUpdateItemDTO,
+    ProductStockUpdateDTO,
 )
 from src.domain.exceptions import (
     BusinessRuleViolationException,
@@ -27,6 +28,7 @@ class AdminCatalogUseCase:
         is_published: bool | None = None,
         has_conflict: bool | None = None,
         is_incomplete: bool | None = None,
+        stock_status: str | None = None,
         search: str | None = None,
         limit: int = 50,
         offset: int = 0,
@@ -43,6 +45,11 @@ class AdminCatalogUseCase:
             query = query.where(ProductORM.is_published == is_published)
         if search:
             query = query.where(ProductORM.name.ilike(f"%{search}%"))
+
+        if stock_status == "low":
+            query = query.where(ProductORM.current_stock <= ProductORM.min_stock_alert)
+        elif stock_status == "out":
+            query = query.where(ProductORM.current_stock <= 0)
 
         if has_conflict is not None:
             conflict_subq = (
@@ -107,6 +114,11 @@ class AdminCatalogUseCase:
                     tech_sheet_url=p.tech_sheet_url,
                     image_url=p.image_url,
                     is_active=p.is_active,
+                    current_stock=p.current_stock,
+                    min_stock_alert=p.min_stock_alert,
+                    allow_backorder=p.allow_backorder,
+                    is_low_stock=p.current_stock <= p.min_stock_alert,
+                    is_out_of_stock=p.current_stock <= 0,
                     prices=prices_dto,
                 )
             )
@@ -130,6 +142,9 @@ class AdminCatalogUseCase:
             iva_rate=data.iva_rate,
             is_published=False,
             is_active=True,
+            current_stock=0,
+            min_stock_alert=5,
+            allow_backorder=False,
         )
         self.session.add(product)
         await self.session.flush()
@@ -176,6 +191,11 @@ class AdminCatalogUseCase:
             tech_sheet_url=product.tech_sheet_url,
             image_url=product.image_url,
             is_active=product.is_active,
+            current_stock=product.current_stock,
+            min_stock_alert=product.min_stock_alert,
+            allow_backorder=product.allow_backorder,
+            is_low_stock=product.current_stock <= product.min_stock_alert,
+            is_out_of_stock=product.current_stock <= 0,
             prices=prices_dto,
         )
 
@@ -282,3 +302,67 @@ class AdminCatalogUseCase:
         product.is_published = is_published
         await self.session.commit()
         return product.is_published
+
+    async def update_stock(
+        self, product_id: int, data: ProductStockUpdateDTO
+    ) -> ProductAdminDetailDTO:
+        """
+        Actualizar los niveles de inventario físico y alertas de stock de un producto.
+        """
+        stmt = (
+            select(ProductORM)
+            .options(selectinload(ProductORM.prices).selectinload(ProductPriceORM.commercial_list))
+            .where(ProductORM.id == product_id)
+        )
+        result = await self.session.execute(stmt)
+        product = result.scalar_one_or_none()
+        if not product:
+            raise EntityNotFoundException(f"Producto con ID {product_id} no encontrado.")
+
+        product.current_stock = data.current_stock
+        product.min_stock_alert = data.min_stock_alert
+        product.allow_backorder = data.allow_backorder
+        await self.session.commit()
+
+        prices_dto: list[ProductPriceDetailDTO] = [
+            ProductPriceDetailDTO(
+                commercial_list_id=pr.commercial_list_id,
+                commercial_list_name=(pr.commercial_list.name if pr.commercial_list else ""),
+                cost_iva_inc=pr.cost_iva_inc,
+                markup_percentage=pr.markup_percentage,
+                price_iva_inc=pr.price_iva_inc,
+                has_conflict=pr.has_conflict,
+                conflict_detail=pr.conflict_detail,
+            )
+            for pr in product.prices
+        ]
+
+        missing_price_data = not product.prices or any(
+            pr.cost_iva_inc is None or pr.markup_percentage is None for pr in product.prices
+        )
+        is_draft = (
+            not (product.presentation and product.presentation.strip())
+            or not (product.provider and product.provider.strip())
+            or missing_price_data
+        )
+
+        return ProductAdminDetailDTO(
+            id=product.id,
+            code=product.code,
+            name=product.name,
+            presentation=product.presentation,
+            provider=product.provider,
+            category=product.category,
+            iva_rate=product.iva_rate,
+            is_published=product.is_published,
+            is_pending_draft=is_draft,
+            tech_sheet_url=product.tech_sheet_url,
+            image_url=product.image_url,
+            is_active=product.is_active,
+            current_stock=product.current_stock,
+            min_stock_alert=product.min_stock_alert,
+            allow_backorder=product.allow_backorder,
+            is_low_stock=product.current_stock <= product.min_stock_alert,
+            is_out_of_stock=product.current_stock <= 0,
+            prices=prices_dto,
+        )

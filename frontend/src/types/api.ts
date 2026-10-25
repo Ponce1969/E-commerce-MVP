@@ -32,7 +32,18 @@ export interface ProductAdminDetail {
   tech_sheet_url: string | null;
   image_url: string | null;
   is_active: boolean;
+  current_stock: number;
+  min_stock_alert: number;
+  allow_backorder: boolean;
+  is_low_stock: boolean;
+  is_out_of_stock: boolean;
   prices: ProductPriceDetail[];
+}
+
+export interface ProductStockUpdate {
+  current_stock: number;
+  min_stock_alert: number;
+  allow_backorder: boolean;
 }
 
 export interface ProductPortalItem {

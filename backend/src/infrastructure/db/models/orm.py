@@ -64,6 +64,9 @@ class ProductORM(Base):
     tech_sheet_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False, index=True)
+    current_stock: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
+    min_stock_alert: Mapped[int] = mapped_column(Integer, default=5, nullable=False)
+    allow_backorder: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )

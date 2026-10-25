@@ -85,29 +85,38 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
     <!-- Admin Dashboard (when authenticated) -->
     <div id="adminDashboard" class="hidden space-y-6">
-      <!-- 4 Top KPI Cards (Spec Section 7) -->
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <!-- 5 Top KPI Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Artículos Maestros</div>
-          <div class="text-2xl sm:text-3xl font-black text-foreground mt-1">311</div>
+          <div id="kpiTotalProducts" class="text-2xl sm:text-3xl font-black text-foreground mt-1">311</div>
           <div class="text-[11px] text-muted-foreground mt-0.5">Catálogo consolidado</div>
+        </div>
+
+        <div class="rounded-xl border border-destructive/30 bg-destructive/5 p-4 shadow-xs cursor-pointer hover:bg-destructive/10 transition-colors" onclick="window.applyFilter('low_stock')">
+          <div class="text-xs font-semibold text-destructive uppercase tracking-wider flex items-center justify-between">
+            <span>Stock Crítico</span>
+            <span class="w-2 h-2 rounded-full bg-destructive animate-pulse"></span>
+          </div>
+          <div id="kpiCriticalStock" class="text-2xl sm:text-3xl font-black text-destructive mt-1">0</div>
+          <div class="text-[11px] text-destructive/80 mt-0.5">Alertas de reposición</div>
         </div>
 
         <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Fichas Incompletas</div>
-          <div class="text-2xl sm:text-3xl font-black text-amber-600 mt-1">57</div>
+          <div id="kpiIncomplete" class="text-2xl sm:text-3xl font-black text-amber-600 mt-1">57</div>
           <div class="text-[11px] text-muted-foreground mt-0.5">Requieren costo/recargo</div>
         </div>
 
         <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Proveedor Moizo</div>
-          <div class="text-2xl sm:text-3xl font-black text-primary mt-1">49</div>
+          <div id="kpiMoizo" class="text-2xl sm:text-3xl font-black text-primary mt-1">49</div>
           <div class="text-[11px] text-muted-foreground mt-0.5">Artículos de línea directa</div>
         </div>
 
         <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Conflictos Históricos</div>
-          <div class="text-2xl sm:text-3xl font-black text-destructive mt-1">19</div>
+          <div id="kpiConflicts" class="text-2xl sm:text-3xl font-black text-destructive mt-1">19</div>
           <div class="text-[11px] text-muted-foreground mt-0.5">Márgenes protegidos intactos</div>
         </div>
       </div>
@@ -128,6 +137,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             data-filter="all"
           >
             Todos
+          </button>
+          <button
+            onclick="window.applyFilter('low_stock')"
+            class="filter-pill rounded-full border border-destructive/40 bg-destructive/10 text-destructive px-3 py-1 text-xs font-bold hover:bg-destructive/20 cursor-pointer"
+            data-filter="low_stock"
+          >
+            Stock Crítico (<span id="lowStockPillCount">0</span>)
           </button>
           <button
             onclick="window.applyFilter('conflicts')"
@@ -170,6 +186,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
                 <th class="py-3 px-3">Artículo / Categoría</th>
                 <th class="py-3 px-3">Pres.</th>
                 <th class="py-3 px-3">Proveedor</th>
+                <th class="py-3 px-3 text-center">Inventario</th>
                 <th class="py-3 px-3">Precios por Lista</th>
                 <th class="py-3 px-3 text-center">Publicación</th>
                 <th class="py-3 px-3 text-right">Acciones</th>
@@ -177,7 +194,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             </thead>
             <tbody id="productsTableBody" class="divide-y divide-border">
               <tr>
-                <td colspan="7" class="py-12 text-center text-muted-foreground">
+                <td colspan="8" class="py-12 text-center text-muted-foreground">
                   Cargando catálogo administrativo...
                 </td>
               </tr>
@@ -334,6 +351,49 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         </form>
       </div>
     </div>
+
+    <!-- Modal: Adjust Stock & Inventory Alerts -->
+    <div id="stockModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-sm rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <h3 class="font-bold text-foreground text-sm">Control de Stock e Inventario</h3>
+          <button onclick="document.getElementById('stockModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <div class="space-y-1">
+          <div id="stockModalProdName" class="font-bold text-sm text-foreground"></div>
+          <div class="text-xs text-muted-foreground">Actualice el inventario físico y umbral de alerta temprana.</div>
+        </div>
+
+        <form id="stockEditForm" class="space-y-3">
+          <input type="hidden" id="stockProdId" />
+
+          <div class="space-y-1">
+            <label for="stockCurrent" class="text-xs font-semibold text-foreground">Stock Físico Actual (Unidades)</label>
+            <input type="number" id="stockCurrent" min="0" required class="w-full rounded border border-input bg-background p-2 text-xs" />
+          </div>
+
+          <div class="space-y-1">
+            <label for="stockMinAlert" class="text-xs font-semibold text-foreground">Alerta Stock Crítico (Mínimo)</label>
+            <input type="number" id="stockMinAlert" min="0" required class="w-full rounded border border-input bg-background p-2 text-xs" />
+            <p class="text-[11px] text-muted-foreground">Se marcará en amarillo/rojo al llegar a este umbral.</p>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <input type="checkbox" id="stockAllowBackorder" class="rounded border-input text-primary focus:ring-primary" />
+            <label for="stockAllowBackorder" class="text-xs text-foreground cursor-pointer select-none">Permitir venta sin stock (Backorder)</label>
+          </div>
+
+          <button
+            type="submit"
+            id="stockSubmitBtn"
+            class="w-full rounded-lg bg-primary py-2.5 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
+          >
+            Guardar Inventario
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
 
   <script is:inline>
@@ -404,6 +464,32 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       checkAdminAuth();
     });
 
+    function updateKpis() {
+      const totalCount = allProducts.length;
+      const lowStockCount = allProducts.filter((p) => p.current_stock <= p.min_stock_alert).length;
+      const incompleteCount = allProducts.filter((p) => p.is_pending_draft).length;
+      const moizoCount = allProducts.filter((p) => (p.provider || '').toLowerCase().includes('moizo')).length;
+      const conflictCount = allProducts.filter((p) => p.prices.some((pr) => pr.has_conflict)).length;
+
+      const kpiTotal = document.getElementById('kpiTotalProducts');
+      if (kpiTotal) kpiTotal.textContent = String(totalCount);
+
+      const kpiStock = document.getElementById('kpiCriticalStock');
+      if (kpiStock) kpiStock.textContent = String(lowStockCount);
+
+      const kpiInc = document.getElementById('kpiIncomplete');
+      if (kpiInc) kpiInc.textContent = String(incompleteCount);
+
+      const kpiMoi = document.getElementById('kpiMoizo');
+      if (kpiMoi) kpiMoi.textContent = String(moizoCount);
+
+      const kpiConf = document.getElementById('kpiConflicts');
+      if (kpiConf) kpiConf.textContent = String(conflictCount);
+
+      const lowPill = document.getElementById('lowStockPillCount');
+      if (lowPill) lowPill.textContent = String(lowStockCount);
+    }
+
     async function loadAdminProducts() {
       if (!adminToken) return;
 
@@ -414,10 +500,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
         if (!res.ok) throw new Error('Error al consultar catálogo.');
         allProducts = await res.json();
+        updateKpis();
         renderProductsTable();
       } catch (err) {
         if (productsTableBody) {
-          productsTableBody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-destructive">${err.message}</td></tr>`;
+          productsTableBody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-destructive">${err.message}</td></tr>`;
         }
       }
     }
@@ -442,6 +529,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         const matchesQuery = !query || p.name.toLowerCase().includes(query) || String(p.id).includes(query);
         if (!matchesQuery) return false;
 
+        if (activeFilter === 'low_stock') {
+          return p.current_stock <= p.min_stock_alert;
+        }
         if (activeFilter === 'conflicts') {
           return p.prices.some((pr) => pr.has_conflict);
         }
@@ -458,13 +548,37 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       });
 
       if (filtered.length === 0) {
-        productsTableBody.innerHTML = '<tr><td colspan="7" class="py-8 text-center text-muted-foreground">No se encontraron artículos con ese criterio.</td></tr>';
+        productsTableBody.innerHTML = '<tr><td colspan="8" class="py-8 text-center text-muted-foreground">No se encontraron artículos con ese criterio.</td></tr>';
         return;
       }
 
       productsTableBody.innerHTML = filtered.map((p) => {
         const hasConflict = p.prices.some((pr) => pr.has_conflict);
         const conflictDetail = p.prices.find((pr) => pr.has_conflict)?.conflict_detail || '';
+
+        let stockBadge = '';
+        if (p.current_stock <= 0) {
+          stockBadge = `
+            <button onclick="window.openStockModal(${p.id})" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-destructive/15 text-destructive border border-destructive/30 hover:bg-destructive/25 transition-colors cursor-pointer" title="Haga clic para editar stock">
+              <span class="w-1.5 h-1.5 rounded-full bg-destructive"></span>
+              Agotado (0)
+            </button>
+          `;
+        } else if (p.current_stock <= p.min_stock_alert) {
+          stockBadge = `
+            <button onclick="window.openStockModal(${p.id})" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-colors cursor-pointer" title="Haga clic para editar stock">
+              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
+              Bajo (${p.current_stock}/${p.min_stock_alert})
+            </button>
+          `;
+        } else {
+          stockBadge = `
+            <button onclick="window.openStockModal(${p.id})" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 hover:bg-emerald-500/25 transition-colors cursor-pointer" title="Haga clic para editar stock">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              ${p.current_stock} disp.
+            </button>
+          `;
+        }
 
         return `
           <tr class="hover:bg-muted/40 transition-colors">
@@ -479,6 +593,9 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             </td>
             <td class="py-2.5 px-3 font-medium text-foreground whitespace-nowrap">${p.presentation || '<span class="text-amber-600">-</span>'}</td>
             <td class="py-2.5 px-3 text-muted-foreground whitespace-nowrap">${p.provider || '<span class="text-amber-600">-</span>'}</td>
+            <td class="py-2.5 px-3 text-center whitespace-nowrap">
+              ${stockBadge}
+            </td>
             <td class="py-2.5 px-3">
               <div class="flex flex-wrap gap-1 max-w-xs">
                 ${p.prices.map((pr) => `
@@ -501,12 +618,21 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
               </button>
             </td>
             <td class="py-2.5 px-3 text-right whitespace-nowrap">
-              <button
-                onclick="window.openPriceModal(${p.id})"
-                class="inline-block rounded border border-input bg-background px-2.5 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
-              >
-                Editar Precios
-              </button>
+              <div class="flex items-center justify-end gap-1.5">
+                <button
+                  onclick="window.openStockModal(${p.id})"
+                  class="inline-block rounded border border-input bg-background px-2.5 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
+                  title="Ajustar inventario y alertas"
+                >
+                  Stock
+                </button>
+                <button
+                  onclick="window.openPriceModal(${p.id})"
+                  class="inline-block rounded border border-input bg-background px-2.5 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
+                >
+                  Precios
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -675,6 +801,71 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       } finally {
         const submitBtn = document.getElementById('quoteSubmitBtn');
         submitBtn.textContent = 'Descargar Presupuesto PDF';
+        submitBtn.disabled = false;
+      }
+    });
+
+    // Stock & Inventory Control Modal
+    window.openStockModal = function(id) {
+      const prod = allProducts.find((p) => p.id === id);
+      if (!prod) return;
+
+      document.getElementById('stockProdId').value = String(prod.id);
+      document.getElementById('stockModalProdName').textContent = `#${prod.id} - ${prod.name}`;
+      document.getElementById('stockCurrent').value = String(prod.current_stock ?? 0);
+      document.getElementById('stockMinAlert').value = String(prod.min_stock_alert ?? 5);
+      document.getElementById('stockAllowBackorder').checked = Boolean(prod.allow_backorder);
+
+      document.getElementById('stockModal').classList.remove('hidden');
+    };
+
+    document.getElementById('stockEditForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const id = parseInt(document.getElementById('stockProdId').value, 10);
+      const currentStock = parseInt(document.getElementById('stockCurrent').value, 10);
+      const minAlert = parseInt(document.getElementById('stockMinAlert').value, 10);
+      const allowBackorder = document.getElementById('stockAllowBackorder').checked;
+
+      const submitBtn = document.getElementById('stockSubmitBtn');
+      submitBtn.textContent = 'Guardando...';
+      submitBtn.disabled = true;
+
+      try {
+        const res = await fetch(`${API_URL}/admin/products/${id}/stock`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({
+            current_stock: currentStock,
+            min_stock_alert: minAlert,
+            allow_backorder: allowBackorder,
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al actualizar inventario.');
+        }
+
+        const updated = await res.json();
+        const idx = allProducts.findIndex((p) => p.id === id);
+        if (idx !== -1) {
+          allProducts[idx].current_stock = updated.current_stock;
+          allProducts[idx].min_stock_alert = updated.min_stock_alert;
+          allProducts[idx].allow_backorder = updated.allow_backorder;
+          allProducts[idx].is_low_stock = updated.is_low_stock;
+          allProducts[idx].is_out_of_stock = updated.is_out_of_stock;
+        }
+
+        document.getElementById('stockModal').classList.add('hidden');
+        updateKpis();
+        renderProductsTable();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        submitBtn.textContent = 'Guardar Inventario';
         submitBtn.disabled = false;
       }
     });

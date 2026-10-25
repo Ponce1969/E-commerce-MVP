@@ -15,6 +15,7 @@ from src.application.dtos.catalog_dto import (
     ProductAdminDetailDTO,
     ProductCreateDTO,
     ProductPriceDetailDTO,
+    ProductStockUpdateDTO,
     ProductTogglePublishDTO,
     ProductUpdatePricesDTO,
     UploadAttachmentResponseDTO,
@@ -48,6 +49,9 @@ async def list_products(
     is_incomplete: bool | None = Query(
         None, description="Filtrar fichas incompletas (PendingDraft)"
     ),
+    stock_status: str | None = Query(
+        None, description="Filtrar por stock ('low' para crítico, 'out' para agotado)"
+    ),
     search: str | None = Query(None, description="Buscador por nombre"),
     limit: int = Query(50, ge=1, le=500),
     offset: int = Query(0, ge=0),
@@ -60,6 +64,7 @@ async def list_products(
         is_published=is_published,
         has_conflict=has_conflict,
         is_incomplete=is_incomplete,
+        stock_status=stock_status,
         search=search,
         limit=limit,
         offset=offset,
@@ -88,6 +93,19 @@ async def update_product_prices(
     use_case = AdminCatalogUseCase(session)
     try:
         return await use_case.update_prices(product_id, data.prices)
+    except EntityNotFoundException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+
+
+@router.put("/products/{product_id}/stock", response_model=ProductAdminDetailDTO)
+async def update_product_stock(
+    product_id: int,
+    data: ProductStockUpdateDTO,
+    session: AsyncSession = Depends(get_db_session),
+) -> ProductAdminDetailDTO:
+    use_case = AdminCatalogUseCase(session)
+    try:
+        return await use_case.update_stock(product_id, data)
     except EntityNotFoundException as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
 

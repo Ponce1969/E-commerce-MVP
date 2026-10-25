@@ -62,7 +62,18 @@ class Product:
     tech_sheet_url: str | None = None
     image_url: str | None = None
     is_active: bool = True
+    current_stock: int = 0
+    min_stock_alert: int = 5
+    allow_backorder: bool = False
     prices: list[ProductPrice] = field(default_factory=list)
+
+    @property
+    def is_low_stock(self) -> bool:
+        return self.current_stock <= self.min_stock_alert
+
+    @property
+    def is_out_of_stock(self) -> bool:
+        return self.current_stock <= 0
 
     @property
     def is_pending_draft(self) -> bool:

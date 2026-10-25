@@ -26,7 +26,18 @@ class ProductAdminDetailDTO(BaseModel):
     tech_sheet_url: str | None = None
     image_url: str | None = None
     is_active: bool
+    current_stock: int = 0
+    min_stock_alert: int = 5
+    allow_backorder: bool = False
+    is_low_stock: bool = False
+    is_out_of_stock: bool = False
     prices: list[ProductPriceDetailDTO] = []
+
+
+class ProductStockUpdateDTO(BaseModel):
+    current_stock: int = Field(..., ge=0, description="Stock físico actual en depósito")
+    min_stock_alert: int = Field(5, ge=0, description="Umbral de alerta para stock crítico")
+    allow_backorder: bool = Field(False, description="Permitir venta sin stock disponible")
 
 
 class ProductCreateDTO(BaseModel):
