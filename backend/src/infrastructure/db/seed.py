@@ -9,11 +9,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.domain.services.pricing_service import PricingService
 from src.infrastructure.db.models import (
+    AdminUserORM,
     CommercialListORM,
     ProductORM,
     ProductPriceORM,
 )
 from src.infrastructure.db.session import Base, async_session_factory, engine
+from src.infrastructure.security.password import hash_password
 
 CANONICAL_LISTS = [
     {"name": "Empresas / Limpieza", "description": "Canal corporativo y empresas de limpieza"},
@@ -46,6 +48,21 @@ def parse_decimal(value: Any) -> Decimal | None:
         return None
 
 
+async def _seed_admin_user(session: AsyncSession) -> None:
+    email = "mariana@2rodriguez.uy"
+    stmt = select(AdminUserORM).where(AdminUserORM.email == email)
+    result = await session.execute(stmt)
+    admin = result.scalar_one_or_none()
+    if not admin:
+        admin = AdminUserORM(
+            email=email,
+            password_hash=hash_password("Admin2Rodriguez!2026"),
+            full_name="Mariana 2 Rodríguez",
+            is_active=True,
+        )
+        session.add(admin)
+
+
 async def seed_database(json_path: Path) -> dict[str, int]:
     """Imports 311 catalog products and commercial conditions into PostgreSQL."""
     if not json_path.exists():
@@ -58,6 +75,7 @@ async def seed_database(json_path: Path) -> dict[str, int]:
         await conn.run_sync(Base.metadata.create_all)
 
     async with async_session_factory() as session:
+        await _seed_admin_user(session)
         list_records = await _seed_commercial_lists(session)
         stats = await _seed_products(session, data, list_records)
         await session.commit()

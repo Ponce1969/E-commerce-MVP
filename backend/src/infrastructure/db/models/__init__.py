@@ -1,4 +1,5 @@
 from src.infrastructure.db.models.orm import (
+    AdminUserORM,
     CommercialListORM,
     CustomerORM,
     OrderItemORM,
@@ -8,6 +9,7 @@ from src.infrastructure.db.models.orm import (
 )
 
 __all__ = [
+    "AdminUserORM",
     "CommercialListORM",
     "CustomerORM",
     "OrderItemORM",
