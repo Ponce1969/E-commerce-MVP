@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from src.config import settings
 from src.infrastructure.api.v1.admin.router import router as admin_router
 from src.infrastructure.api.v1.auth.router import router as auth_router
+from src.infrastructure.api.v1.finances.router import router as finances_router
 from src.infrastructure.api.v1.portal.router import router as portal_router
 
 
@@ -34,6 +35,7 @@ def create_app() -> FastAPI:
     # API Routers
     app.include_router(auth_router, prefix=settings.API_V1_STR)
     app.include_router(admin_router, prefix=settings.API_V1_STR)
+    app.include_router(finances_router, prefix=settings.API_V1_STR)
     app.include_router(portal_router, prefix=settings.API_V1_STR)
 
     @app.get("/health", tags=["Health"])

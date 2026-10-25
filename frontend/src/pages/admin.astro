@@ -99,7 +99,27 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
     <!-- Admin Dashboard (when authenticated) -->
     <div id="adminDashboard" class="hidden space-y-6">
-      <!-- 5 Top KPI Cards -->
+      <!-- Admin Tab Switcher -->
+      <div class="flex items-center gap-2 border-b border-border pb-3">
+        <button
+          id="tabCatalogBtn"
+          onclick="window.switchAdminTab('catalog')"
+          class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-colors cursor-pointer bg-primary text-primary-foreground shadow-xs"
+        >
+          <span>📦 Catálogo & Inventario</span>
+        </button>
+        <button
+          id="tabFinancesBtn"
+          onclick="window.switchAdminTab('finances')"
+          class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg transition-colors cursor-pointer bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80"
+        >
+          <span>📊 Mini-Contabilidad & Rentabilidad</span>
+        </button>
+      </div>
+
+      <!-- Catalog Section -->
+      <div id="catalogSection" class="space-y-6">
+        <!-- 5 Top KPI Cards -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
         <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Artículos Maestros</div>
@@ -226,7 +246,144 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           </table>
         </div>
       </div>
-    </div>
+    </div> <!-- Close catalogSection -->
+
+    <!-- Finances & Profitability Section -->
+    <div id="financesSection" class="hidden space-y-6">
+      <!-- Controls: Period Selector & Add Expense -->
+      <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between bg-card p-4 rounded-xl border border-border shadow-xs">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3">
+          <span class="text-xs font-bold text-foreground">Período Contable:</span>
+          <select
+            id="financesMonthSelect"
+            class="rounded-lg border border-input bg-background px-3 py-1.5 text-xs font-semibold text-foreground hover:border-primary cursor-pointer min-h-[36px]"
+          >
+            <option value="1">Enero</option>
+            <option value="2">Febrero</option>
+            <option value="3">Marzo</option>
+            <option value="4">Abril</option>
+            <option value="5">Mayo</option>
+            <option value="6">Junio</option>
+            <option value="7">Julio</option>
+            <option value="8">Agosto</option>
+            <option value="9">Setiembre</option>
+            <option value="10">Octubre</option>
+            <option value="11">Noviembre</option>
+            <option value="12">Diciembre</option>
+          </select>
+          <select
+            id="financesYearSelect"
+            class="rounded-lg border border-input bg-background px-3 py-1.5 text-xs font-semibold text-foreground hover:border-primary cursor-pointer min-h-[36px]"
+          >
+            <option value="2026">2026</option>
+            <option value="2025">2025</option>
+          </select>
+          <button
+            id="refreshFinancesBtn"
+            class="rounded-lg border border-input bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-accent min-h-[36px] cursor-pointer"
+          >
+            Actualizar
+          </button>
+        </div>
+
+        <button
+          id="openExpenseModalBtn"
+          class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-xs font-bold text-white shadow hover:bg-emerald-700 transition-colors min-h-[36px] gap-1.5 cursor-pointer"
+        >
+          + Registrar Gasto
+        </button>
+      </div>
+
+      <!-- Financial KPI Cards -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+          <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Facturación Bruta</div>
+          <div id="kpiGrossRevenue" class="text-2xl sm:text-3xl font-black text-foreground mt-1">$0.00</div>
+          <div id="kpiOrdersCount" class="text-[11px] text-muted-foreground mt-0.5">0 pedidos en el mes</div>
+        </div>
+
+        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+          <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Costo Mercadería (COGS)</div>
+          <div id="kpiCogs" class="text-2xl sm:text-3xl font-black text-amber-600 mt-1">$0.00</div>
+          <div class="text-[11px] text-muted-foreground mt-0.5">Costo con IVA de ítems vendidos</div>
+        </div>
+
+        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+          <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Gastos Operativos</div>
+          <div id="kpiTotalExpenses" class="text-2xl sm:text-3xl font-black text-destructive mt-1">$0.00</div>
+          <div class="text-[11px] text-muted-foreground mt-0.5">Alquiler, fletes, embalajes</div>
+        </div>
+
+        <div class="rounded-xl border border-emerald-500/30 bg-emerald-50/40 dark:bg-emerald-950/20 p-4 shadow-xs">
+          <div class="text-xs font-bold text-emerald-800 dark:text-emerald-300 uppercase tracking-wider flex items-center justify-between">
+            <span>Ganancia Neta</span>
+            <span id="kpiMarginPctBadge" class="text-[10px] bg-emerald-500/20 px-2 py-0.5 rounded-full font-bold">0% margen</span>
+          </div>
+          <div id="kpiNetProfit" class="text-2xl sm:text-3xl font-black text-emerald-700 dark:text-emerald-400 mt-1">$0.00</div>
+          <div id="kpiGrossMargin" class="text-[11px] text-muted-foreground mt-0.5">Margen bruto: $0.00</div>
+        </div>
+      </div>
+
+      <!-- Profitability Chart (Native SVG) -->
+      <div class="rounded-xl border border-border bg-card p-5 shadow-xs space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-border pb-3">
+          <div>
+            <h3 class="text-sm font-bold text-foreground">Evolución de Rentabilidad (Últimos 6 Meses)</h3>
+            <p class="text-xs text-muted-foreground">Comparativa mensual entre Facturación, Gastos y Ganancia Neta real.</p>
+          </div>
+          <div class="flex items-center gap-4 text-xs">
+            <span class="inline-flex items-center gap-1.5 font-medium text-foreground">
+              <span class="w-3 h-3 rounded-xs bg-blue-600 inline-block"></span> Facturación
+            </span>
+            <span class="inline-flex items-center gap-1.5 font-medium text-foreground">
+              <span class="w-3 h-3 rounded-xs bg-rose-500 inline-block"></span> Gastos
+            </span>
+            <span class="inline-flex items-center gap-1.5 font-medium text-foreground">
+              <span class="w-3 h-3 rounded-xs bg-emerald-600 inline-block"></span> Ganancia Neta
+            </span>
+          </div>
+        </div>
+
+        <!-- SVG Chart Container -->
+        <div id="financialChartContainer" class="w-full overflow-x-auto py-2">
+          <svg id="financialSvgChart" viewBox="0 0 680 220" class="w-full min-w-[500px] h-48 sm:h-56">
+            <!-- Rendered via JS -->
+          </svg>
+        </div>
+      </div>
+
+      <!-- Expenses Table -->
+      <div class="rounded-xl border border-border bg-card overflow-hidden shadow-xs space-y-3 p-4">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <div>
+            <h3 class="text-sm font-bold text-foreground">Registro de Gastos del Mes</h3>
+            <p class="text-xs text-muted-foreground">Detalle de egresos y costos fijos asentados.</p>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead class="border-b border-border bg-secondary/50 font-semibold text-muted-foreground uppercase tracking-wider">
+              <tr>
+                <th class="py-2.5 px-3">Fecha</th>
+                <th class="py-2.5 px-3">Categoría</th>
+                <th class="py-2.5 px-3">Descripción</th>
+                <th class="py-2.5 px-3 text-right">Monto</th>
+                <th class="py-2.5 px-3 text-right">Acción</th>
+              </tr>
+            </thead>
+            <tbody id="expensesTableBody" class="divide-y divide-border">
+              <tr>
+                <td colspan="5" class="py-8 text-center text-muted-foreground">
+                  Cargando gastos del período...
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div> <!-- Close financesSection -->
+  </div> <!-- Close adminDashboard -->
 
     <!-- Modal: Edit Prices -->
     <div id="priceModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
@@ -532,6 +689,60 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         <div id="attachFeedback" class="hidden rounded-lg p-3 text-xs"></div>
       </div>
     </div>
+
+    <!-- Modal: Register Expense -->
+    <div id="expenseModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <h3 class="font-bold text-foreground text-sm">Registrar Gasto del Negocio</h3>
+          <button onclick="document.getElementById('expenseModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <form id="expenseForm" class="space-y-3">
+          <div class="space-y-1">
+            <label for="expenseCategory" class="text-xs font-semibold text-foreground">Categoría del Gasto</label>
+            <select id="expenseCategory" required class="w-full rounded border border-input bg-background p-2 text-xs">
+              <option value="Alquiler Depósito">Alquiler Depósito (Paso Molino)</option>
+              <option value="Packaging y Envases">Packaging y Envases (Bidones, Cajas)</option>
+              <option value="Fletes y Cadetería">Fletes y Cadetería</option>
+              <option value="Servicios Básicos">Servicios (Luz, Agua, Internet)</option>
+              <option value="Impuestos y BPS">Impuestos y Tributos (BPS / DGI)</option>
+              <option value="Sueldos y Mano de Obra">Sueldos y Jornales</option>
+              <option value="Publicidad y Marketing">Publicidad y Redes Sociales</option>
+              <option value="Mantenimiento">Mantenimiento de Vehículo / Depósito</option>
+              <option value="Varios">Varios / Otros</option>
+            </select>
+          </div>
+
+          <div class="space-y-1">
+            <label for="expenseDescription" class="text-xs font-semibold text-foreground">Descripción / Detalle</label>
+            <input type="text" id="expenseDescription" required placeholder="Ej: Pago mensual alquiler local" class="w-full rounded border border-input bg-background p-2 text-xs" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label for="expenseDate" class="text-xs font-semibold text-foreground">Fecha del Gasto</label>
+              <input type="date" id="expenseDate" required class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+
+            <div class="space-y-1">
+              <label for="expenseAmount" class="text-xs font-semibold text-foreground">Monto ($UYU)</label>
+              <input type="number" step="0.01" min="0.01" id="expenseAmount" required placeholder="0.00" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div id="expenseError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-2 text-xs text-destructive"></div>
+
+          <button
+            type="submit"
+            id="expenseSubmitBtn"
+            class="w-full rounded-lg bg-emerald-600 py-2.5 text-xs font-semibold text-white shadow hover:bg-emerald-700 transition-colors min-h-[40px] cursor-pointer"
+          >
+            Guardar Gasto
+          </button>
+        </form>
+      </div>
+    </div>
   </div>
 
   <script is:inline>
@@ -539,6 +750,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     let adminToken = localStorage.getItem('admin_token') || '';
     let allProducts = [];
     let activeFilter = 'all';
+    let currentAdminTab = 'catalog';
 
     const adminLoginView = document.getElementById('adminLoginView');
     const adminDashboard = document.getElementById('adminDashboard');
@@ -548,6 +760,31 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     const adminLogoutBtn = document.getElementById('adminLogoutBtn');
     const productsTableBody = document.getElementById('productsTableBody');
     const adminSearchInput = document.getElementById('adminSearchInput');
+
+    const catalogSection = document.getElementById('catalogSection');
+    const financesSection = document.getElementById('financesSection');
+    const tabCatalogBtn = document.getElementById('tabCatalogBtn');
+    const tabFinancesBtn = document.getElementById('tabFinancesBtn');
+
+    window.switchAdminTab = function(tab) {
+      currentAdminTab = tab;
+      if (tab === 'catalog') {
+        catalogSection?.classList.remove('hidden');
+        financesSection?.classList.add('hidden');
+        tabCatalogBtn?.classList.remove('bg-muted', 'text-muted-foreground');
+        tabCatalogBtn?.classList.add('bg-primary', 'text-primary-foreground');
+        tabFinancesBtn?.classList.remove('bg-primary', 'text-primary-foreground');
+        tabFinancesBtn?.classList.add('bg-muted', 'text-muted-foreground');
+      } else {
+        catalogSection?.classList.add('hidden');
+        financesSection?.classList.remove('hidden');
+        tabFinancesBtn?.classList.remove('bg-muted', 'text-muted-foreground');
+        tabFinancesBtn?.classList.add('bg-primary', 'text-primary-foreground');
+        tabCatalogBtn?.classList.remove('bg-primary', 'text-primary-foreground');
+        tabCatalogBtn?.classList.add('bg-muted', 'text-muted-foreground');
+        loadFinancesData();
+      }
+    };
 
     function checkAdminAuth() {
       if (adminToken) {
@@ -1318,6 +1555,280 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       pdfDropZone.classList.remove('border-primary', 'bg-primary/5');
       if (e.dataTransfer.files?.length) uploadFileAttachment(e.dataTransfer.files[0], 'tech_sheet');
     });
+
+    // --- Mini-Contabilidad & Finanzas ---
+    const financesMonthSelect = document.getElementById('financesMonthSelect');
+    const financesYearSelect = document.getElementById('financesYearSelect');
+    const refreshFinancesBtn = document.getElementById('refreshFinancesBtn');
+    const openExpenseModalBtn = document.getElementById('openExpenseModalBtn');
+    const expenseModal = document.getElementById('expenseModal');
+    const expenseForm = document.getElementById('expenseForm');
+    const expenseError = document.getElementById('expenseError');
+    const expensesTableBody = document.getElementById('expensesTableBody');
+
+    // Set default month & year to current
+    const currentDate = new Date();
+    if (financesMonthSelect) financesMonthSelect.value = String(currentDate.getMonth() + 1);
+    if (financesYearSelect) financesYearSelect.value = String(currentDate.getFullYear());
+
+    function getSelectedFinancesPeriod() {
+      const year = parseInt(financesYearSelect?.value || String(currentDate.getFullYear()), 10);
+      const month = parseInt(financesMonthSelect?.value || String(currentDate.getMonth() + 1), 10);
+      return { year, month };
+    }
+
+    async function loadFinancesData() {
+      if (!adminToken) return;
+      await Promise.all([loadFinancesSummary(), loadExpensesList()]);
+    }
+
+    async function loadFinancesSummary() {
+      const { year, month } = getSelectedFinancesPeriod();
+      try {
+        const res = await fetch(`${API_URL}/admin/finances/summary?year=${year}&month=${month}`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (!res.ok) throw new Error('Error al consultar métricas financieras.');
+        const data = await res.json();
+
+        const formatCurrency = (val) => `$${Number(val || 0).toLocaleString('es-UY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+        document.getElementById('kpiGrossRevenue').textContent = formatCurrency(data.gross_revenue);
+        document.getElementById('kpiOrdersCount').textContent = `${data.orders_count} pedido(s) en ${data.period_label}`;
+        document.getElementById('kpiCogs').textContent = formatCurrency(data.cogs);
+        document.getElementById('kpiTotalExpenses').textContent = formatCurrency(data.total_expenses);
+        
+        const netProfitEl = document.getElementById('kpiNetProfit');
+        const netProfitVal = Number(data.net_profit || 0);
+        netProfitEl.textContent = formatCurrency(netProfitVal);
+        if (netProfitVal >= 0) {
+          netProfitEl.className = 'text-2xl sm:text-3xl font-black text-emerald-700 dark:text-emerald-400 mt-1';
+        } else {
+          netProfitEl.className = 'text-2xl sm:text-3xl font-black text-destructive mt-1';
+        }
+
+        document.getElementById('kpiGrossMargin').textContent = `Margen bruto: ${formatCurrency(data.gross_margin)}`;
+        document.getElementById('kpiMarginPctBadge').textContent = `${data.margin_percentage}% retorno`;
+
+        renderSvgChart(data.monthly_trend || []);
+      } catch (err) {
+        console.error('Error cargando finanzas:', err);
+      }
+    }
+
+    function renderSvgChart(trend) {
+      const svg = document.getElementById('financialSvgChart');
+      if (!svg) return;
+
+      if (!trend || trend.length === 0) {
+        svg.innerHTML = '<text x="340" y="110" text-anchor="middle" fill="#64748b" font-size="12">Sin datos de tendencia</text>';
+        return;
+      }
+
+      // Calculate max value for Y-axis scale
+      let maxVal = 100;
+      trend.forEach((item) => {
+        const rev = Number(item.gross_revenue || 0);
+        const exp = Number(item.expenses || 0);
+        const profit = Number(item.net_profit || 0);
+        maxVal = Math.max(maxVal, rev, exp, profit);
+      });
+      // Round maxVal up to a nice number
+      maxVal = Math.ceil(maxVal * 1.15);
+
+      const chartWidth = 680;
+      const chartHeight = 220;
+      const padLeft = 60;
+      const padRight = 20;
+      const padTop = 20;
+      const padBottom = 35;
+      const plotWidth = chartWidth - padLeft - padRight;
+      const plotHeight = chartHeight - padTop - padBottom;
+
+      let html = '';
+
+      // Grid lines & Y labels (4 lines)
+      for (let i = 0; i <= 4; i++) {
+        const yVal = (maxVal / 4) * i;
+        const yPos = padTop + plotHeight - (plotHeight / 4) * i;
+        html += `
+          <line x1="${padLeft}" y1="${yPos}" x2="${chartWidth - padRight}" y2="${yPos}" stroke="currentColor" stroke-opacity="0.1" stroke-dasharray="3,3" />
+          <text x="${padLeft - 8}" y="${yPos + 3}" text-anchor="end" fill="#94a3b8" font-size="9" font-family="monospace">$${yVal >= 1000 ? (yVal / 1000).toFixed(0) + 'k' : yVal.toFixed(0)}</text>
+        `;
+      }
+
+      // Render Bar Groups
+      const slotWidth = plotWidth / trend.length;
+      const barWidth = 12;
+      const barGap = 3;
+
+      trend.forEach((item, idx) => {
+        const xCenter = padLeft + idx * slotWidth + slotWidth / 2;
+        const revVal = Math.max(0, Number(item.gross_revenue || 0));
+        const expVal = Math.max(0, Number(item.expenses || 0));
+        const netVal = Number(item.net_profit || 0);
+
+        const revHeight = (revVal / maxVal) * plotHeight;
+        const expHeight = (expVal / maxVal) * plotHeight;
+        const netHeight = (Math.abs(netVal) / maxVal) * plotHeight;
+
+        const revY = padTop + plotHeight - revHeight;
+        const expY = padTop + plotHeight - expHeight;
+        const netY = padTop + plotHeight - netHeight;
+
+        // Group of 3 bars: Revenue (Blue), Expenses (Rose), Net (Emerald or Red)
+        const xRev = xCenter - (barWidth * 1.5 + barGap);
+        const xExp = xCenter - barWidth * 0.5;
+        const xNet = xCenter + (barWidth * 0.5 + barGap);
+
+        html += `
+          <g class="chart-group">
+            <!-- Facturación -->
+            <rect x="${xRev}" y="${revY}" width="${barWidth}" height="${revHeight}" rx="2" fill="#2563eb" opacity="0.9">
+              <title>${item.month_label} - Facturación: $${revVal.toFixed(2)}</title>
+            </rect>
+            <!-- Gastos -->
+            <rect x="${xExp}" y="${expY}" width="${barWidth}" height="${expHeight}" rx="2" fill="#f43f5e" opacity="0.9">
+              <title>${item.month_label} - Gastos: $${expVal.toFixed(2)}</title>
+            </rect>
+            <!-- Ganancia Neta -->
+            <rect x="${xNet}" y="${netY}" width="${barWidth}" height="${netHeight}" rx="2" fill="${netVal >= 0 ? '#10b981' : '#ef4444'}" opacity="0.95">
+              <title>${item.month_label} - Ganancia Neta: $${netVal.toFixed(2)}</title>
+            </rect>
+            <!-- Month Label -->
+            <text x="${xCenter}" y="${chartHeight - 10}" text-anchor="middle" fill="#64748b" font-size="10" font-weight="600">${item.month_label}</text>
+          </g>
+        `;
+      });
+
+      svg.innerHTML = html;
+    }
+
+    async function loadExpensesList() {
+      const { year, month } = getSelectedFinancesPeriod();
+      try {
+        const res = await fetch(`${API_URL}/admin/finances/expenses?year=${year}&month=${month}&limit=100`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (!res.ok) throw new Error('Error al cargar lista de gastos.');
+        const expenses = await res.json();
+
+        if (!expensesTableBody) return;
+
+        if (expenses.length === 0) {
+          expensesTableBody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-muted-foreground">No hay gastos asentados en este período. Usá "+ Registrar Gasto" para cargar egresos.</td></tr>';
+          return;
+        }
+
+        expensesTableBody.innerHTML = expenses.map((exp) => `
+          <tr class="hover:bg-muted/40 transition-colors">
+            <td class="py-2.5 px-3 font-mono text-muted-foreground whitespace-nowrap">${exp.expense_date}</td>
+            <td class="py-2.5 px-3">
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold bg-muted text-foreground border border-border">
+                ${exp.category}
+              </span>
+            </td>
+            <td class="py-2.5 px-3 font-medium text-foreground">${exp.description}</td>
+            <td class="py-2.5 px-3 text-right font-mono font-bold text-destructive whitespace-nowrap">
+              -$${Number(exp.amount).toLocaleString('es-UY', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </td>
+            <td class="py-2.5 px-3 text-right whitespace-nowrap">
+              <button
+                onclick="window.deleteExpense(${exp.id})"
+                class="text-xs text-destructive hover:underline font-semibold cursor-pointer"
+                title="Eliminar gasto"
+              >
+                Eliminar
+              </button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (err) {
+        if (expensesTableBody) {
+          expensesTableBody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-destructive">${err.message}</td></tr>`;
+        }
+      }
+    }
+
+    refreshFinancesBtn?.addEventListener('click', loadFinancesData);
+    financesMonthSelect?.addEventListener('change', loadFinancesData);
+    financesYearSelect?.addEventListener('change', loadFinancesData);
+
+    // Modal: Register Expense
+    openExpenseModalBtn?.addEventListener('click', () => {
+      if (expenseError) expenseError.classList.add('hidden');
+      const dateInput = document.getElementById('expenseDate');
+      if (dateInput) dateInput.value = new Date().toISOString().slice(0, 10);
+      document.getElementById('expenseDescription').value = '';
+      document.getElementById('expenseAmount').value = '';
+      expenseModal?.classList.remove('hidden');
+    });
+
+    expenseForm?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (expenseError) expenseError.classList.add('hidden');
+
+      const category = document.getElementById('expenseCategory').value;
+      const description = document.getElementById('expenseDescription').value;
+      const expenseDate = document.getElementById('expenseDate').value;
+      const amount = parseFloat(document.getElementById('expenseAmount').value);
+
+      const submitBtn = document.getElementById('expenseSubmitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Guardando...';
+
+      try {
+        const res = await fetch(`${API_URL}/admin/finances/expenses`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({
+            category,
+            description,
+            expense_date: expenseDate,
+            amount,
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al registrar gasto.');
+        }
+
+        expenseModal?.classList.add('hidden');
+        loadFinancesData();
+      } catch (err) {
+        if (expenseError) {
+          expenseError.textContent = err.message;
+          expenseError.classList.remove('hidden');
+        }
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Guardar Gasto';
+      }
+    });
+
+    window.deleteExpense = async function(id) {
+      if (!confirm('¿Seguro que deseas eliminar este registro de gasto?')) return;
+
+      try {
+        const res = await fetch(`${API_URL}/admin/finances/expenses/${id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al eliminar gasto.');
+        }
+
+        loadFinancesData();
+      } catch (err) {
+        alert(err.message);
+      }
+    };
 
     // Check auth on page load
     checkAdminAuth();

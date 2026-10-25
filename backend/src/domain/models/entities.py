@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import date, datetime
 from decimal import Decimal
 from enum import StrEnum
 
@@ -128,3 +128,13 @@ class Order:
     delivery_notes: str | None = None
     created_at: datetime = field(default_factory=datetime.utcnow)
     items: list[OrderItem] = field(default_factory=list)
+
+
+@dataclass
+class Expense:
+    id: int | None
+    category: str
+    description: str
+    expense_date: date
+    amount: Decimal
+    created_at: datetime = field(default_factory=datetime.utcnow)

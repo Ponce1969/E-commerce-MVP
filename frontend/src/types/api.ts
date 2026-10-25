@@ -100,3 +100,43 @@ export interface OrderResponse {
   created_at: string;
   items: OrderItemResponse[];
 }
+
+export interface ExpenseCreate {
+  category: string;
+  description: string;
+  expense_date: string;
+  amount: number;
+}
+
+export interface ExpenseResponse {
+  id: number;
+  category: string;
+  description: string;
+  expense_date: string;
+  amount: number;
+  created_at: string;
+}
+
+export interface MonthlyTrendItem {
+  month_key: string;
+  month_label: string;
+  gross_revenue: number;
+  cogs: number;
+  gross_margin: number;
+  expenses: number;
+  net_profit: number;
+}
+
+export interface FinancialSummary {
+  period_label: string;
+  year: number;
+  month: number;
+  gross_revenue: number;
+  cogs: number;
+  gross_margin: number;
+  margin_percentage: number;
+  total_expenses: number;
+  net_profit: number;
+  orders_count: number;
+  monthly_trend: MonthlyTrendItem[];
+}
