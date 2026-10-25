@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import (
     APIRouter,
     Depends,
@@ -22,6 +24,7 @@ from src.application.dtos.catalog_dto import (
 )
 from src.application.dtos.quote_dto import QuoteCreateDTO
 from src.application.use_cases.catalog.admin_catalog import AdminCatalogUseCase
+from src.application.use_cases.catalog.inventory_io import InventoryIOUseCase
 from src.application.use_cases.catalog.upload_attachment import UploadAttachmentUseCase
 from src.application.use_cases.quotes.generate_quote_pdf import GenerateQuotePdfUseCase
 from src.domain.exceptions import (
@@ -155,3 +158,34 @@ async def generate_quote_pdf(
         )
     except (EntityNotFoundException, BusinessRuleViolationException) as e:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
+
+
+@router.get("/providers", response_model=list[str])
+async def list_providers(
+    session: AsyncSession = Depends(get_db_session),
+) -> list[str]:
+    use_case = AdminCatalogUseCase(session)
+    return await use_case.get_providers()
+
+
+@router.get("/inventory/export")
+async def export_inventory_csv(
+    session: AsyncSession = Depends(get_db_session),
+) -> Response:
+    use_case = InventoryIOUseCase(session)
+    csv_bytes = await use_case.export_inventory_csv()
+    return Response(
+        content=csv_bytes,
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": "attachment; filename=inventario_2rodriguez.csv"},
+    )
+
+
+@router.post("/inventory/import")
+async def import_inventory_csv(
+    file: UploadFile = File(...),
+    session: AsyncSession = Depends(get_db_session),
+) -> dict[str, Any]:
+    content = await file.read()
+    use_case = InventoryIOUseCase(session)
+    return await use_case.import_inventory_csv(content)

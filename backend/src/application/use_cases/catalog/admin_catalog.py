@@ -366,3 +366,14 @@ class AdminCatalogUseCase:
             is_out_of_stock=product.current_stock <= 0,
             prices=prices_dto,
         )
+
+    async def get_providers(self) -> list[str]:
+        """Obtener lista alfabética de proveedores registrados."""
+        stmt = (
+            select(ProductORM.provider)
+            .where(ProductORM.provider.isnot(None), ProductORM.provider != "")
+            .distinct()
+            .order_by(ProductORM.provider.asc())
+        )
+        result = await self.session.execute(stmt)
+        return [str(p).strip() for p in result.scalars().all() if p and str(p).strip()]

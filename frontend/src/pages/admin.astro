@@ -18,7 +18,21 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         </p>
       </div>
 
-      <div id="adminUserBar" class="hidden flex-wrap items-center gap-3">
+      <div id="adminUserBar" class="hidden flex-wrap items-center gap-2.5">
+        <button
+          id="exportInventoryBtn"
+          class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-3 py-2 text-xs font-semibold text-foreground shadow-xs hover:bg-accent hover:border-primary transition-colors min-h-[40px] gap-1.5 cursor-pointer"
+          title="Descargar catálogo completo con stock en CSV compatible con Excel"
+        >
+          <span>📥 Exportar Excel / CSV</span>
+        </button>
+        <button
+          id="openImportStockBtn"
+          class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-3 py-2 text-xs font-semibold text-foreground shadow-xs hover:bg-accent hover:border-primary transition-colors min-h-[40px] gap-1.5 cursor-pointer"
+          title="Subir archivo Excel/CSV para actualizar el inventario masivamente"
+        >
+          <span>📤 Cargar Stock Masivo</span>
+        </button>
         <button
           id="openQuoteModalBtn"
           class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white shadow hover:bg-emerald-700 transition-colors min-h-[40px] gap-2 cursor-pointer"
@@ -173,6 +187,16 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           >
             Publicados
           </button>
+
+          <div class="flex items-center gap-1.5 pl-2 border-l border-border">
+            <label for="adminProviderSelect" class="text-xs font-semibold text-muted-foreground whitespace-nowrap">Proveedor:</label>
+            <select
+              id="adminProviderSelect"
+              class="rounded-lg border border-input bg-background px-2.5 py-1 text-xs font-semibold text-foreground hover:border-primary cursor-pointer min-h-[32px]"
+            >
+              <option value="">Todos los Proveedores</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -394,6 +418,120 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         </form>
       </div>
     </div>
+
+    <!-- Modal: Import Stock CSV / Excel -->
+    <div id="importStockModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <h3 class="font-bold text-foreground text-sm">Carga Masiva de Stock (Excel / CSV)</h3>
+          <button onclick="document.getElementById('importStockModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <div class="space-y-1">
+          <p class="text-xs text-muted-foreground">
+            Subí la planilla con los valores de stock actualizados. Mariana puede usar el botón "Exportar Excel / CSV", editar los números y arrastrar el archivo acá.
+          </p>
+        </div>
+
+        <div
+          id="importDropZone"
+          class="border-2 border-dashed border-input rounded-xl p-6 text-center hover:border-primary transition-colors cursor-pointer bg-muted/20"
+        >
+          <div class="text-3xl mb-2">📑</div>
+          <div class="text-xs font-semibold text-foreground" id="importFileName">
+            Hacé clic o arrastrá acá el archivo CSV
+          </div>
+          <p class="text-[11px] text-muted-foreground mt-1">Requiere columnas: ID y Stock Actual</p>
+          <input type="file" id="importFileInput" accept=".csv,text/csv" class="hidden" />
+        </div>
+
+        <div id="importFeedback" class="hidden rounded-lg p-3 text-xs"></div>
+
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button
+            type="button"
+            onclick="document.getElementById('importStockModal').classList.add('hidden')"
+            class="rounded-lg border border-input bg-background px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-accent cursor-pointer"
+          >
+            Cerrar
+          </button>
+          <button
+            type="button"
+            id="importSubmitBtn"
+            class="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors cursor-pointer"
+          >
+            Procesar e Importar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Product Attachments (Drag & Drop Photo & Technical PDF) -->
+    <div id="attachmentModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <h3 class="font-bold text-foreground text-sm">Archivos del Producto: Foto y Ficha PDF</h3>
+          <button onclick="document.getElementById('attachmentModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <div>
+          <div id="attachProdName" class="font-bold text-sm text-foreground"></div>
+          <input type="hidden" id="attachProdId" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Photo Upload Box -->
+          <div class="border border-border rounded-xl p-4 space-y-3 bg-muted/10 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-bold text-foreground flex items-center justify-between">
+                <span>Foto del Artículo</span>
+                <span class="text-[10px] text-muted-foreground font-normal">JPG, PNG, WEBP</span>
+              </div>
+              <div id="attachPhotoPreviewContainer" class="mt-2 h-28 rounded-lg border border-border bg-background flex items-center justify-center overflow-hidden">
+                <img id="attachPhotoPreview" src="" alt="Vista previa" class="hidden h-full w-full object-contain" />
+                <span id="attachPhotoPlaceholder" class="text-[11px] text-muted-foreground">Sin foto asignada</span>
+              </div>
+            </div>
+
+            <div
+              id="photoDropZone"
+              class="border-2 border-dashed border-input rounded-lg p-3 text-center hover:border-primary transition-colors cursor-pointer text-xs"
+            >
+              <span class="font-semibold text-primary">Arrastrá foto acá</span>
+              <p class="text-[10px] text-muted-foreground mt-0.5">o hacé clic para elegir</p>
+              <input type="file" id="photoFileInput" accept="image/*" class="hidden" />
+            </div>
+          </div>
+
+          <!-- PDF Sheet Upload Box -->
+          <div class="border border-border rounded-xl p-4 space-y-3 bg-muted/10 flex flex-col justify-between">
+            <div>
+              <div class="text-xs font-bold text-foreground flex items-center justify-between">
+                <span>Ficha Técnica (PDF)</span>
+                <span class="text-[10px] text-muted-foreground font-normal">PDF</span>
+              </div>
+              <div id="attachPdfPreviewContainer" class="mt-2 h-28 rounded-lg border border-border bg-background flex flex-col items-center justify-center p-2 text-center">
+                <span id="attachPdfPlaceholder" class="text-[11px] text-muted-foreground">Sin ficha técnica PDF</span>
+                <a id="attachPdfLink" href="" target="_blank" rel="noopener noreferrer" class="hidden text-xs text-primary font-bold hover:underline flex items-center gap-1">
+                  <span>📄 Abrir Ficha Actual</span>
+                </a>
+              </div>
+            </div>
+
+            <div
+              id="pdfDropZone"
+              class="border-2 border-dashed border-input rounded-lg p-3 text-center hover:border-primary transition-colors cursor-pointer text-xs"
+            >
+              <span class="font-semibold text-primary">Arrastrá PDF acá</span>
+              <p class="text-[10px] text-muted-foreground mt-0.5">o hacé clic para elegir</p>
+              <input type="file" id="pdfFileInput" accept="application/pdf" class="hidden" />
+            </div>
+          </div>
+        </div>
+
+        <div id="attachFeedback" class="hidden rounded-lg p-3 text-xs"></div>
+      </div>
+    </div>
   </div>
 
   <script is:inline>
@@ -490,6 +628,28 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       if (lowPill) lowPill.textContent = String(lowStockCount);
     }
 
+    async function loadProviders() {
+      if (!adminToken) return;
+      try {
+        const res = await fetch(`${API_URL}/admin/providers`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (!res.ok) return;
+        const providers = await res.json();
+        const select = document.getElementById('adminProviderSelect');
+        if (select) {
+          const currentVal = select.value;
+          select.innerHTML = '<option value="">Todos los Proveedores</option>' +
+            providers.map((pr) => `<option value="${pr}">${pr}</option>`).join('');
+          select.value = currentVal;
+        }
+      } catch (e) {}
+    }
+
+    document.getElementById('adminProviderSelect')?.addEventListener('change', () => {
+      renderProductsTable();
+    });
+
     async function loadAdminProducts() {
       if (!adminToken) return;
 
@@ -501,6 +661,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         if (!res.ok) throw new Error('Error al consultar catálogo.');
         allProducts = await res.json();
         updateKpis();
+        loadProviders();
         renderProductsTable();
       } catch (err) {
         if (productsTableBody) {
@@ -524,10 +685,15 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     function renderProductsTable() {
       if (!productsTableBody) return;
       const query = (adminSearchInput?.value || '').toLowerCase().trim();
+      const selectedProvider = document.getElementById('adminProviderSelect')?.value || '';
 
       const filtered = allProducts.filter((p) => {
         const matchesQuery = !query || p.name.toLowerCase().includes(query) || String(p.id).includes(query);
         if (!matchesQuery) return false;
+
+        if (selectedProvider && p.provider !== selectedProvider) {
+          return false;
+        }
 
         if (activeFilter === 'low_stock') {
           return p.current_stock <= p.min_stock_alert;
@@ -580,19 +746,28 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           `;
         }
 
+        let mediaBadges = '';
+        if (p.image_url) {
+          mediaBadges += `<span class="inline-flex items-center text-[10px] bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 px-1.5 py-0.5 rounded font-semibold cursor-pointer" onclick="window.openAttachmentModal(${p.id})" title="Ver foto">📷 Foto</span>`;
+        }
+        if (p.tech_sheet_url) {
+          mediaBadges += `<a href="${API_URL.replace('/api/v1', '')}${p.tech_sheet_url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-[10px] bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 px-1.5 py-0.5 rounded font-semibold hover:underline" title="Abrir ficha técnica PDF">📄 Ficha PDF</a>`;
+        }
+
         return `
           <tr class="hover:bg-muted/40 transition-colors">
             <td class="py-2.5 px-3 font-mono font-bold text-center text-muted-foreground">${p.id}</td>
             <td class="py-2.5 px-3">
               <div class="font-bold text-foreground text-xs leading-snug">${p.name}</div>
-              <div class="text-[11px] text-muted-foreground flex items-center gap-2 mt-0.5">
+              <div class="text-[11px] text-muted-foreground flex flex-wrap items-center gap-1.5 mt-0.5">
                 <span>${p.category}</span>
+                ${mediaBadges}
                 ${hasConflict ? `<span class="bg-destructive/10 text-destructive px-1.5 py-0.2 rounded font-semibold text-[10px]" title="${conflictDetail}">Conflicto Histórico</span>` : ''}
                 ${p.is_pending_draft ? '<span class="bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-semibold text-[10px]">Ficha Incompleta</span>' : ''}
               </div>
             </td>
             <td class="py-2.5 px-3 font-medium text-foreground whitespace-nowrap">${p.presentation || '<span class="text-amber-600">-</span>'}</td>
-            <td class="py-2.5 px-3 text-muted-foreground whitespace-nowrap">${p.provider || '<span class="text-amber-600">-</span>'}</td>
+            <td class="py-2.5 px-3 text-muted-foreground whitespace-nowrap font-medium">${p.provider || '<span class="text-amber-600">-</span>'}</td>
             <td class="py-2.5 px-3 text-center whitespace-nowrap">
               ${stockBadge}
             </td>
@@ -620,15 +795,22 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             <td class="py-2.5 px-3 text-right whitespace-nowrap">
               <div class="flex items-center justify-end gap-1.5">
                 <button
+                  onclick="window.openAttachmentModal(${p.id})"
+                  class="inline-block rounded border border-input bg-background px-2 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
+                  title="Subir foto o ficha técnica PDF por Drag & Drop"
+                >
+                  Archivos
+                </button>
+                <button
                   onclick="window.openStockModal(${p.id})"
-                  class="inline-block rounded border border-input bg-background px-2.5 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
+                  class="inline-block rounded border border-input bg-background px-2 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
                   title="Ajustar inventario y alertas"
                 >
                   Stock
                 </button>
                 <button
                   onclick="window.openPriceModal(${p.id})"
-                  class="inline-block rounded border border-input bg-background px-2.5 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
+                  class="inline-block rounded border border-input bg-background px-2 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
                 >
                   Precios
                 </button>
@@ -868,6 +1050,273 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         submitBtn.textContent = 'Guardar Inventario';
         submitBtn.disabled = false;
       }
+    });
+
+    // --- Export Inventory CSV (Excel Compatible) ---
+    document.getElementById('exportInventoryBtn')?.addEventListener('click', async () => {
+      if (!adminToken) return;
+      const btn = document.getElementById('exportInventoryBtn');
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '<span>Generando CSV...</span>';
+      try {
+        const res = await fetch(`${API_URL}/admin/inventory/export`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (!res.ok) throw new Error('Error al generar archivo CSV de inventario.');
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const dateStr = new Date().toISOString().slice(0, 10);
+        a.download = `inventario_2rodriguez_${dateStr}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        btn.innerHTML = originalText;
+      }
+    });
+
+    // --- Import Inventory CSV (Drag & Drop) ---
+    let selectedImportFile = null;
+    const importStockModal = document.getElementById('importStockModal');
+    const importDropZone = document.getElementById('importDropZone');
+    const importFileInput = document.getElementById('importFileInput');
+    const importFileName = document.getElementById('importFileName');
+    const importFeedback = document.getElementById('importFeedback');
+    const importSubmitBtn = document.getElementById('importSubmitBtn');
+
+    document.getElementById('openImportStockBtn')?.addEventListener('click', () => {
+      selectedImportFile = null;
+      if (importFileName) importFileName.textContent = 'Hacé clic o arrastrá acá el archivo CSV';
+      if (importFileInput) importFileInput.value = '';
+      importFeedback?.classList.add('hidden');
+      importStockModal?.classList.remove('hidden');
+    });
+
+    importDropZone?.addEventListener('click', () => importFileInput?.click());
+
+    importFileInput?.addEventListener('change', (e) => {
+      if (e.target.files?.length) {
+        selectedImportFile = e.target.files[0];
+        if (importFileName) importFileName.textContent = `Archivo seleccionado: ${selectedImportFile.name}`;
+      }
+    });
+
+    importDropZone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      importDropZone.classList.add('border-primary', 'bg-primary/5');
+    });
+
+    importDropZone?.addEventListener('dragleave', () => {
+      importDropZone.classList.remove('border-primary', 'bg-primary/5');
+    });
+
+    importDropZone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      importDropZone.classList.remove('border-primary', 'bg-primary/5');
+      if (e.dataTransfer.files?.length) {
+        selectedImportFile = e.dataTransfer.files[0];
+        if (importFileName) importFileName.textContent = `Archivo arrastrado: ${selectedImportFile.name}`;
+      }
+    });
+
+    importSubmitBtn?.addEventListener('click', async () => {
+      if (!selectedImportFile) {
+        alert('Por favor selecciona o arrastra un archivo CSV.');
+        return;
+      }
+      importSubmitBtn.disabled = true;
+      importSubmitBtn.textContent = 'Importando...';
+      importFeedback?.classList.add('hidden');
+
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedImportFile);
+
+        const res = await fetch(`${API_URL}/admin/inventory/import`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${adminToken}` },
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error en la importación.');
+        }
+
+        const data = await res.json();
+        if (importFeedback) {
+          importFeedback.className = 'rounded-lg p-3 text-xs bg-emerald-50 text-emerald-800 border border-emerald-200';
+          let msg = `¡Éxito! Se actualizaron ${data.updated_count} productos.`;
+          if (data.errors?.length) {
+            msg += ` (Advertencias: ${data.errors.slice(0, 3).join(', ')})`;
+          }
+          importFeedback.textContent = msg;
+          importFeedback.classList.remove('hidden');
+        }
+
+        loadAdminProducts();
+        setTimeout(() => {
+          importStockModal?.classList.add('hidden');
+        }, 1800);
+      } catch (err) {
+        if (importFeedback) {
+          importFeedback.className = 'rounded-lg p-3 text-xs bg-destructive/10 text-destructive border border-destructive/20';
+          importFeedback.textContent = err.message;
+          importFeedback.classList.remove('hidden');
+        }
+      } finally {
+        importSubmitBtn.disabled = false;
+        importSubmitBtn.textContent = 'Procesar e Importar';
+      }
+    });
+
+    // --- Product Attachments Modal (Drag & Drop Photo & PDF) ---
+    const attachmentModal = document.getElementById('attachmentModal');
+    const attachProdId = document.getElementById('attachProdId');
+    const attachProdName = document.getElementById('attachProdName');
+    const attachPhotoPreview = document.getElementById('attachPhotoPreview');
+    const attachPhotoPlaceholder = document.getElementById('attachPhotoPlaceholder');
+    const attachPdfLink = document.getElementById('attachPdfLink');
+    const attachPdfPlaceholder = document.getElementById('attachPdfPlaceholder');
+    const attachFeedback = document.getElementById('attachFeedback');
+
+    const photoDropZone = document.getElementById('photoDropZone');
+    const photoFileInput = document.getElementById('photoFileInput');
+    const pdfDropZone = document.getElementById('pdfDropZone');
+    const pdfFileInput = document.getElementById('pdfFileInput');
+
+    window.openAttachmentModal = function(id) {
+      const prod = allProducts.find((p) => p.id === id);
+      if (!prod) return;
+
+      if (attachProdId) attachProdId.value = String(prod.id);
+      if (attachProdName) attachProdName.textContent = `#${prod.id} - ${prod.name}`;
+      attachFeedback?.classList.add('hidden');
+
+      const baseOrigin = 'http://localhost:8000';
+      if (prod.image_url) {
+        if (attachPhotoPreview) {
+          attachPhotoPreview.src = `${baseOrigin}${prod.image_url}`;
+          attachPhotoPreview.classList.remove('hidden');
+        }
+        attachPhotoPlaceholder?.classList.add('hidden');
+      } else {
+        if (attachPhotoPreview) {
+          attachPhotoPreview.src = '';
+          attachPhotoPreview.classList.add('hidden');
+        }
+        attachPhotoPlaceholder?.classList.remove('hidden');
+      }
+
+      if (prod.tech_sheet_url) {
+        if (attachPdfLink) {
+          attachPdfLink.href = `${baseOrigin}${prod.tech_sheet_url}`;
+          attachPdfLink.classList.remove('hidden');
+        }
+        attachPdfPlaceholder?.classList.add('hidden');
+      } else {
+        if (attachPdfLink) {
+          attachPdfLink.href = '';
+          attachPdfLink.classList.add('hidden');
+        }
+        attachPdfPlaceholder?.classList.remove('hidden');
+      }
+
+      attachmentModal?.classList.remove('hidden');
+    };
+
+    async function uploadFileAttachment(file, attachmentType) {
+      const prodId = attachProdId?.value;
+      if (!file || !prodId) return;
+
+      if (attachFeedback) {
+        attachFeedback.className = 'rounded-lg p-2.5 text-xs bg-blue-50 text-blue-800 border border-blue-200';
+        attachFeedback.textContent = `Subiendo ${attachmentType === 'image' ? 'foto' : 'ficha técnica PDF'}...`;
+        attachFeedback.classList.remove('hidden');
+      }
+
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('product_id', prodId);
+        formData.append('attachment_type', attachmentType);
+
+        const res = await fetch(`${API_URL}/admin/attachments`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${adminToken}` },
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al subir archivo.');
+        }
+
+        const data = await res.json();
+        const baseOrigin = 'http://localhost:8000';
+        const prod = allProducts.find((p) => p.id === parseInt(prodId, 10));
+
+        if (attachmentType === 'image') {
+          if (prod) prod.image_url = data.url;
+          if (attachPhotoPreview) {
+            attachPhotoPreview.src = `${baseOrigin}${data.url}`;
+            attachPhotoPreview.classList.remove('hidden');
+          }
+          attachPhotoPlaceholder?.classList.add('hidden');
+        } else {
+          if (prod) prod.tech_sheet_url = data.url;
+          if (attachPdfLink) {
+            attachPdfLink.href = `${baseOrigin}${data.url}`;
+            attachPdfLink.classList.remove('hidden');
+          }
+          attachPdfPlaceholder?.classList.add('hidden');
+        }
+
+        if (attachFeedback) {
+          attachFeedback.className = 'rounded-lg p-2.5 text-xs bg-emerald-50 text-emerald-800 border border-emerald-200';
+          attachFeedback.textContent = 'Archivo subido y vinculado con éxito.';
+        }
+        renderProductsTable();
+      } catch (err) {
+        if (attachFeedback) {
+          attachFeedback.className = 'rounded-lg p-2.5 text-xs bg-destructive/10 text-destructive border border-destructive/20';
+          attachFeedback.textContent = err.message;
+        }
+      }
+    }
+
+    photoDropZone?.addEventListener('click', () => photoFileInput?.click());
+    photoFileInput?.addEventListener('change', (e) => {
+      if (e.target.files?.length) uploadFileAttachment(e.target.files[0], 'image');
+    });
+    photoDropZone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      photoDropZone.classList.add('border-primary', 'bg-primary/5');
+    });
+    photoDropZone?.addEventListener('dragleave', () => photoDropZone.classList.remove('border-primary', 'bg-primary/5'));
+    photoDropZone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      photoDropZone.classList.remove('border-primary', 'bg-primary/5');
+      if (e.dataTransfer.files?.length) uploadFileAttachment(e.dataTransfer.files[0], 'image');
+    });
+
+    pdfDropZone?.addEventListener('click', () => pdfFileInput?.click());
+    pdfFileInput?.addEventListener('change', (e) => {
+      if (e.target.files?.length) uploadFileAttachment(e.target.files[0], 'tech_sheet');
+    });
+    pdfDropZone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      pdfDropZone.classList.add('border-primary', 'bg-primary/5');
+    });
+    pdfDropZone?.addEventListener('dragleave', () => pdfDropZone.classList.remove('border-primary', 'bg-primary/5'));
+    pdfDropZone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      pdfDropZone.classList.remove('border-primary', 'bg-primary/5');
+      if (e.dataTransfer.files?.length) uploadFileAttachment(e.dataTransfer.files[0], 'tech_sheet');
     });
 
     // Check auth on page load

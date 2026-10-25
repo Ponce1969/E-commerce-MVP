@@ -167,11 +167,15 @@ async def test_auth_and_admin_portal_workflows() -> None:
         forbidden_res = await client.get("/api/v1/admin/products", headers=cust_headers)
         assert forbidden_res.status_code == 403
 
-        # 8. Customer Portal Catalog (Must see published product)
+        # 8. Customer Portal Catalog (Must see published product, strictly hiding costs/suppliers)
         portal_catalog_res = await client.get("/api/v1/portal/catalog", headers=cust_headers)
         assert portal_catalog_res.status_code == 200
         items = portal_catalog_res.json()
         assert any(it["id"] == created_id for it in items)
+        portal_item = next(it for it in items if it["id"] == created_id)
+        assert "provider" not in portal_item
+        assert "cost_iva_inc" not in portal_item
+        assert "markup_percentage" not in portal_item
 
         # 8.1 Customer Order Rejection when Stock is Insufficient
         insufficient_stock_res = await client.post(
@@ -224,3 +228,46 @@ async def test_auth_and_admin_portal_workflows() -> None:
         assert admin_stock_check.status_code == 200
         checked_prod = next(p for p in admin_stock_check.json() if p["id"] == created_id)
         assert checked_prod["current_stock"] == 7
+
+        # 12. Test Provider Secrecy in Admin vs Portal & Provider List Endpoint
+        prov_res = await client.get("/api/v1/admin/providers", headers=admin_headers)
+        assert prov_res.status_code == 200
+        assert "Moizo" in prov_res.json()
+
+        # 13. Test Inventory CSV Export (Excel Compatible with UTF-8-SIG)
+        export_res = await client.get("/api/v1/admin/inventory/export", headers=admin_headers)
+        assert export_res.status_code == 200
+        assert export_res.headers["content-type"].startswith("text/csv")
+        assert b"Stock Actual" in export_res.content
+
+        # 14. Test Inventory CSV Import (Update stock to 45 with backorder True)
+        csv_payload = (
+            f"ID;Codigo;Nombre;Presentacion;Proveedor;Categoria;Stock Actual;Alerta Minima;Permitir Backorder\n"
+            f"{created_id};;Detergente Test Validacion;;;;45;12;SI\n"
+        )
+        import_res = await client.post(
+            "/api/v1/admin/inventory/import",
+            files={"file": ("inventario.csv", csv_payload.encode("utf-8-sig"), "text/csv")},
+            headers=admin_headers,
+        )
+        assert import_res.status_code == 200
+        assert import_res.json()["updated_count"] == 1
+
+        # 15. Test Attachments (Image and Technical Sheet PDF Upload)
+        img_res = await client.post(
+            "/api/v1/admin/attachments",
+            data={"product_id": str(created_id), "attachment_type": "image"},
+            files={"file": ("foto_producto.png", b"fake_png_binary_data", "image/png")},
+            headers=admin_headers,
+        )
+        assert img_res.status_code == 200
+        assert img_res.json()["url"].startswith("/static/uploads/images/")
+
+        pdf_doc_res = await client.post(
+            "/api/v1/admin/attachments",
+            data={"product_id": str(created_id), "attachment_type": "tech_sheet"},
+            files={"file": ("ficha_limpieza.pdf", b"%PDF-1.4 fake_pdf_data", "application/pdf")},
+            headers=admin_headers,
+        )
+        assert pdf_doc_res.status_code == 200
+        assert pdf_doc_res.json()["url"].startswith("/static/uploads/documents/")

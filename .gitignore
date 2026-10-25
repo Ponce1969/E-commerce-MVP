@@ -43,6 +43,11 @@ node_modules/
 .astro/
 dist/
 
+# Uploads & local data exports
+uploads/
+backend/uploads/
+*.csv
+
 # OS files
 .DS_Store
 Thumbs.db
