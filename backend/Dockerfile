@@ -16,8 +16,9 @@ COPY pyproject.toml uv.lock ./
 # Install project dependencies without development packages
 RUN uv sync --frozen --no-install-project --no-dev
 
-# Copy application source code and migrations
+# Copy application source code, data and migrations
 COPY src/ src/
+COPY data/ data/
 COPY alembic.ini ./
 COPY src/infrastructure/db/alembic/ src/infrastructure/db/alembic/
 COPY entrypoint.sh ./

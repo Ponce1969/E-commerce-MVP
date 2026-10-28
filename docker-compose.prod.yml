@@ -34,6 +34,7 @@ services:
       POSTGRES_PORT: 5432
     volumes:
       - web2r_uploads:/app/uploads
+      - ./backend/data:/app/data:ro
     depends_on:
       postgres:
         condition: service_healthy
