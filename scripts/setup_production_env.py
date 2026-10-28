@@ -39,8 +39,14 @@ def main() -> None:
     parser.add_argument(
         "--domain",
         type=str,
-        default=None,
-        help="URL o dominio del frontend (ej: https://2rodriguez.uy o http://192.168.1.50:4321)",
+        default="https://2rodriguez.com.uy",
+        help="URL o dominio del frontend (por defecto: https://2rodriguez.com.uy)",
+    )
+    parser.add_argument(
+        "--resend-key",
+        type=str,
+        default="",
+        help="API Key de Resend (comienza con re_)",
     )
     parser.add_argument(
         "--port",
@@ -82,18 +88,28 @@ def main() -> None:
     db_name = "web_2r_prod"
     db_port = args.port
 
-    frontend_url = args.domain
-    if not frontend_url:
-        default_domain = "http://localhost:4321"
+    frontend_url = args.domain or "https://2rodriguez.com.uy"
+    resend_key = args.resend_key
+    if not resend_key and sys.stdin.isatty():
         try:
-            print("Configuración de Dominio / Red:")
-            user_input = input(
-                f"  Ingresá la URL del frontend [{default_domain}]: "
+            print("Configuración de Servicios Externos:")
+            user_key = input(
+                "  Ingresá tu RESEND_API_KEY (ej: re_123... o Enter para omitir): "
             ).strip()
-            frontend_url = user_input if user_input else default_domain
+            resend_key = user_key
         except (EOFError, KeyboardInterrupt):
-            print("\n[!] Modo no interactivo detectado. Usando valor por defecto.")
-            frontend_url = default_domain
+            resend_key = ""
+
+    cors_origins = [
+        frontend_url,
+        "https://www.2rodriguez.com.uy",
+        "https://2rodriguez.com.uy",
+        "http://localhost:4322",
+    ]
+    cors_unique = list(dict.fromkeys(cors_origins))
+    import json
+
+    cors_json = json.dumps(cors_unique)
 
     env_content = f"""# ==============================================================================
 # 2 Rodríguez Distribuidora — Variables de Entorno de Producción (Orange Pi)
@@ -107,7 +123,7 @@ DEBUG=false
 API_V1_STR="/api/v1"
 
 # Orígenes Permitidos (CORS estricto)
-CORS_ORIGINS=["{frontend_url}", "http://localhost:4321", "http://127.0.0.1:4321"]
+CORS_ORIGINS={cors_json}
 
 # Base de Datos PostgreSQL
 POSTGRES_USER={db_user}
@@ -122,8 +138,7 @@ ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=480
 
 # Correo Transaccional (Resend API)
-# NOTA: Pegá tu clave real de Resend aquí abajo (comienza con 're_')
-RESEND_API_KEY=
+RESEND_API_KEY={resend_key}
 RESEND_FROM_EMAIL="2 Rodríguez Distribuidora <onboarding@resend.dev>"
 COMPANY_EMAIL="dosrodriguezdistribuidora@gmail.com"
 FRONTEND_URL="{frontend_url}"
