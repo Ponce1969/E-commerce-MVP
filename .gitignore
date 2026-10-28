@@ -15,8 +15,6 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
 parts/
 sdist/
 var/
@@ -26,6 +24,9 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Explicitly track frontend lib
+!frontend/src/lib/
 
 # Virtual environments
 .venv/
