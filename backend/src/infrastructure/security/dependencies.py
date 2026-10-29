@@ -52,3 +52,14 @@ async def require_customer(
             detail="Cliente no tiene lista comercial asignada.",
         )
     return current_user
+
+
+async def get_optional_customer(
+    credentials: HTTPAuthorizationCredentials | None = Depends(security_scheme),
+) -> TokenData | None:
+    if not credentials:
+        return None
+    token_data = decode_access_token(credentials.credentials)
+    if token_data and token_data.role == UserRole.CUSTOMER:
+        return token_data
+    return None

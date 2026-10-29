@@ -5,6 +5,7 @@ from sqlalchemy import (
     Boolean,
     Date,
     DateTime,
+    Enum,
     ForeignKey,
     Integer,
     Numeric,
@@ -153,6 +154,39 @@ class OrderORM(Base):
     delivery_address: Mapped[str | None] = mapped_column(Text, nullable=True)
     delivery_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     total_amount: Mapped[Decimal] = mapped_column(Numeric(12, 2), nullable=False)
+    payment_method: Mapped[str | None] = mapped_column(
+        Enum("BROU_TRANSFER", "MERCADO_PAGO", name="payment_method_enum", native_enum=True),
+        nullable=True,
+    )
+    payment_status: Mapped[str] = mapped_column(
+        Enum(
+            "PENDING",
+            "PAID",
+            "REJECTED",
+            "EXPIRED",
+            name="payment_status_enum",
+            native_enum=True,
+        ),
+        default="PENDING",
+        nullable=False,
+        index=True,
+    )
+    payment_id: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
+    preference_id: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
+    remito_postal: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
+    tracking_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
+
+    # Shipping address structured fields (Marco Postal / ePresis)
+    shipping_recipient_name: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    shipping_document_number: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    shipping_street: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    shipping_street_number: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    shipping_apartment: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    shipping_city: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    shipping_state: Mapped[str | None] = mapped_column(String(100), nullable=True)
+    shipping_postal_code: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    shipping_phone: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    shipping_notes: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False, index=True
     )

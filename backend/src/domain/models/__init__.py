@@ -8,6 +8,8 @@ from src.domain.models.entities import (
     Order,
     OrderItem,
     OrderStatus,
+    PaymentMethod,
+    PaymentStatus,
     Product,
     ProductPrice,
 )
@@ -22,6 +24,8 @@ __all__ = [
     "Order",
     "OrderItem",
     "OrderStatus",
+    "PaymentMethod",
+    "PaymentStatus",
     "Product",
     "ProductPrice",
 ]

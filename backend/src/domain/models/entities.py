@@ -18,6 +18,18 @@ class OrderStatus(StrEnum):
     CANCELADO = "CANCELADO"
 
 
+class PaymentMethod(StrEnum):
+    BROU_TRANSFER = "BROU_TRANSFER"
+    MERCADO_PAGO = "MERCADO_PAGO"
+
+
+class PaymentStatus(StrEnum):
+    PENDING = "PENDING"
+    PAID = "PAID"
+    REJECTED = "REJECTED"
+    EXPIRED = "EXPIRED"
+
+
 class DocumentType(StrEnum):
     RUT = "RUT"
     CI = "CI"
@@ -126,6 +138,23 @@ class Order:
     total_amount: Decimal
     delivery_address: str | None = None
     delivery_notes: str | None = None
+    payment_method: PaymentMethod | None = None
+    payment_status: PaymentStatus = PaymentStatus.PENDING
+    payment_id: str | None = None
+    preference_id: str | None = None
+    remito_postal: str | None = None
+    tracking_url: str | None = None
+    # Datos de envío estructurados (compatibles con Marco Postal / ePresis)
+    recipient_name: str | None = None
+    document_number: str | None = None
+    street: str | None = None
+    street_number: str | None = None
+    apartment: str | None = None
+    city: str | None = None
+    state: str | None = None
+    postal_code: str | None = None
+    phone: str | None = None
+    notes: str | None = None
     created_at: datetime = field(default_factory=datetime.utcnow)
     items: list[OrderItem] = field(default_factory=list)
 
