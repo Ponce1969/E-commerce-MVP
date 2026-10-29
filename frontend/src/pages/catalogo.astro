@@ -29,6 +29,23 @@ const totalCount = catalogData.length;
       </a>
     </div>
 
+    <!-- Session Banner (when customer is logged in) -->
+    <div id="catalogAuthBanner" class="hidden rounded-xl border border-primary/30 bg-primary/10 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs sm:text-sm">
+      <div class="flex items-center gap-2.5">
+        <span class="flex h-2.5 w-2.5 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+        <span class="font-medium text-foreground">
+          Sesión comercial activa como <strong id="catalogUserEmail" class="text-primary font-bold"></strong>. Podés hacer pedidos directos con tus tarifas preferenciales.
+        </span>
+      </div>
+      <a
+        href="/portal"
+        class="inline-flex items-center justify-center rounded-lg bg-primary text-primary-foreground font-semibold px-3.5 py-2 text-xs shadow-xs hover:bg-primary/90 transition-colors shrink-0 gap-1.5"
+      >
+        <span>Ir a Mi Carrito / Portal</span>
+        <span>&rarr;</span>
+      </a>
+    </div>
+
     <!-- Filter Bar -->
     <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-card p-4 rounded-xl border border-border">
       <div class="w-full sm:w-1/2 relative">
@@ -179,6 +196,16 @@ const totalCount = catalogData.length;
 
     if (initialCategory) {
       filterProducts();
+    }
+
+    // Check customer session to show auth banner
+    const customerToken = localStorage.getItem('customer_token');
+    const customerEmail = localStorage.getItem('customer_email');
+    const authBanner = document.getElementById('catalogAuthBanner');
+    const userEmailEl = document.getElementById('catalogUserEmail');
+    if (customerToken && authBanner) {
+      if (userEmailEl) userEmailEl.textContent = customerEmail || 'Cliente';
+      authBanner.classList.remove('hidden');
     }
   </script>
 </BaseLayout>
