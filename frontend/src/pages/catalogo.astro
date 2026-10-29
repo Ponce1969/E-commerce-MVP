@@ -3,9 +3,15 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import Badge from '@/components/ui/badge.astro';
 import Card from '@/components/ui/card.astro';
 import catalogData from '@/data/catalog.json';
+import { DEPARTMENTS, getDepartmentForCategory } from '@/lib/departments';
 
 const categories = Array.from(new Set(catalogData.map((p) => p.categoria))).sort();
 const totalCount = catalogData.length;
+
+const departmentCounts = DEPARTMENTS.map((dept) => {
+  const count = catalogData.filter((p) => getDepartmentForCategory(p.categoria).id === dept.id).length;
+  return { ...dept, count };
+});
 ---
 
 <BaseLayout title="Catálogo Completo | 2 Rodríguez Distribuidora" currentNav="catalogo">
@@ -46,6 +52,41 @@ const totalCount = catalogData.length;
       </a>
     </div>
 
+    <!-- Macro-Rubros / Departamentos Tabs -->
+    <div class="space-y-2.5">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-foreground uppercase tracking-wider">Líneas y Rubros Disponibles:</span>
+        <span class="text-xs text-muted-foreground hidden sm:inline">Seleccioná un rubro para separar pañales de químicos</span>
+      </div>
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5" id="departmentTabs">
+        <button
+          type="button"
+          data-department="all"
+          class="dept-tab flex items-center gap-2.5 p-3 rounded-xl border-2 border-primary bg-primary/10 text-primary font-bold text-xs sm:text-sm text-left transition-all cursor-pointer shadow-xs"
+        >
+          <span class="text-xl">📦</span>
+          <div class="min-w-0">
+            <div class="truncate">Todos los Rubros</div>
+            <div class="text-[11px] font-normal text-muted-foreground">{totalCount} artículos</div>
+          </div>
+        </button>
+
+        {departmentCounts.map((dept) => (
+          <button
+            type="button"
+            data-department={dept.id}
+            class="dept-tab flex items-center gap-2.5 p-3 rounded-xl border border-border bg-card hover:border-primary/50 text-foreground font-semibold text-xs sm:text-sm text-left transition-all cursor-pointer shadow-xs"
+          >
+            <span class="text-xl">{dept.icon}</span>
+            <div class="min-w-0">
+              <div class="truncate">{dept.shortName}</div>
+              <div class="text-[11px] font-normal text-muted-foreground">{dept.count} artículos</div>
+            </div>
+          </button>
+        ))}
+      </div>
+    </div>
+
     <!-- Filter Bar -->
     <div class="flex flex-col sm:flex-row gap-4 items-center justify-between bg-card p-4 rounded-xl border border-border">
       <div class="w-full sm:w-1/2 relative">
@@ -76,21 +117,23 @@ const totalCount = catalogData.length;
     <!-- Product Grid -->
     <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {catalogData.map((p) => {
+        const dept = getDepartmentForCategory(p.categoria);
         const waMsg = encodeURIComponent(`Hola 2 Rodríguez Distribuidora, quisiera consultar el precio del producto: ${p.nombre} (${p.presentacion || 'estándar'})`);
         return (
           <div
             class="product-card"
             data-name={p.nombre.toLowerCase()}
             data-category={p.categoria}
+            data-department={dept.id}
           >
             <Card class="h-full flex flex-col justify-between p-5 hover:border-primary/50 transition-all shadow-xs">
               <div class="space-y-3">
-                <!-- Product Preview Box -->
-                <div class="relative w-full h-36 rounded-lg bg-muted/20 border border-border/50 flex flex-col items-center justify-center text-muted-foreground/40 gap-1.5 p-3 overflow-hidden">
-                  <svg class="h-8 w-8 stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
-                  </svg>
-                  <span class="text-[10px] uppercase tracking-wider font-semibold text-muted-foreground/60">2 Rodríguez Calidad</span>
+                <!-- Product Preview Box with Department Badge -->
+                <div class="relative w-full h-36 rounded-lg bg-muted/20 border border-border/50 flex flex-col items-center justify-center text-muted-foreground/60 gap-1.5 p-3 overflow-hidden">
+                  <span class="text-3xl">{dept.icon}</span>
+                  <span class="text-[10px] uppercase tracking-wider font-bold text-primary/80">
+                    {dept.badge}
+                  </span>
                 </div>
 
                 <div class="flex items-center justify-between gap-2">
@@ -154,12 +197,31 @@ const totalCount = catalogData.length;
     const categoryFilter = document.getElementById('categoryFilter');
     const productCards = document.querySelectorAll('.product-card');
     const emptyState = document.getElementById('emptyState');
+    const deptTabs = document.querySelectorAll('.dept-tab');
 
-    // Parse URL params for pre-selected category
+    // Parse URL params for pre-selected category or department
     const urlParams = new URLSearchParams(window.location.search);
     const initialCategory = urlParams.get('categoria');
+    const initialDept = urlParams.get('rubro') || urlParams.get('departamento') || 'all';
+
+    let currentDept = initialDept;
+
     if (initialCategory && categoryFilter) {
       categoryFilter.value = initialCategory;
+    }
+
+    function setActiveTab(deptId) {
+      currentDept = deptId;
+      deptTabs.forEach((tab) => {
+        const isMatch = tab.getAttribute('data-department') === deptId;
+        if (isMatch) {
+          tab.classList.remove('border-border', 'bg-card', 'text-foreground');
+          tab.classList.add('border-2', 'border-primary', 'bg-primary/10', 'text-primary', 'font-bold');
+        } else {
+          tab.classList.remove('border-2', 'border-primary', 'bg-primary/10', 'text-primary', 'font-bold');
+          tab.classList.add('border-border', 'bg-card', 'text-foreground');
+        }
+      });
     }
 
     function filterProducts() {
@@ -170,11 +232,13 @@ const totalCount = catalogData.length;
       productCards.forEach((card) => {
         const name = card.getAttribute('data-name') || '';
         const category = card.getAttribute('data-category') || '';
+        const cardDept = card.getAttribute('data-department') || '';
 
+        const matchesDept = currentDept === 'all' || cardDept === currentDept;
         const matchesQuery = !query || name.includes(query);
         const matchesCategory = !selectedCategory || category === selectedCategory;
 
-        if (matchesQuery && matchesCategory) {
+        if (matchesDept && matchesQuery && matchesCategory) {
           card.classList.remove('hidden');
           visibleCount++;
         } else {
@@ -191,12 +255,21 @@ const totalCount = catalogData.length;
       }
     }
 
+    deptTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const deptId = tab.getAttribute('data-department') || 'all';
+        setActiveTab(deptId);
+        filterProducts();
+      });
+    });
+
     searchInput?.addEventListener('input', filterProducts);
     categoryFilter?.addEventListener('change', filterProducts);
 
-    if (initialCategory) {
-      filterProducts();
+    if (initialDept !== 'all') {
+      setActiveTab(initialDept);
     }
+    filterProducts();
 
     // Check customer session to show auth banner
     const customerToken = localStorage.getItem('customer_token');

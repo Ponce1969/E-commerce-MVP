@@ -161,6 +161,38 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         </div>
       </div>
 
+      <!-- Department Filter Tabs in Portal -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1" id="portalDeptTabs">
+        <button
+          type="button"
+          data-dept="all"
+          class="portal-dept-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-primary text-primary-foreground transition-all shrink-0 cursor-pointer shadow-xs"
+        >
+          Todos los Rubros
+        </button>
+        <button
+          type="button"
+          data-dept="incontinencia"
+          class="portal-dept-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-card border border-border text-foreground hover:border-primary transition-all shrink-0 cursor-pointer"
+        >
+          🩲 Cuidado del Adulto & Incontinencia
+        </button>
+        <button
+          type="button"
+          data-dept="limpieza"
+          class="portal-dept-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-card border border-border text-foreground hover:border-primary transition-all shrink-0 cursor-pointer"
+        >
+          🧼 Limpieza & Químicos
+        </button>
+        <button
+          type="button"
+          data-dept="higiene"
+          class="portal-dept-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-card border border-border text-foreground hover:border-primary transition-all shrink-0 cursor-pointer"
+        >
+          🧴 Higiene & Papelería
+        </button>
+      </div>
+
       <div id="portalLoading" class="text-center py-12 text-sm text-muted-foreground">
         Cargando catálogo arancelario...
       </div>
@@ -648,7 +680,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         }
 
         allCatalog = await res.json();
-        renderPortalProducts(allCatalog);
+        filterAndRenderPortal();
       } catch (err) {
         if (portalGrid) {
           portalGrid.innerHTML = `<div class="col-span-full text-center text-sm text-destructive py-8">${err.message}</div>`;
@@ -658,10 +690,47 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       }
     }
 
+    let currentPortalDept = 'all';
+
+    function getProductDept(category) {
+      const norm = (category || '').toLowerCase();
+      if (['incontinencia', 'medicamentos', 'enfermeria', 'enfermería'].some((k) => norm.includes(k))) return 'incontinencia';
+      if (['higiene personal', 'artículos elite', 'articulos elite', 'bolsas negras', 'bolsas transparentes', 'guantes'].some((k) => norm.includes(k))) return 'higiene';
+      return 'limpieza';
+    }
+
+    function filterAndRenderPortal() {
+      const q = (portalSearch?.value || '').toLowerCase().trim();
+      const filtered = allCatalog.filter((p) => {
+        const matchesDept = currentPortalDept === 'all' || getProductDept(p.category) === currentPortalDept;
+        const matchesQuery = !q || p.name.toLowerCase().includes(q) || (p.category && p.category.toLowerCase().includes(q));
+        return matchesDept && matchesQuery;
+      });
+      renderPortalProducts(filtered);
+    }
+
+    document.querySelectorAll('.portal-dept-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        currentPortalDept = btn.getAttribute('data-dept') || 'all';
+        document.querySelectorAll('.portal-dept-btn').forEach((b) => {
+          if (b.getAttribute('data-dept') === currentPortalDept) {
+            b.className = 'portal-dept-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-primary text-primary-foreground transition-all shrink-0 cursor-pointer shadow-xs';
+          } else {
+            b.className = 'portal-dept-btn px-3.5 py-2 rounded-xl text-xs font-semibold bg-card border border-border text-foreground hover:border-primary transition-all shrink-0 cursor-pointer';
+          }
+        });
+        filterAndRenderPortal();
+      });
+    });
+
+    portalSearch?.addEventListener('input', () => {
+      filterAndRenderPortal();
+    });
+
     function renderPortalProducts(products) {
       if (!portalGrid) return;
       if (products.length === 0) {
-        portalGrid.innerHTML = '<div class="col-span-full text-center text-sm text-muted-foreground py-8">No hay artículos publicados en tu lista comercial por el momento.</div>';
+        portalGrid.innerHTML = '<div class="col-span-full text-center text-sm text-muted-foreground py-8">No hay artículos publicados en este rubro por el momento.</div>';
         return;
       }
 
@@ -670,21 +739,24 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         const imgSrc = hasImg ? (p.image_url.startsWith('http') ? p.image_url : `${baseOrigin}${p.image_url}`) : '';
         const hasPdf = Boolean(p.tech_sheet_url);
         const pdfSrc = hasPdf ? (p.tech_sheet_url.startsWith('http') ? p.tech_sheet_url : `${baseOrigin}${p.tech_sheet_url}`) : '';
+        const deptKey = getProductDept(p.category);
+        const deptIcon = deptKey === 'incontinencia' ? '🩲' : (deptKey === 'higiene' ? '🧴' : '🧼');
+        const deptLabel = deptKey === 'incontinencia' ? 'Cuidado del Adulto' : (deptKey === 'higiene' ? 'Higiene Personal' : 'Limpieza Profesional');
 
         return `
         <div class="rounded-xl border border-border bg-card p-5 flex flex-col justify-between hover:border-primary/50 transition-all shadow-xs group">
           <div class="space-y-3">
             <!-- Product Media Container -->
-            <div class="relative w-full h-44 rounded-lg bg-muted/20 border border-border/60 flex items-center justify-center p-2 overflow-hidden">
+            <div class="relative w-full h-44 rounded-lg bg-muted/20 border border-border/60 flex flex-col items-center justify-center p-2 overflow-hidden gap-1">
               ${hasImg
                 ? `<img src="${imgSrc}" alt="${p.name.replace(/"/g, '&quot;')}" class="max-h-full max-w-full object-contain transition-transform duration-300 group-hover:scale-105" loading="lazy" onerror="this.style.display='none'; const fb = this.nextElementSibling; if(fb) fb.style.display='flex';" />
                    <div class="hidden flex-col items-center justify-center text-muted-foreground/40 text-xs gap-1">
-                     <svg class="h-8 w-8 stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                     <span class="text-[10px] uppercase font-semibold">2 Rodríguez</span>
+                     <span class="text-2xl">${deptIcon}</span>
+                     <span class="text-[10px] uppercase font-semibold text-primary/80">${deptLabel}</span>
                    </div>`
-                : `<div class="flex flex-col items-center justify-center text-muted-foreground/40 text-xs gap-1">
-                     <svg class="h-8 w-8 stroke-current" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
-                     <span class="text-[10px] uppercase tracking-wider font-semibold">2 Rodríguez</span>
+                : `<div class="flex flex-col items-center justify-center text-muted-foreground/50 text-xs gap-1">
+                     <span class="text-3xl">${deptIcon}</span>
+                     <span class="text-[10px] uppercase tracking-wider font-semibold text-primary/80">${deptLabel}</span>
                    </div>`
               }
               ${hasPdf ? `
