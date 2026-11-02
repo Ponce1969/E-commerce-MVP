@@ -9,7 +9,9 @@ from src.application.dtos.finance_dto import (
 from src.application.use_cases.finances.financial_use_case import FinancialUseCase
 from src.domain.exceptions import EntityNotFoundException
 from src.infrastructure.db.session import get_db_session
+from src.infrastructure.security.audit import audit_log
 from src.infrastructure.security.dependencies import require_admin
+from src.infrastructure.security.jwt import TokenData
 
 router = APIRouter(
     prefix="/admin/finances",
@@ -50,20 +52,36 @@ async def list_expenses(
 )
 async def create_expense(
     data: ExpenseCreateDTO,
+    admin_user: TokenData = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ) -> ExpenseResponseDTO:
     use_case = FinancialUseCase(session)
-    return await use_case.create_expense(data)
+    expense = await use_case.create_expense(data)
+    audit_log(
+        action="CREATE_FINANCIAL_EXPENSE",
+        target_entity="expense",
+        target_id=expense.id,
+        actor=admin_user,
+        details={"category": expense.category, "amount": float(expense.amount)},
+    )
+    return expense
 
 
 @router.delete("/expenses/{expense_id}")
 async def delete_expense(
     expense_id: int,
+    admin_user: TokenData = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ) -> dict[str, bool]:
     use_case = FinancialUseCase(session)
     try:
         await use_case.delete_expense(expense_id)
+        audit_log(
+            action="DELETE_FINANCIAL_EXPENSE",
+            target_entity="expense",
+            target_id=expense_id,
+            actor=admin_user,
+        )
         return {"success": True}
     except EntityNotFoundException as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e

@@ -47,6 +47,9 @@ dist/
 # Uploads & local data exports
 uploads/
 backend/uploads/
+logs/
+backend/logs/
+*.log
 *.csv
 
 # OS files

@@ -32,7 +32,9 @@ from src.domain.exceptions import (
     EntityNotFoundException,
 )
 from src.infrastructure.db.session import get_db_session
+from src.infrastructure.security.audit import audit_log
 from src.infrastructure.security.dependencies import require_admin
+from src.infrastructure.security.jwt import TokenData
 
 router = APIRouter(
     prefix="/admin",
@@ -81,21 +83,39 @@ async def list_products(
 )
 async def create_product(
     data: ProductCreateDTO,
+    admin_user: TokenData = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ) -> ProductAdminDetailDTO:
     use_case = AdminCatalogUseCase(session)
-    return await use_case.create_product(data)
+    product = await use_case.create_product(data)
+    audit_log(
+        action="CREATE_PRODUCT",
+        target_entity="product",
+        target_id=product.id,
+        actor=admin_user,
+        details={"name": product.name, "category": product.category},
+    )
+    return product
 
 
 @router.put("/products/{product_id}/prices", response_model=list[ProductPriceDetailDTO])
 async def update_product_prices(
     product_id: int,
     data: ProductUpdatePricesDTO,
+    admin_user: TokenData = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ) -> list[ProductPriceDetailDTO]:
     use_case = AdminCatalogUseCase(session)
     try:
-        return await use_case.update_prices(product_id, data.prices)
+        updated = await use_case.update_prices(product_id, data.prices)
+        audit_log(
+            action="UPDATE_PRODUCT_PRICES",
+            target_entity="product",
+            target_id=product_id,
+            actor=admin_user,
+            details={"updated_prices_count": len(updated)},
+        )
+        return updated
     except EntityNotFoundException as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
 
@@ -104,11 +124,20 @@ async def update_product_prices(
 async def update_product_stock(
     product_id: int,
     data: ProductStockUpdateDTO,
+    admin_user: TokenData = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ) -> ProductAdminDetailDTO:
     use_case = AdminCatalogUseCase(session)
     try:
-        return await use_case.update_stock(product_id, data)
+        product = await use_case.update_stock(product_id, data)
+        audit_log(
+            action="UPDATE_PRODUCT_STOCK",
+            target_entity="product",
+            target_id=product_id,
+            actor=admin_user,
+            details={"current_stock": product.current_stock},
+        )
+        return product
     except EntityNotFoundException as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
 
@@ -117,11 +146,19 @@ async def update_product_stock(
 async def toggle_product_publish(
     product_id: int,
     data: ProductTogglePublishDTO,
+    admin_user: TokenData = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ) -> dict[str, bool]:
     use_case = AdminCatalogUseCase(session)
     try:
         new_state = await use_case.toggle_publication(product_id, data.is_published)
+        audit_log(
+            action="TOGGLE_PRODUCT_PUBLISH",
+            target_entity="product",
+            target_id=product_id,
+            actor=admin_user,
+            details={"is_published": new_state},
+        )
         return {"is_published": new_state}
     except EntityNotFoundException as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
@@ -205,8 +242,20 @@ async def get_catalog_template() -> Response:
 @router.post("/catalog/import")
 async def import_catalog_csv(
     file: UploadFile = File(...),
+    admin_user: TokenData = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
 ) -> dict[str, Any]:
     content = await file.read()
     use_case = InventoryIOUseCase(session)
-    return await use_case.import_catalog_csv(content)
+    result = await use_case.import_catalog_csv(content)
+    audit_log(
+        action="IMPORT_CATALOG_CSV",
+        target_entity="catalog",
+        actor=admin_user,
+        details={
+            "created": result.get("created_count", 0),
+            "updated": result.get("updated_count", 0),
+            "errors_count": len(result.get("errors", [])),
+        },
+    )
+    return result
