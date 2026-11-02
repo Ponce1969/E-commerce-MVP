@@ -62,6 +62,7 @@ class PasswordRecoveryUseCase:
             user_id=target_user.id,
             email=target_user.email,
             role=user_role,
+            password_hash=target_user.password_hash,
             expires_minutes=60,
         )
 
@@ -74,34 +75,38 @@ class PasswordRecoveryUseCase:
         )
 
     async def reset_password(self, token: str, new_password: str) -> dict[str, str]:
-        """Validates token and updates user password."""
+        """Validates single-use token and updates user password."""
         token_data = decode_password_reset_token(token)
         if not token_data:
             raise BusinessRuleViolationException(
                 "El enlace de recuperación es inválido o ha expirado. Por favor solicitá uno nuevo."
             )
 
-        if len(new_password) < 6:
+        if len(new_password) < 8:
             raise BusinessRuleViolationException(
-                "La nueva contraseña debe tener al menos 6 caracteres."
+                "La nueva contraseña debe tener al menos 8 caracteres."
             )
-
-        new_hash = hash_password(new_password)
 
         if token_data.role == UserRole.ADMIN:
             stmt = select(AdminUserORM).where(AdminUserORM.id == token_data.user_id)
             res = await self.session.execute(stmt)
-            user = res.scalar_one_or_none()
+            user: Any = res.scalar_one_or_none()
             if not user:
                 raise BusinessRuleViolationException("Usuario no encontrado.")
-            user.password_hash = new_hash
         else:
             stmt_cust = select(CustomerORM).where(CustomerORM.id == token_data.user_id)
             res_c = await self.session.execute(stmt_cust)
-            cust = res_c.scalar_one_or_none()
-            if not cust:
+            user = res_c.scalar_one_or_none()
+            if not user:
                 raise BusinessRuleViolationException("Cliente no encontrado.")
-            cust.password_hash = new_hash
+
+        # Verify single-use fingerprint against current password_hash
+        if not decode_password_reset_token(token, current_password_hash=user.password_hash):
+            raise BusinessRuleViolationException(
+                "Este enlace de recuperación ya fue utilizado o ha expirado. Por favor solicitá uno nuevo."
+            )
+
+        user.password_hash = hash_password(new_password)
 
         await self.session.commit()
         return {
@@ -110,10 +115,15 @@ class PasswordRecoveryUseCase:
 
     async def _send_email_via_resend(self, to_email: str, reset_url: str) -> bool:
         if not settings.RESEND_API_KEY:
+            if settings.ENVIRONMENT.lower() == "production":
+                logger.error(
+                    "RESEND_API_KEY no configurada en producción; no se pudo enviar correo de recuperación a %s.",
+                    to_email,
+                )
+                return False
             logger.warning(
-                "RESEND_API_KEY no configurada. Link de reseteo generado para %s: %s",
+                "RESEND_API_KEY no configurada (modo dev). Link generado para %s.",
                 to_email,
-                reset_url,
             )
             return True
 

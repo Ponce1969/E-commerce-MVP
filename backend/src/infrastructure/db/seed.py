@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 from decimal import Decimal
 from pathlib import Path
 from typing import Any
@@ -49,14 +50,15 @@ def parse_decimal(value: Any) -> Decimal | None:
 
 
 async def _seed_admin_user(session: AsyncSession) -> None:
-    email = "mariana@2rodriguez.uy"
+    email = os.environ.get("INITIAL_ADMIN_EMAIL", "mariana@2rodriguez.uy")
+    initial_password = os.environ.get("INITIAL_ADMIN_PASSWORD", "Admin2Rodriguez!2026")
     stmt = select(AdminUserORM).where(AdminUserORM.email == email)
     result = await session.execute(stmt)
     admin = result.scalar_one_or_none()
     if not admin:
         admin = AdminUserORM(
             email=email,
-            password_hash=hash_password("Admin2Rodriguez!2026"),
+            password_hash=hash_password(initial_password),
             full_name="Mariana 2 Rodríguez",
             is_active=True,
         )

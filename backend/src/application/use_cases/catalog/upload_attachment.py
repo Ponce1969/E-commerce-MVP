@@ -1,3 +1,4 @@
+import re
 import uuid
 from pathlib import Path
 
@@ -12,6 +13,19 @@ from src.infrastructure.db.models import ProductORM
 UPLOAD_DIR = Path("uploads")
 ALLOWED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".pdf"}
 MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024  # 10 MB limit
+
+
+def _matches_magic_bytes(ext: str, content: bytes) -> bool:
+    """Validates binary file signature (magic bytes) against declared extension."""
+    if ext in (".jpg", ".jpeg"):
+        return content.startswith(b"\xff\xd8\xff")
+    if ext == ".png":
+        return content.startswith(b"\x89PNG\r\n\x1a\n")
+    if ext == ".webp":
+        return len(content) >= 12 and content[:4] == b"RIFF" and content[8:12] == b"WEBP"
+    if ext == ".pdf":
+        return content.startswith(b"%PDF-")
+    return False
 
 
 class UploadAttachmentUseCase:
@@ -33,13 +47,6 @@ class UploadAttachmentUseCase:
                 f"Extensión '{ext}' no permitida. Formatos aceptados: JPG, PNG, WEBP, PDF."
             )
 
-        subfolder = "documents" if ext == ".pdf" else "images"
-        target_dir = UPLOAD_DIR / subfolder
-        target_dir.mkdir(parents=True, exist_ok=True)
-
-        unique_filename = f"{uuid.uuid4().hex[:12]}_{Path(file.filename).name}"
-        destination = target_dir / unique_filename
-
         content = await file.read()
         if len(content) > MAX_FILE_SIZE_BYTES:
             raise BusinessRuleViolationException(
@@ -47,6 +54,21 @@ class UploadAttachmentUseCase:
             )
         if len(content) == 0:
             raise BusinessRuleViolationException("El archivo subido está vacío.")
+
+        if not _matches_magic_bytes(ext, content):
+            raise BusinessRuleViolationException(
+                f"El contenido binario del archivo no coincide con un formato válido para '{ext}'."
+            )
+
+        subfolder = "documents" if ext == ".pdf" else "images"
+        target_dir = UPLOAD_DIR / subfolder
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        safe_stem = (
+            re.sub(r"[^a-zA-Z0-9_-]", "_", Path(file.filename).stem)[:48].strip("_") or "file"
+        )
+        unique_filename = f"{uuid.uuid4().hex[:12]}_{safe_stem}{ext}"
+        destination = target_dir / unique_filename
 
         with open(destination, "wb") as f:
             f.write(content)

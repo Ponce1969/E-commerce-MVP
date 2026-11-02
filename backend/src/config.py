@@ -43,7 +43,7 @@ class Settings(BaseSettings):
 
     # Marco Postal / ePresis API v2
     MARCO_POSTAL_API_URL: str = "https://marcopostal.epresis.com/api/v2"
-    MARCO_POSTAL_TOKEN: str = "LRJ4DwsDY21qwf3PSqsbTBMzAkAlWRCVVtcY2CYw28XGpyApGxNrEE4tU1NQ"
+    MARCO_POSTAL_TOKEN: str = ""
     MARCO_POSTAL_SUCURSAL: str = "10090"
     MARCO_POSTAL_SERVICIO: str = "004"
 
@@ -69,6 +69,7 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def validate_production_security(self) -> "Settings":
         if self.ENVIRONMENT.lower() == "production":
+            self.DEBUG = False
             if self.SECRET_KEY == "dev_secret_key_change_in_production":
                 raise ValueError(
                     "CRITICAL SECURITY ERROR: SECRET_KEY must be configured in production via .env and cannot use default dev key."
@@ -76,6 +77,10 @@ class Settings(BaseSettings):
             if len(self.SECRET_KEY) < 32:
                 raise ValueError(
                     "CRITICAL SECURITY ERROR: Production SECRET_KEY must be at least 32 characters long."
+                )
+            if self.POSTGRES_PASSWORD == "postgres":
+                raise ValueError(
+                    "CRITICAL SECURITY ERROR: POSTGRES_PASSWORD cannot be default 'postgres' in production."
                 )
         return self
 

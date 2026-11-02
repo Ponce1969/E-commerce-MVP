@@ -14,6 +14,7 @@ from src.domain.exceptions import BusinessRuleViolationException
 from src.infrastructure.db.session import get_db_session
 from src.infrastructure.security.audit import audit_log
 from src.infrastructure.security.rate_limiter import (
+    extract_client_ip,
     login_rate_limiter,
     password_reset_rate_limiter,
     rate_limit,
@@ -33,9 +34,7 @@ async def login(
     request: Request,
     session: AsyncSession = Depends(get_db_session),
 ) -> TokenResponse:
-    client_ip = request.headers.get("x-forwarded-for", "").split(",")[0].strip()
-    if not client_ip and request.client:
-        client_ip = request.client.host
+    client_ip = extract_client_ip(request)
 
     use_case = AuthenticateUserUseCase(session)
     try:

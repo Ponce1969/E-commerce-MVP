@@ -1,6 +1,6 @@
 # SPEC-005: Security Hardening & Compliance Architecture (ISO 27001, ISO 27701, SOC 2)
 
-- **Estado:** APPROVED / IMPLEMENTING (Fase 1 en progreso)
+- **Estado:** IMPLEMENTED (Fases 1, 2, 3 y Fase 4 de Suficiencia de Controles completadas)
 - **Fecha:** Noviembre 2026
 - **Ámbito:** Frontend (Nginx/Astro), Backend (FastAPI), Base de Datos (PostgreSQL), Docker & Infraestructura
 - **Objetivo:** Establecer los controles formales de seguridad técnica, privacidad de datos y endurecimiento operativo (hardening) en 2 Rodríguez Distribuidora, alineando la arquitectura con **ISO/IEC 27001:2022**, **ISO/IEC 27701:2019** (Privacidad / Ley 18.331 Uruguay) y **SOC 2 Type II** (Security, Confidentiality & Privacy).
@@ -108,9 +108,13 @@
 
 ## 4. Checklist de Aceptación y Verificación
 
-- [ ] `curl -I https://2rodriguez.uy/` devuelve cabeceras `Content-Security-Policy`, `Strict-Transport-Security` y `X-Content-Type-Options: nosniff`.
-- [ ] La versión de Nginx no figura en las cabeceras HTTP (`Server: nginx` sin versión).
-- [ ] 6 intentos consecutivos de login incorrecto en `/api/v1/auth/login` resultan en `HTTP 429 Too Many Requests`.
-- [ ] El formulario de login de [admin.astro](file:///c:/Users/cerra/codigo/web_2R/frontend/src/pages/admin.astro) tiene inputs limpios sin valores por defecto.
-- [ ] El contenedor `web_2r_backend` corre bajo UID `10001` (no `root`).
-- [ ] La base de datos no es accesible desde fuera de la red Docker interna.
+- [x] `curl -I https://2rodriguez.uy/` devuelve cabeceras `Content-Security-Policy`, `Strict-Transport-Security` y `X-Content-Type-Options: nosniff` (incluyendo bloques `location` con `Cache-Control`).
+- [x] La versión de Nginx no figura en las cabeceras HTTP (`Server: nginx` sin versión).
+- [x] 6 intentos consecutivos de login incorrecto en `/api/v1/auth/login` resultan en `HTTP 429 Too Many Requests` (resistente a spoofing de `X-Forwarded-For` y acotado en memoria).
+- [x] El formulario de login de [admin.astro](file:///c:/Users/cerra/codigo/web_2R/frontend/src/pages/admin.astro) tiene inputs limpios sin valores por defecto.
+- [x] El contenedor `web_2r_backend` corre bajo UID `10001` (no `root`).
+- [x] La base de datos se publica únicamente en loopback local (`127.0.0.1:5446:5432`) para monitoreo de Guardian, inaccesible desde redes externas.
+- [x] Los tokens JWT separan estrictamente `type: "access"` de `type: "password_reset"`, y los enlaces de recuperación son de un solo uso mediante firma HMAC del `password_hash` actual.
+- [x] La subida de archivos adjuntos verifica la firma binaria real (Magic Bytes para JPG, PNG, WEBP y PDF) y sanitiza nombres de archivo.
+- [x] El checkout público aísla las órdenes de invitados en una cuenta de consumidor final deshabilitada para login, sin exponer ni asociar órdenes a clientes B2B registrados.
+- [x] Las rutas `/docs`, `/redoc` y `/openapi.json` se desactivan automáticamente cuando `ENVIRONMENT=production`.

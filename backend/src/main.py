@@ -14,11 +14,12 @@ from src.infrastructure.api.v1.portal.router import router as portal_router
 
 
 def create_app() -> FastAPI:
+    is_prod = settings.ENVIRONMENT.lower() == "production"
     app = FastAPI(
         title=settings.PROJECT_NAME,
-        openapi_url=f"{settings.API_V1_STR}/openapi.json",
-        docs_url=f"{settings.API_V1_STR}/docs",
-        redoc_url=f"{settings.API_V1_STR}/redoc",
+        openapi_url=None if is_prod else f"{settings.API_V1_STR}/openapi.json",
+        docs_url=None if is_prod else f"{settings.API_V1_STR}/docs",
+        redoc_url=None if is_prod else f"{settings.API_V1_STR}/redoc",
     )
 
     cors_origins = list(settings.CORS_ORIGINS)

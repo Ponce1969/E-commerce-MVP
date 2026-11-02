@@ -257,7 +257,9 @@ async def test_auth_and_admin_portal_workflows() -> None:
         img_res = await client.post(
             "/api/v1/admin/attachments",
             data={"product_id": str(created_id), "attachment_type": "image"},
-            files={"file": ("foto_producto.png", b"fake_png_binary_data", "image/png")},
+            files={
+                "file": ("foto_producto.png", b"\x89PNG\r\n\x1a\nfake_png_binary_data", "image/png")
+            },
             headers=admin_headers,
         )
         assert img_res.status_code == 200

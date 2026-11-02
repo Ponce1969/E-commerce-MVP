@@ -1,3 +1,5 @@
+import hashlib
+import hmac
 import logging
 from decimal import Decimal
 from typing import Any
@@ -27,10 +29,46 @@ from src.infrastructure.logistics.marco_postal_client import MarcoPostalClient
 from src.infrastructure.payments.mercadopago_client import MercadoPagoClient
 from src.infrastructure.security.dependencies import get_optional_customer
 from src.infrastructure.security.jwt import TokenData
+from src.infrastructure.security.rate_limiter import checkout_rate_limiter, rate_limit
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Checkout y Pagos"])
+
+GUEST_CHECKOUT_EMAIL = "guest_checkout@2rodriguez.uy"
+
+
+def _verify_mp_signature(request: Request, data_id: str | None) -> bool:
+    """Validates Mercado Pago webhook HMAC-SHA256 signature when MP_WEBHOOK_SECRET is configured."""
+    secret = settings.MP_WEBHOOK_SECRET
+    if not secret:
+        return True
+
+    x_signature = request.headers.get("x-signature", "")
+    x_request_id = request.headers.get("x-request-id", "")
+    if not x_signature or not data_id:
+        return False
+
+    ts_val = ""
+    v1_val = ""
+    for part in x_signature.split(","):
+        kv = part.strip().split("=", 1)
+        if len(kv) == 2:
+            if kv[0].strip() == "ts":
+                ts_val = kv[1].strip()
+            elif kv[0].strip() == "v1":
+                v1_val = kv[1].strip()
+
+    if not ts_val or not v1_val:
+        return False
+
+    manifest = f"id:{data_id};request-id:{x_request_id};ts:{ts_val};"
+    computed = hmac.new(
+        secret.encode("utf-8"),
+        manifest.encode("utf-8"),
+        hashlib.sha256,
+    ).hexdigest()
+    return hmac.compare_digest(computed, v1_val)
 
 
 @router.post(
@@ -38,6 +76,7 @@ router = APIRouter(tags=["Checkout y Pagos"])
     response_model=CheckoutResponseDTO,
     status_code=status.HTTP_201_CREATED,
     summary="Registrar orden de compra y procesar pago (Checkout Pro o BROU)",
+    dependencies=[Depends(rate_limit(checkout_rate_limiter))],
 )
 async def create_checkout_order(
     data: OrderCheckoutCreateDTO,
@@ -49,75 +88,46 @@ async def create_checkout_order(
     - Si payment_method es BROU_TRANSFER: retorna los datos bancarios para depósito.
     - Si payment_method es MERCADO_PAGO: invoca crear_preferencia y devuelve el init_point.
     """
-    # 1. Resolver cliente y lista comercial asociada
+    # 1. Resolver cliente y lista comercial asociada de forma aislada (sin filtrar cuentas B2B a invitados)
     customer_id: int | None = opt_customer.user_id if opt_customer else None
     commercial_list_id: int | None = opt_customer.commercial_list_id if opt_customer else None
 
     if not customer_id or not commercial_list_id:
-        # Si no viene autenticado por token, buscar por documento en shipping_address
-        if data.shipping_address and data.shipping_address.document_number:
-            cust_stmt = select(CustomerORM).where(
-                CustomerORM.document_number == data.shipping_address.document_number
-            )
-            cust_res = await session.execute(cust_stmt)
-            existing_cust = cust_res.scalar_one_or_none()
-            if existing_cust:
-                customer_id = existing_cust.id
-                commercial_list_id = existing_cust.commercial_list_id
+        # Usar o crear cuenta dedicada de Consumidor Final para compras sin sesión autenticada
+        guest_stmt = select(CustomerORM).where(CustomerORM.email == GUEST_CHECKOUT_EMAIL)
+        guest_res = await session.execute(guest_stmt)
+        guest_cust = guest_res.scalar_one_or_none()
 
-        # Fallback si aún no está resuelto: tomar cliente activo o crear uno
-        if not customer_id or not commercial_list_id:
-            first_cust_stmt = select(CustomerORM).limit(1)
-            first_res = await session.execute(first_cust_stmt)
-            fallback_cust = first_res.scalar_one_or_none()
-            if fallback_cust:
-                customer_id = fallback_cust.id
-                commercial_list_id = fallback_cust.commercial_list_id
-            else:
-                # Obtener lista comercial activa
-                cl_stmt = (
-                    select(CommercialListORM).where(CommercialListORM.is_active.is_(True)).limit(1)
+        if guest_cust:
+            customer_id = guest_cust.id
+            commercial_list_id = guest_cust.commercial_list_id
+        else:
+            cl_stmt = (
+                select(CommercialListORM).where(CommercialListORM.is_active.is_(True)).limit(1)
+            )
+            cl_res = await session.execute(cl_stmt)
+            cl = cl_res.scalar_one_or_none()
+            if not cl:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="No existe ninguna lista comercial activa en el sistema.",
                 )
-                cl_res = await session.execute(cl_stmt)
-                cl = cl_res.scalar_one_or_none()
-                if not cl:
-                    raise HTTPException(
-                        status_code=status.HTTP_400_BAD_REQUEST,
-                        detail="No existe ninguna lista comercial activa en el sistema.",
-                    )
-                # Crear cliente genérico para checkout
-                new_cust = CustomerORM(
-                    document_type="CI",
-                    document_number=(
-                        data.shipping_address.document_number
-                        if data.shipping_address
-                        else "00000000"
-                    ),
-                    business_name=(
-                        data.shipping_address.recipient_name
-                        if data.shipping_address
-                        else "Consumidor Final"
-                    ),
-                    contact_name=(
-                        data.shipping_address.recipient_name
-                        if data.shipping_address
-                        else "Consumidor Final"
-                    ),
-                    phone_whatsapp=(
-                        data.shipping_address.phone if data.shipping_address else "099000000"
-                    ),
-                    email=(
-                        f"checkout_{data.shipping_address.phone if data.shipping_address else 'guest'}@2rodriguez.uy"
-                    ),
-                    password_hash="checkout_guest",
-                    commercial_list_id=cl.id,
-                    crm_status="ACTIVO",
-                    is_active=True,
-                )
-                session.add(new_cust)
-                await session.flush()
-                customer_id = new_cust.id
-                commercial_list_id = cl.id
+            new_cust = CustomerORM(
+                document_type="CI",
+                document_number="00000000",
+                business_name="Consumidor Final Web",
+                contact_name="Consumidor Final",
+                phone_whatsapp="099000000",
+                email=GUEST_CHECKOUT_EMAIL,
+                password_hash="!disabled_guest_account!",
+                commercial_list_id=cl.id,
+                crm_status="INVITADO_WEB",
+                is_active=False,
+            )
+            session.add(new_cust)
+            await session.flush()
+            customer_id = new_cust.id
+            commercial_list_id = cl.id
 
     # 2. Calcular costo de flete y validar dirección si es cadetería Marco Postal
     if data.delivery_type == DeliveryType.PICKUP_PASO_MOLINO:
@@ -327,6 +337,16 @@ async def mercadopago_webhook(
             topic,
         )
         return {"status": "ok", "message": "Ignored: no payment id found"}
+
+    if not _verify_mp_signature(request, payment_id):
+        logger.warning(
+            "Firma HMAC de webhook Mercado Pago inválida o ausente para payment_id=%s.",
+            payment_id,
+        )
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Mercado Pago webhook signature.",
+        )
 
     logger.info("Procesando notificación de pago MP: topic=%s, payment_id=%s", topic, payment_id)
 
