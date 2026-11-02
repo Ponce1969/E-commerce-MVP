@@ -27,13 +27,13 @@ COPY alembic.ini ./
 COPY src/infrastructure/db/alembic/ src/infrastructure/db/alembic/
 COPY entrypoint.sh ./
 
-# Create uploads directory for persistent storage and grant ownership to appuser
-RUN mkdir -p uploads/images uploads/documents && \
-    chmod +x entrypoint.sh && \
-    chown -R appuser:appgroup /app
-
 # Sync project itself
 RUN uv sync --frozen --no-dev
+
+# Create uploads & audit logs directories and grant ownership of /app (including .venv) to appuser
+RUN mkdir -p uploads/images uploads/documents logs && \
+    chmod +x entrypoint.sh && \
+    chown -R appuser:appgroup /app
 
 EXPOSE 8000
 

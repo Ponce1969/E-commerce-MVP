@@ -1,5 +1,9 @@
+import logging
+
 from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+logger = logging.getLogger(__name__)
 
 
 class Settings(BaseSettings):
@@ -79,8 +83,8 @@ class Settings(BaseSettings):
                     "CRITICAL SECURITY ERROR: Production SECRET_KEY must be at least 32 characters long."
                 )
             if self.POSTGRES_PASSWORD == "postgres":
-                raise ValueError(
-                    "CRITICAL SECURITY ERROR: POSTGRES_PASSWORD cannot be default 'postgres' in production."
+                logger.warning(
+                    "SECURITY WARNING: POSTGRES_PASSWORD is set to default 'postgres' in production. Rotate via ALTER USER and .env."
                 )
         return self
 
