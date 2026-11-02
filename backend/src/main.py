@@ -1,6 +1,7 @@
 from pathlib import Path
+from typing import Any
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
@@ -31,6 +32,15 @@ def create_app() -> FastAPI:
         allow_methods=["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         allow_headers=["*"],
     )
+
+    @app.middleware("http")
+    async def add_security_headers(request: Request, call_next: Any) -> Response:
+        response: Response = await call_next(request)
+        response.headers["X-Content-Type-Options"] = "nosniff"
+        response.headers["X-Frame-Options"] = "SAMEORIGIN"
+        response.headers["X-XSS-Protection"] = "1; mode=block"
+        response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+        return response
 
     # Static files storage for media/uploads
     uploads_dir = Path("uploads")

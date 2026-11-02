@@ -12,6 +12,11 @@ from src.application.use_cases.auth.authenticate_user import AuthenticateUserUse
 from src.application.use_cases.auth.password_recovery import PasswordRecoveryUseCase
 from src.domain.exceptions import BusinessRuleViolationException
 from src.infrastructure.db.session import get_db_session
+from src.infrastructure.security.rate_limiter import (
+    login_rate_limiter,
+    password_reset_rate_limiter,
+    rate_limit,
+)
 
 router = APIRouter(prefix="/auth", tags=["Autenticación"])
 
@@ -20,6 +25,7 @@ router = APIRouter(prefix="/auth", tags=["Autenticación"])
     "/login",
     response_model=TokenResponse,
     summary="Iniciar sesión (Admin o Cliente B2B)",
+    dependencies=[Depends(rate_limit(login_rate_limiter))],
 )
 async def login(
     data: LoginRequest,
@@ -39,6 +45,7 @@ async def login(
     "/forgot-password",
     response_model=ForgotPasswordResponse,
     summary="Solicitar recuperación de contraseña vía Resend",
+    dependencies=[Depends(rate_limit(password_reset_rate_limiter))],
 )
 async def forgot_password(
     data: ForgotPasswordRequest,
@@ -51,6 +58,7 @@ async def forgot_password(
 @router.post(
     "/reset-password",
     summary="Restablecer contraseña con token temporal",
+    dependencies=[Depends(rate_limit(password_reset_rate_limiter))],
 )
 async def reset_password(
     data: ResetPasswordRequest,
