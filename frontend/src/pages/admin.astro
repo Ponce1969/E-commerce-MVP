@@ -462,17 +462,26 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div>
 
     <!-- Modal: New Product -->
-    <div id="newProductModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-      <div class="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
+    <div id="newProductModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+      <div class="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4 my-8">
         <div class="flex items-center justify-between border-b border-border pb-2">
-          <h3 class="font-bold text-foreground text-sm">Alta de Producto Maestro</h3>
+          <div>
+            <h3 class="font-bold text-foreground text-sm">Alta Completa de Producto Maestro</h3>
+            <p class="text-[11px] text-muted-foreground">Cargá datos, costo, precio y stock en un solo paso (después podés sumarle foto/PDF).</p>
+          </div>
           <button onclick="document.getElementById('newProductModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
         </div>
 
         <form id="newProductForm" class="space-y-3">
-          <div class="space-y-1">
-            <label class="text-xs font-semibold text-foreground">Nombre Comercial</label>
-            <input type="text" id="newProdName" required placeholder="Ej: Detergente Multiuso 2 Rodríguez" class="w-full rounded border border-input bg-background p-2 text-xs" />
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div class="sm:col-span-2 space-y-1">
+              <label class="text-xs font-semibold text-foreground">Nombre Comercial *</label>
+              <input type="text" id="newProdName" required placeholder="Ej: Detergente Multiuso 2 Rodríguez" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Código / SKU (Opc.)</label>
+              <input type="text" id="newProdCode" placeholder="Ej: GAB-015" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
           </div>
 
           <div class="grid grid-cols-2 gap-3">
@@ -482,20 +491,47 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             </div>
             <div class="space-y-1">
               <label class="text-xs font-semibold text-foreground">Proveedor</label>
-              <input type="text" id="newProdProv" placeholder="Ej: Moizo, Gabriel" class="w-full rounded border border-input bg-background p-2 text-xs" />
+              <input type="text" id="newProdProv" placeholder="Ej: Química Gabriel, Moizo" class="w-full rounded border border-input bg-background p-2 text-xs" />
             </div>
           </div>
 
-          <div class="space-y-1">
-            <label class="text-xs font-semibold text-foreground">Categoría</label>
-            <input type="text" id="newProdCat" value="Limpieza General" class="w-full rounded border border-input bg-background p-2 text-xs" />
+          <div class="grid grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Categoría</label>
+              <input type="text" id="newProdCat" value="Limpieza General" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Stock Inicial (Unid.)</label>
+              <input type="number" min="0" id="newProdStock" value="10" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 border-t border-border pt-3">
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Costo c/IVA ($ Opc.)</label>
+              <input type="number" step="0.01" min="0" id="newProdCost" placeholder="Ej: 150.00" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Recargo (%)</label>
+              <input type="number" step="0.01" min="0" id="newProdMarkup" value="50" class="w-full rounded border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="rounded-lg bg-secondary/50 p-2.5 text-xs flex justify-between items-center">
+            <span class="text-muted-foreground">Precio Venta Calculado (todas las listas):</span>
+            <span id="newProdPreviewPrice" class="font-bold text-primary text-sm">$0.00</span>
+          </div>
+
+          <div class="flex items-center gap-2 pt-1">
+            <input type="checkbox" id="newProdPublish" checked class="rounded border-input text-primary focus:ring-primary" />
+            <label for="newProdPublish" class="text-xs text-foreground cursor-pointer select-none font-medium">Publicar inmediatamente en el catálogo web (si tiene costo y presentación)</label>
           </div>
 
           <button
             type="submit"
-            class="w-full rounded-lg bg-primary py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
+            class="w-full rounded-lg bg-primary py-2.5 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
           >
-            Dar de Alta
+            Dar de Alta Producto
           </button>
         </form>
       </div>
@@ -694,35 +730,49 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         </div>
 
         <!-- Collapsible AI Guide Details -->
-        <details class="rounded-xl border border-border bg-muted/30 p-3.5 text-xs group">
+        <details class="rounded-xl border border-border bg-muted/30 p-3.5 text-xs group" open>
           <summary class="font-semibold text-foreground cursor-pointer flex items-center justify-between select-none">
-            <span>💡 ¿Cómo pedirle a tu IA (ChatGPT / Claude / Gemini) que ordene tu lista?</span>
+            <span>💡 Paso 1: Copiá este mensaje para ChatGPT y mandáselo con tus capturas o PDF</span>
             <span class="text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
           </summary>
           <div class="mt-3 space-y-2 text-muted-foreground leading-relaxed text-[11px]">
-            <p>Pegale el siguiente texto a tu asistente de IA junto con los datos de Gabriel, Moizo o cualquier lista en Word, Excel o PDF:</p>
-            <pre class="bg-background border border-border rounded-lg p-3 text-[10px] text-foreground font-mono overflow-x-auto whitespace-pre-wrap select-all" id="promptTextContent">Actuá como especialista en datos para 2 Rodríguez Distribuidora. Tengo este listado de productos de mi proveedor.
-Por favor convertilo a una tabla CSV separada por punto y coma (;) con estos encabezados exactos:
+            <p>1. Tocá el botón azul <strong>"Copiar Prompt para tu IA (ChatGPT)"</strong> de arriba.<br/>2. En ChatGPT, pegá ese texto y adjuntale las <strong>capturas de pantalla</strong> o el <strong>PDF/Excel</strong> que te dio la empresa proveedora:</p>
+            <pre class="bg-background border border-border rounded-lg p-3 text-[10px] text-foreground font-mono overflow-x-auto whitespace-pre-wrap select-all" id="promptTextContent">Actuá como especialista en catálogo para 2 Rodríguez Distribuidora. Te adjunto capturas de pantalla o un listado de productos de mi proveedor.
+Por favor extraé todos los artículos y convertilos a una tabla CSV separada por punto y coma (;) con estos encabezados exactos:
 Codigo;Nombre;Presentacion;Proveedor;Categoria;Costo_IVA_Inc;Precio_Venta_IVA_Inc;Stock;Alerta_Minima;Publicar
 
 Reglas obligatorias:
-1. Sin signos de pesos ($) ni separadores de miles. Usá punto decimal si corresponde.
-2. Si un artículo no tiene precio de venta, dejalo vacío (el sistema aplica automáticamente el 50% de recargo redondeado arriba).
-3. Si el proveedor es Química Gabriel, poné Proveedor="Química Gabriel".
-4. Respondé SOLO con el bloque de código CSV listo para guardar.</pre>
+1. Sin signos de pesos ($) ni separadores de miles. Usá punto decimal si corresponde (ej: 150.50).
+2. Si un artículo tiene el costo del proveedor pero no tiene precio de venta final, poné el costo en Costo_IVA_Inc y dejá Precio_Venta_IVA_Inc vacío (nuestro sistema calcula automáticamente el 50% de recargo redondeado hacia arriba).
+3. En Stock poné 10 por defecto y en Publicar poné SI (si tiene costo y presentación) o NO.
+4. Respondé ÚNICAMENTE con el bloque de texto CSV listo para copiar y pegar.</pre>
           </div>
         </details>
+
+        <!-- Direct Paste from ChatGPT Box (Zero File Needed!) -->
+        <div class="space-y-1.5">
+          <label for="catalogPasteTextarea" class="text-xs font-bold text-foreground flex items-center justify-between">
+            <span>✨ Opción A (Más fácil): Pegá acá directo lo que te respondió ChatGPT</span>
+            <span class="text-[10px] font-normal text-primary">No hace falta crear archivo .csv</span>
+          </label>
+          <textarea
+            id="catalogPasteTextarea"
+            rows="4"
+            placeholder="Pegá acá el bloque CSV que te armó ChatGPT (con clic derecho -> Pegar o Ctrl+V)..."
+            class="w-full rounded-xl border border-input bg-background p-3 text-xs font-mono text-foreground focus:ring-2 focus:ring-primary"
+          ></textarea>
+        </div>
 
         <!-- Drag & Drop Zone -->
         <div
           id="catalogDropZone"
-          class="border-2 border-dashed border-input rounded-2xl p-7 text-center hover:border-primary transition-all cursor-pointer bg-muted/15 flex flex-col items-center justify-center min-h-[140px]"
+          class="border-2 border-dashed border-input rounded-2xl p-5 text-center hover:border-primary transition-all cursor-pointer bg-muted/15 flex flex-col items-center justify-center min-h-[105px]"
         >
-          <div class="text-4xl mb-2">📋</div>
-          <div class="text-xs sm:text-sm font-semibold text-foreground" id="catalogFileName">
-            Hacé clic o arrastrá acá el archivo CSV de catálogo
+          <div class="text-2xl mb-1">📋</div>
+          <div class="text-xs font-semibold text-foreground" id="catalogFileName">
+            Opción B: O hacé clic / arrastrá acá un archivo .csv guardado en tu PC
           </div>
-          <p class="text-[11px] text-muted-foreground mt-1">Formato admitido: .csv delimitado por punto y coma (;) o coma (,)</p>
+          <p class="text-[11px] text-muted-foreground mt-0.5">Formato admitido: .csv delimitado por punto y coma (;) o coma (,)</p>
           <input type="file" id="catalogFileInput" accept=".csv,text/csv" class="hidden" />
         </div>
 
@@ -760,6 +810,9 @@ Reglas obligatorias:
         <div>
           <div id="attachProdName" class="font-bold text-sm text-foreground"></div>
           <input type="hidden" id="attachProdId" />
+          <div class="mt-2 rounded-lg bg-primary/10 border border-primary/25 p-2.5 text-[11px] text-foreground">
+            💡 <strong>Atajo rápido para Fotos:</strong> Podés recortar la foto del catálogo del proveedor (con <code>Win + Shift + S</code>) y presionar <strong><code>Ctrl + V</code></strong> acá mismo para pegarla directo sin guardar archivos.
+          </div>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1019,7 +1072,7 @@ Reglas obligatorias:
       if (!adminToken) return;
 
       try {
-        const res = await fetch(`${API_URL}/admin/products?limit=350`, {
+        const res = await fetch(`${API_URL}/admin/products?limit=2000`, {
           headers: { Authorization: `Bearer ${adminToken}` },
         });
 
@@ -1265,17 +1318,52 @@ Reglas obligatorias:
       }
     });
 
-    // New Product
+    // New Product (Single-Step Full Creation)
+    function calcNewProdPreview() {
+      const cost = parseFloat(document.getElementById('newProdCost')?.value) || 0;
+      const markup = parseFloat(document.getElementById('newProdMarkup')?.value) || 0;
+      const previewEl = document.getElementById('newProdPreviewPrice');
+      if (previewEl) {
+        if (cost > 0) {
+          const res = Math.ceil(cost * (1 + markup / 100));
+          previewEl.textContent = `$${res.toFixed(2)}`;
+        } else {
+          previewEl.textContent = '$0.00 (Borrador)';
+        }
+      }
+    }
+
+    document.getElementById('newProdCost')?.addEventListener('input', calcNewProdPreview);
+    document.getElementById('newProdMarkup')?.addEventListener('input', calcNewProdPreview);
+
     document.getElementById('openNewProductBtn')?.addEventListener('click', () => {
+      calcNewProdPreview();
       document.getElementById('newProductModal')?.classList.remove('hidden');
     });
 
     document.getElementById('newProductForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const name = document.getElementById('newProdName')?.value;
+      const code = document.getElementById('newProdCode')?.value || null;
       const presentation = document.getElementById('newProdPres')?.value;
       const provider = document.getElementById('newProdProv')?.value;
       const category = document.getElementById('newProdCat')?.value;
+      const stockVal = parseInt(document.getElementById('newProdStock')?.value || '0', 10);
+      const rawCost = document.getElementById('newProdCost')?.value;
+      const rawMarkup = document.getElementById('newProdMarkup')?.value;
+      const isPub = Boolean(document.getElementById('newProdPublish')?.checked);
+
+      const payload = {
+        name,
+        code,
+        presentation,
+        provider,
+        category,
+        current_stock: isNaN(stockVal) ? 0 : stockVal,
+        cost_iva_inc: rawCost ? parseFloat(rawCost) : null,
+        markup_percentage: rawMarkup ? parseFloat(rawMarkup) : null,
+        is_published: isPub,
+      };
 
       try {
         const res = await fetch(`${API_URL}/admin/products`, {
@@ -1284,13 +1372,16 @@ Reglas obligatorias:
             'Content-Type': 'application/json',
             Authorization: `Bearer ${adminToken}`,
           },
-          body: JSON.stringify({ name, presentation, provider, category }),
+          body: JSON.stringify(payload),
         });
 
         if (!res.ok) throw new Error('Error al crear producto.');
-        alert('Producto creado con éxito.');
+        const createdProd = await res.json();
         document.getElementById('newProductModal')?.classList.add('hidden');
-        loadAdminProducts();
+        await loadAdminProducts();
+        if (confirm(`¡Producto #${createdProd.id} "${createdProd.name}" creado! ¿Querés subirle ahora su Foto o Ficha PDF?`)) {
+          window.openAttachmentModal(createdProd.id);
+        }
       } catch (err) {
         alert(err.message);
       }
@@ -1552,10 +1643,13 @@ Reglas obligatorias:
     const copyAiPromptText = document.getElementById('copyAiPromptText');
     const promptTextContent = document.getElementById('promptTextContent');
 
+    const catalogPasteTextarea = document.getElementById('catalogPasteTextarea');
+
     document.getElementById('openImportCatalogBtn')?.addEventListener('click', () => {
       selectedCatalogFile = null;
-      if (catalogFileName) catalogFileName.textContent = 'Hacé clic o arrastrá acá el archivo CSV de catálogo';
+      if (catalogFileName) catalogFileName.textContent = 'Opción B: O hacé clic / arrastrá acá un archivo .csv guardado en tu PC';
       if (catalogFileInput) catalogFileInput.value = '';
+      if (catalogPasteTextarea) catalogPasteTextarea.value = '';
       catalogFeedback?.classList.add('hidden');
       importCatalogModal?.classList.remove('hidden');
     });
@@ -1620,13 +1714,20 @@ Reglas obligatorias:
     });
 
     catalogSubmitBtn?.addEventListener('click', async () => {
-      if (!selectedCatalogFile) {
-        alert('Por favor seleccioná o arrastrá un archivo CSV antes de procesar.');
+      const pastedCsv = (catalogPasteTextarea?.value || '').trim();
+      let fileToUpload = selectedCatalogFile;
+
+      if (pastedCsv) {
+        fileToUpload = new File([pastedCsv], 'chatgpt_pasted_catalog.csv', { type: 'text/csv;charset=utf-8' });
+      }
+
+      if (!fileToUpload) {
+        alert('Pegá la tabla que te dio ChatGPT en el cuadro de texto (Opción A) o seleccioná un archivo CSV (Opción B).');
         return;
       }
 
       // Client-side Guardrail: Check file extension & size
-      if (!selectedCatalogFile.name.toLowerCase().endsWith('.csv')) {
+      if (!fileToUpload.name.toLowerCase().endsWith('.csv')) {
         if (catalogFeedback) {
           catalogFeedback.className = 'rounded-xl p-4 text-xs bg-destructive/10 text-destructive border border-destructive/20';
           catalogFeedback.innerHTML = '<strong>Error de Guardarraíl:</strong> El archivo debe tener extensión <code>.csv</code>. Si tenés un Excel (.xlsx), guardalo o exportalo como CSV.';
@@ -1635,7 +1736,7 @@ Reglas obligatorias:
         return;
       }
 
-      if (selectedCatalogFile.size > 5 * 1024 * 1024) {
+      if (fileToUpload.size > 5 * 1024 * 1024) {
         if (catalogFeedback) {
           catalogFeedback.className = 'rounded-xl p-4 text-xs bg-destructive/10 text-destructive border border-destructive/20';
           catalogFeedback.innerHTML = '<strong>Error de Guardarraíl:</strong> El archivo supera el tamaño máximo de 5 MB.';
@@ -1650,7 +1751,7 @@ Reglas obligatorias:
 
       try {
         const formData = new FormData();
-        formData.append('file', selectedCatalogFile);
+        formData.append('file', fileToUpload);
 
         const res = await fetch(`${API_URL}/admin/catalog/import`, {
           method: 'POST',
@@ -1781,7 +1882,6 @@ Reglas obligatorias:
         }
 
         const data = await res.json();
-        const baseOrigin = 'http://localhost:8000';
         const prod = allProducts.find((p) => p.id === parseInt(prodId, 10));
 
         if (attachmentType === 'image') {
@@ -1841,6 +1941,25 @@ Reglas obligatorias:
       e.preventDefault();
       pdfDropZone.classList.remove('border-primary', 'bg-primary/5');
       if (e.dataTransfer.files?.length) uploadFileAttachment(e.dataTransfer.files[0], 'tech_sheet');
+    });
+
+    // Support Ctrl+V image paste inside Attachment Modal (from screenshots / Snipping Tool)
+    document.addEventListener('paste', (e) => {
+      if (!attachmentModal || attachmentModal.classList.contains('hidden')) return;
+      const items = e.clipboardData?.items;
+      if (!items) return;
+      for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        if (item.type.startsWith('image/')) {
+          const blob = item.getAsFile();
+          if (blob) {
+            const ext = item.type === 'image/jpeg' ? '.jpg' : item.type === 'image/webp' ? '.webp' : '.png';
+            const pastedFile = new File([blob], `captura_producto${ext}`, { type: item.type });
+            uploadFileAttachment(pastedFile, 'image');
+            break;
+          }
+        }
+      }
     });
 
     // --- Mini-Contabilidad & Finanzas ---

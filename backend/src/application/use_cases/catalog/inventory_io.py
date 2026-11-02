@@ -8,7 +8,6 @@ from typing import Any
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-
 from src.infrastructure.db.models import CommercialListORM, ProductORM, ProductPriceORM
 
 
@@ -247,7 +246,13 @@ class InventoryIOUseCase:
                 ],
             }
 
-        first_line = text.splitlines()[0] if text.splitlines() else ""
+        # Strip Markdown code fences (e.g. ```csv ... ```) if pasted directly from ChatGPT
+        cleaned_lines = [
+            line for line in text.strip().splitlines() if not line.strip().startswith("```")
+        ]
+        text = "\n".join(cleaned_lines)
+
+        first_line = cleaned_lines[0] if cleaned_lines else ""
         delimiter = ";" if ";" in first_line else ("," if "," in first_line else "\t")
 
         reader = csv.DictReader(io.StringIO(text), delimiter=delimiter)
@@ -293,6 +298,8 @@ class InventoryIOUseCase:
             ["alerta_minima", "alerta mínima", "alerta", "min_stock_alert", "stock minimo"]
         )
         pub_col = find_col(["publicar", "publicado", "is_published", "publicar en web"])
+        img_col = find_col(["foto_url", "imagen_url", "image_url", "foto", "imagen"])
+        pdf_col = find_col(["ficha_pdf_url", "tech_sheet_url", "ficha_pdf", "pdf_url", "ficha"])
 
         # Fetch active commercial lists
         lists_stmt = select(CommercialListORM).where(CommercialListORM.is_active == True)  # noqa: E712
@@ -349,6 +356,8 @@ class InventoryIOUseCase:
             raw_stock_str = (row.get(stock_col) or "").strip() if stock_col else ""
             raw_min_str = (row.get(min_col) or "").strip() if min_col else ""
             raw_pub_str = (row.get(pub_col) or "").strip() if pub_col else ""
+            raw_img_url = (row.get(img_col) or "").strip() if img_col else ""
+            raw_pdf_url = (row.get(pdf_col) or "").strip() if pdf_col else ""
 
             if len(raw_name) < 2:
                 errors.append(
@@ -429,6 +438,10 @@ class InventoryIOUseCase:
                     match_prod.min_stock_alert = min_alert_val
                 if raw_pub_str:
                     match_prod.is_published = is_pub
+                if raw_img_url:
+                    match_prod.image_url = raw_img_url
+                if raw_pdf_url:
+                    match_prod.tech_sheet_url = raw_pdf_url
 
                 if cost_val is not None or price_val is not None:
                     existing_prices_by_list = {p.commercial_list_id: p for p in match_prod.prices}
@@ -468,6 +481,8 @@ class InventoryIOUseCase:
                     current_stock=stock_val,
                     min_stock_alert=min_alert_val,
                     allow_backorder=False,
+                    image_url=raw_img_url or None,
+                    tech_sheet_url=raw_pdf_url or None,
                 )
                 self.session.add(new_prod)
                 await self.session.flush()

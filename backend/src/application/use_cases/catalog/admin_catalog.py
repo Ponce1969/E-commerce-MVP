@@ -1,7 +1,6 @@
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-
 from src.application.dtos.catalog_dto import (
     ProductAdminDetailDTO,
     ProductCreateDTO,
@@ -126,11 +125,32 @@ class AdminCatalogUseCase:
         return dtos
 
     async def create_product(self, data: ProductCreateDTO) -> ProductAdminDetailDTO:
+        from decimal import Decimal
+
         # Get next ID
         max_id_stmt = select(func.max(ProductORM.id))
         max_res = await self.session.execute(max_id_stmt)
         max_id = max_res.scalar() or 0
         new_id = max_id + 1
+
+        cost_val = data.cost_iva_inc
+        markup_val = data.markup_percentage
+        if cost_val is not None and markup_val is None:
+            markup_val = Decimal("50.00")
+
+        calc_price = None
+        if cost_val is not None and markup_val is not None:
+            calc_price = PricingService.calculate_price_iva_inc(cost_val, markup_val)
+
+        has_complete_fields = bool(
+            data.presentation
+            and data.presentation.strip()
+            and data.provider
+            and data.provider.strip()
+            and cost_val is not None
+            and markup_val is not None
+        )
+        can_publish = bool(data.is_published and has_complete_fields)
 
         product = ProductORM(
             id=new_id,
@@ -140,16 +160,16 @@ class AdminCatalogUseCase:
             provider=data.provider.strip() if data.provider else None,
             category=data.category.strip() if data.category else "General",
             iva_rate=data.iva_rate,
-            is_published=False,
+            is_published=can_publish,
             is_active=True,
-            current_stock=0,
+            current_stock=data.current_stock,
             min_stock_alert=5,
             allow_backorder=False,
         )
         self.session.add(product)
         await self.session.flush()
 
-        # Attach default price rows for active commercial lists
+        # Attach price rows for active commercial lists
         lists_stmt = select(CommercialListORM).where(CommercialListORM.is_active == True)  # noqa: E712
         lists_res = await self.session.execute(lists_stmt)
         all_lists = lists_res.scalars().all()
@@ -159,9 +179,9 @@ class AdminCatalogUseCase:
             price_row = ProductPriceORM(
                 product_id=product.id,
                 commercial_list_id=cl.id,
-                cost_iva_inc=None,
-                markup_percentage=None,
-                price_iva_inc=None,
+                cost_iva_inc=cost_val,
+                markup_percentage=markup_val,
+                price_iva_inc=calc_price,
                 has_conflict=False,
             )
             self.session.add(price_row)
@@ -169,9 +189,9 @@ class AdminCatalogUseCase:
                 ProductPriceDetailDTO(
                     commercial_list_id=cl.id,
                     commercial_list_name=cl.name,
-                    cost_iva_inc=None,
-                    markup_percentage=None,
-                    price_iva_inc=None,
+                    cost_iva_inc=cost_val,
+                    markup_percentage=markup_val,
+                    price_iva_inc=calc_price,
                     has_conflict=False,
                 )
             )
@@ -187,7 +207,7 @@ class AdminCatalogUseCase:
             category=product.category,
             iva_rate=product.iva_rate,
             is_published=product.is_published,
-            is_pending_draft=True,  # Brand new product without cost/markup is draft
+            is_pending_draft=not has_complete_fields,
             tech_sheet_url=product.tech_sheet_url,
             image_url=product.image_url,
             is_active=product.is_active,

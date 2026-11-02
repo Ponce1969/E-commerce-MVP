@@ -47,6 +47,10 @@ class ProductCreateDTO(BaseModel):
     provider: str | None = None
     category: str = "General"
     iva_rate: Decimal = Decimal("0.22")
+    cost_iva_inc: Decimal | None = Field(None, ge=0)
+    markup_percentage: Decimal | None = Field(None, ge=0)
+    current_stock: int = Field(0, ge=0)
+    is_published: bool = False
 
 
 class ProductPriceUpdateItemDTO(BaseModel):

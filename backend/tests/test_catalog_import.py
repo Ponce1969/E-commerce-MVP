@@ -4,12 +4,11 @@ from decimal import Decimal
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
-
 from src.application.use_cases.catalog.inventory_io import InventoryIOUseCase
 from src.infrastructure.db.models import CommercialListORM, ProductORM, ProductPriceORM
 
 
-def test_get_catalog_template_csv():
+def test_get_catalog_template_csv() -> None:
     use_case = InventoryIOUseCase(None)  # type: ignore
     csv_bytes = use_case.get_catalog_template_csv()
     assert csv_bytes.startswith(b"\xef\xbb\xbf")  # UTF-8 BOM
@@ -25,7 +24,7 @@ def test_get_catalog_template_csv():
 
 
 @pytest.mark.asyncio
-async def test_import_catalog_csv_size_guardrail():
+async def test_import_catalog_csv_size_guardrail() -> None:
     use_case = InventoryIOUseCase(None)  # type: ignore
     huge_bytes = b"x" * (5 * 1024 * 1024 + 10)
     result = await use_case.import_catalog_csv(huge_bytes)
@@ -34,7 +33,7 @@ async def test_import_catalog_csv_size_guardrail():
 
 
 @pytest.mark.asyncio
-async def test_import_catalog_csv_missing_name_guardrail():
+async def test_import_catalog_csv_missing_name_guardrail() -> None:
     use_case = InventoryIOUseCase(None)  # type: ignore
     bad_csv = b"Codigo;Stock\nABC;10\n"
     result = await use_case.import_catalog_csv(bad_csv)
@@ -43,7 +42,7 @@ async def test_import_catalog_csv_missing_name_guardrail():
 
 
 @pytest.mark.asyncio
-async def test_import_catalog_csv_valid_with_gabriel_pricing_rule():
+async def test_import_catalog_csv_valid_with_gabriel_pricing_rule() -> None:
     mock_session = AsyncMock()
 
     comm_list = CommercialListORM(id=1, name="General", is_active=True)
@@ -125,3 +124,43 @@ async def test_import_catalog_csv_valid_with_gabriel_pricing_rule():
     assert len(price_objs) == 1
     assert price_objs[0].cost_iva_inc == Decimal("151.00")
     assert price_objs[0].price_iva_inc == Decimal("227")  # math.ceil(151 * 1.5)
+
+
+@pytest.mark.asyncio
+async def test_import_catalog_csv_chatgpt_fences_and_media_urls() -> None:
+    mock_session = AsyncMock()
+    comm_list = CommercialListORM(id=1, name="General", is_active=True)
+
+    mock_lists_result = MagicMock()
+    mock_lists_result.scalars.return_value.all.return_value = [comm_list]
+    mock_prod_result = MagicMock()
+    mock_prod_result.scalars.return_value.all.return_value = []
+    mock_max_result = MagicMock()
+    mock_max_result.scalar.return_value = 50
+
+    mock_session.execute.side_effect = [
+        mock_lists_result,
+        mock_prod_result,
+        mock_max_result,
+    ]
+
+    use_case = InventoryIOUseCase(mock_session)
+
+    chatgpt_pasted = (
+        "```csv\n"
+        "Codigo;Nombre;Presentacion;Proveedor;Categoria;Costo_IVA_Inc;Stock;Publicar;Foto_URL;Ficha_PDF_URL\n"
+        "NEW-99;Detergente Industrial Concentrado;5 L;Química Gabriel;Limpieza;200;12;SI;/static/uploads/det.webp;/static/uploads/ficha.pdf\n"
+        "```\n"
+    ).encode()
+
+    res = await use_case.import_catalog_csv(chatgpt_pasted)
+    assert res["created_count"] == 1
+    assert len(res["errors"]) == 0
+
+    added_objs = [call.args[0] for call in mock_session.add.call_args_list]
+    new_prods = [obj for obj in added_objs if isinstance(obj, ProductORM)]
+    assert len(new_prods) == 1
+    assert new_prods[0].code == "NEW-99"
+    assert new_prods[0].is_published is True
+    assert new_prods[0].image_url == "/static/uploads/det.webp"
+    assert new_prods[0].tech_sheet_url == "/static/uploads/ficha.pdf"

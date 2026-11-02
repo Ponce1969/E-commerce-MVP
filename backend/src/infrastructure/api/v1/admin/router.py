@@ -12,7 +12,6 @@ from fastapi import (
     status,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
-
 from src.application.dtos.catalog_dto import (
     ProductAdminDetailDTO,
     ProductCreateDTO,
@@ -58,7 +57,7 @@ async def list_products(
         None, description="Filtrar por stock ('low' para crítico, 'out' para agotado)"
     ),
     search: str | None = Query(None, description="Buscador por nombre"),
-    limit: int = Query(50, ge=1, le=500),
+    limit: int = Query(50, ge=1, le=2000),
     offset: int = Query(0, ge=0),
     session: AsyncSession = Depends(get_db_session),
 ) -> list[ProductAdminDetailDTO]:
