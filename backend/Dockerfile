@@ -10,6 +10,10 @@ ENV UV_LINK_MODE=copy
 # Ensure uploads and temporary dirs exist
 ENV PYTHONUNBUFFERED=1
 
+# Create unprivileged system user and group (UID/GID 10001) for ISO 27001 / SOC 2 hardening
+RUN groupadd -g 10001 appgroup && \
+    useradd -u 10001 -g appgroup -s /bin/bash -m appuser
+
 # Copy dependency files
 COPY pyproject.toml uv.lock ./
 
@@ -23,12 +27,16 @@ COPY alembic.ini ./
 COPY src/infrastructure/db/alembic/ src/infrastructure/db/alembic/
 COPY entrypoint.sh ./
 
-# Create uploads directory for persistent storage
-RUN mkdir -p uploads/images uploads/documents && chmod +x entrypoint.sh
+# Create uploads directory for persistent storage and grant ownership to appuser
+RUN mkdir -p uploads/images uploads/documents && \
+    chmod +x entrypoint.sh && \
+    chown -R appuser:appgroup /app
 
 # Sync project itself
 RUN uv sync --frozen --no-dev
 
 EXPOSE 8000
+
+USER appuser
 
 ENTRYPOINT ["/app/entrypoint.sh"]

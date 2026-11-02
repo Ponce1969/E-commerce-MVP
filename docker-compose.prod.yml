@@ -8,6 +8,8 @@ services:
     image: postgres:16-alpine
     container_name: web_2r_postgres
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     env_file:
       - ./backend/.env
     volumes:
@@ -17,16 +19,23 @@ services:
       interval: 8s
       timeout: 5s
       retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
     networks:
       - web2r_internal
 
-  # Backend FastAPI con uv y Alembic
+  # Backend FastAPI con uv y Alembic (ISO 27001 Hardened)
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: web_2r_backend
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     env_file:
       - ./backend/.env
     environment:
@@ -38,6 +47,11 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          cpus: "1.5"
+          memory: 768M
     networks:
       - web2r_internal
 
@@ -48,10 +62,17 @@ services:
       dockerfile: Dockerfile
     container_name: web_2r_frontend
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     ports:
       - "4322:80"
     depends_on:
       - backend
+    deploy:
+      resources:
+        limits:
+          cpus: "0.5"
+          memory: 256M
     networks:
       - web2r_internal
 
