@@ -5,7 +5,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 <BaseLayout title="Backoffice Mariana | 2 Rodríguez Distribuidora" currentNav="admin">
   <div class="space-y-6">
     <!-- Admin Header -->
-    <div class="border-b border-border pb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <div class="border-b border-border pb-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
       <div>
         <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-foreground flex items-center gap-3">
           Panel de Administración
@@ -18,46 +18,60 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         </p>
       </div>
 
-      <div id="adminUserBar" class="hidden flex-wrap items-center gap-2.5">
-        <button
-          id="openImportCatalogBtn"
-          class="inline-flex items-center justify-center rounded-lg border border-primary/40 bg-primary/10 px-3.5 py-2 text-xs font-bold text-primary shadow-xs hover:bg-primary/20 hover:border-primary transition-colors min-h-[40px] gap-1.5 cursor-pointer"
-          title="Cargar o actualizar catálogo masivo con Guardarraíles de seguridad y Asistente IA"
-        >
-          <span>✨ Importar Catálogo (CSV / IA)</span>
-        </button>
-        <button
-          id="exportInventoryBtn"
-          class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-3 py-2 text-xs font-semibold text-foreground shadow-xs hover:bg-accent hover:border-primary transition-colors min-h-[40px] gap-1.5 cursor-pointer"
-          title="Descargar catálogo completo con stock en CSV compatible con Excel"
-        >
-          <span>📥 Exportar Excel / CSV</span>
-        </button>
-        <button
-          id="openImportStockBtn"
-          class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-3 py-2 text-xs font-semibold text-foreground shadow-xs hover:bg-accent hover:border-primary transition-colors min-h-[40px] gap-1.5 cursor-pointer"
-          title="Subir archivo Excel/CSV para actualizar el inventario masivamente"
-        >
-          <span>📤 Cargar Stock Masivo</span>
-        </button>
-        <button
-          id="openQuoteModalBtn"
-          class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white shadow hover:bg-emerald-700 transition-colors min-h-[40px] gap-2 cursor-pointer"
-        >
-          <span>Emitir Presupuesto PDF</span>
-        </button>
-        <button
-          id="openNewProductBtn"
-          class="inline-flex items-center justify-center rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
-        >
-          + Nuevo Artículo
-        </button>
-        <button
-          id="adminLogoutBtn"
-          class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-colors min-h-[40px] cursor-pointer"
-        >
-          Salir
-        </button>
+      <div id="adminUserBar" class="hidden flex-col items-start sm:items-end gap-3 shrink-0">
+        <!-- Fila 1: Acciones Principales y Sesión -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button
+            id="openNewProductBtn"
+            class="inline-flex items-center justify-center rounded-lg bg-primary px-3.5 py-2 text-xs font-semibold text-primary-foreground shadow-xs hover:bg-primary/90 transition-all min-h-[38px] cursor-pointer"
+          >
+            <span>+ Nuevo Artículo</span>
+          </button>
+          <button
+            id="openQuoteModalBtn"
+            class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-all min-h-[38px] gap-1.5 cursor-pointer"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="16" y1="13" x2="8" y2="13"/>
+              <line x1="16" y1="17" x2="8" y2="17"/>
+              <polyline points="10 9 9 9 8 9"/>
+            </svg>
+            <span>Emitir Presupuesto PDF</span>
+          </button>
+          <button
+            id="adminLogoutBtn"
+            class="inline-flex items-center justify-center rounded-lg border border-border bg-card px-3 py-2 text-xs font-medium text-muted-foreground hover:bg-accent hover:text-foreground transition-all min-h-[38px] cursor-pointer"
+          >
+            <span>Salir</span>
+          </button>
+        </div>
+
+        <!-- Fila 2: Gestión de Archivos y Catálogo (Barra de Herramientas) -->
+        <div class="flex flex-wrap items-center gap-2 bg-muted/40 p-1.5 rounded-xl border border-border">
+          <button
+            id="openImportCatalogBtn"
+            class="inline-flex items-center justify-center rounded-lg border border-primary/30 bg-primary/10 px-3 py-1.5 text-xs font-bold text-primary shadow-2xs hover:bg-primary/20 hover:border-primary transition-all min-h-[34px] gap-1.5 cursor-pointer"
+            title="Cargar o actualizar catálogo masivo con Guardarraíles de seguridad y Asistente IA"
+          >
+            <span>✨ Importar Catálogo (CSV / IA)</span>
+          </button>
+          <button
+            id="exportInventoryBtn"
+            class="inline-flex items-center justify-center rounded-lg border border-border/80 bg-background hover:bg-accent px-3 py-1.5 text-xs font-semibold text-foreground shadow-2xs hover:border-border transition-all min-h-[34px] gap-1.5 cursor-pointer"
+            title="Descargar catálogo completo con stock en CSV compatible con Excel"
+          >
+            <span>📥 Exportar Excel</span>
+          </button>
+          <button
+            id="openImportStockBtn"
+            class="inline-flex items-center justify-center rounded-lg border border-border/80 bg-background hover:bg-accent px-3 py-1.5 text-xs font-semibold text-foreground shadow-2xs hover:border-border transition-all min-h-[34px] gap-1.5 cursor-pointer"
+            title="Subir archivo Excel/CSV para actualizar el inventario masivamente"
+          >
+            <span>📤 Cargar Stock Masivo</span>
+          </button>
+        </div>
       </div>
     </div>
 
