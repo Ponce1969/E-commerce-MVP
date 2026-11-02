@@ -189,3 +189,24 @@ async def import_inventory_csv(
     content = await file.read()
     use_case = InventoryIOUseCase(session)
     return await use_case.import_inventory_csv(content)
+
+
+@router.get("/catalog/template")
+async def get_catalog_template() -> Response:
+    use_case = InventoryIOUseCase(None)  # type: ignore[arg-type]
+    csv_bytes = use_case.get_catalog_template_csv()
+    return Response(
+        content=csv_bytes,
+        media_type="text/csv; charset=utf-8",
+        headers={"Content-Disposition": "attachment; filename=plantilla_catalogo_2rodriguez.csv"},
+    )
+
+
+@router.post("/catalog/import")
+async def import_catalog_csv(
+    file: UploadFile = File(...),
+    session: AsyncSession = Depends(get_db_session),
+) -> dict[str, Any]:
+    content = await file.read()
+    use_case = InventoryIOUseCase(session)
+    return await use_case.import_catalog_csv(content)

@@ -96,6 +96,15 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           >
             Ingresar a Mi Cuenta
           </button>
+
+          <div class="text-center pt-1 border-t border-border/60">
+            <a
+              href="/admin"
+              class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              <span>🔒 ¿Sos administradora (Mariana)? Acceder al Backoffice &rarr;</span>
+            </a>
+          </div>
         </form>
       </div>
 
@@ -639,8 +648,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         }
 
         const data = await res.json();
+        if (data.role === 'ADMIN') {
+          localStorage.setItem('admin_token', data.access_token);
+          window.location.href = '/admin';
+          return;
+        }
+
         if (data.role !== 'CUSTOMER') {
-          throw new Error('Esta cuenta pertenece a Administración. Ingrese por la sección Mariana (Admin).');
+          throw new Error('Esta cuenta pertenece a Administración. Ingrese por el Panel de Administración.');
         }
 
         customerToken = data.access_token;

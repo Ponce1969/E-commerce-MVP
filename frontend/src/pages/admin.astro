@@ -20,6 +20,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
       <div id="adminUserBar" class="hidden flex-wrap items-center gap-2.5">
         <button
+          id="openImportCatalogBtn"
+          class="inline-flex items-center justify-center rounded-lg border border-primary/40 bg-primary/10 px-3.5 py-2 text-xs font-bold text-primary shadow-xs hover:bg-primary/20 hover:border-primary transition-colors min-h-[40px] gap-1.5 cursor-pointer"
+          title="Cargar o actualizar catálogo masivo con Guardarraíles de seguridad y Asistente IA"
+        >
+          <span>✨ Importar Catálogo (CSV / IA)</span>
+        </button>
+        <button
           id="exportInventoryBtn"
           class="inline-flex items-center justify-center rounded-lg border border-input bg-background px-3 py-2 text-xs font-semibold text-foreground shadow-xs hover:bg-accent hover:border-primary transition-colors min-h-[40px] gap-1.5 cursor-pointer"
           title="Descargar catálogo completo con stock en CSV compatible con Excel"
@@ -618,6 +625,109 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             class="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors cursor-pointer"
           >
             Procesar e Importar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Import Full Catalog with Guardrails & AI Assistant -->
+    <div id="importCatalogModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+      <div class="w-full max-w-2xl rounded-2xl border border-border bg-card p-5 sm:p-7 shadow-2xl space-y-5 my-8 max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between border-b border-border pb-3">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🛡️</span>
+            <div>
+              <h3 class="font-bold text-foreground text-base">Importación Segura de Catálogo</h3>
+              <p class="text-xs text-muted-foreground">Guardarraíles automáticos: protección contra desorden y duplicados</p>
+            </div>
+          </div>
+          <button onclick="document.getElementById('importCatalogModal').classList.add('hidden')" class="text-muted-foreground hover:text-foreground text-xl cursor-pointer p-1">&times;</button>
+        </div>
+
+        <!-- Guardrails Status Card -->
+        <div class="rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-4 space-y-2 text-xs">
+          <div class="flex items-center gap-2 font-bold text-emerald-800 dark:text-emerald-300">
+            <span>✓ Guardarraíles de Base de Datos Activos</span>
+          </div>
+          <ul class="list-disc list-inside space-y-1 text-muted-foreground text-[11px] leading-relaxed">
+            <li><strong>No rompe el orden de los artículos:</strong> Si el código o producto ya existe, actualiza sus datos sin tocar su ID. Si es nuevo, le asigna el próximo número correlativo en orden.</li>
+            <li><strong>Límite seguro:</strong> Archivos CSV de hasta <strong>5 MB</strong> para proteger la memoria del servidor.</li>
+            <li><strong>Fórmula de Gabriel automática:</strong> Si ponés el Costo pero no el Precio de venta, el sistema calcula automáticamente <strong>Costo × 1.50 redondeado hacia arriba</strong>.</li>
+            <li><strong>Columnas mínimas:</strong> Solo exige la columna <code>Nombre</code>. Opcionales: <code>Codigo</code>, <code>Presentacion</code>, <code>Proveedor</code>, <code>Categoria</code>, <code>Costo_IVA_Inc</code>, <code>Precio_Venta_IVA_Inc</code>, <code>Stock</code>, <code>Publicar</code>.</li>
+          </ul>
+        </div>
+
+        <!-- AI Assistant & Template Actions -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <button
+            type="button"
+            id="downloadCatalogTemplateBtn"
+            class="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-background hover:bg-accent hover:border-primary p-3 text-xs font-semibold text-foreground transition-all shadow-2xs cursor-pointer"
+          >
+            <span class="text-base">📥</span>
+            <span>Descargar Plantilla CSV Oficial</span>
+          </button>
+          <button
+            type="button"
+            id="copyAiPromptBtn"
+            class="inline-flex items-center justify-center gap-2 rounded-xl border border-primary/30 bg-primary/5 hover:bg-primary/10 p-3 text-xs font-semibold text-primary transition-all shadow-2xs cursor-pointer"
+          >
+            <span class="text-base">🤖</span>
+            <span id="copyAiPromptText">Copiar Prompt para tu IA (ChatGPT)</span>
+          </button>
+        </div>
+
+        <!-- Collapsible AI Guide Details -->
+        <details class="rounded-xl border border-border bg-muted/30 p-3.5 text-xs group">
+          <summary class="font-semibold text-foreground cursor-pointer flex items-center justify-between select-none">
+            <span>💡 ¿Cómo pedirle a tu IA (ChatGPT / Claude / Gemini) que ordene tu lista?</span>
+            <span class="text-muted-foreground group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-3 space-y-2 text-muted-foreground leading-relaxed text-[11px]">
+            <p>Pegale el siguiente texto a tu asistente de IA junto con los datos de Gabriel, Moizo o cualquier lista en Word, Excel o PDF:</p>
+            <pre class="bg-background border border-border rounded-lg p-3 text-[10px] text-foreground font-mono overflow-x-auto whitespace-pre-wrap select-all" id="promptTextContent">Actuá como especialista en datos para 2 Rodríguez Distribuidora. Tengo este listado de productos de mi proveedor.
+Por favor convertilo a una tabla CSV separada por punto y coma (;) con estos encabezados exactos:
+Codigo;Nombre;Presentacion;Proveedor;Categoria;Costo_IVA_Inc;Precio_Venta_IVA_Inc;Stock;Alerta_Minima;Publicar
+
+Reglas obligatorias:
+1. Sin signos de pesos ($) ni separadores de miles. Usá punto decimal si corresponde.
+2. Si un artículo no tiene precio de venta, dejalo vacío (el sistema aplica automáticamente el 50% de recargo redondeado arriba).
+3. Si el proveedor es Química Gabriel, poné Proveedor="Química Gabriel".
+4. Respondé SOLO con el bloque de código CSV listo para guardar.</pre>
+          </div>
+        </details>
+
+        <!-- Drag & Drop Zone -->
+        <div
+          id="catalogDropZone"
+          class="border-2 border-dashed border-input rounded-2xl p-7 text-center hover:border-primary transition-all cursor-pointer bg-muted/15 flex flex-col items-center justify-center min-h-[140px]"
+        >
+          <div class="text-4xl mb-2">📋</div>
+          <div class="text-xs sm:text-sm font-semibold text-foreground" id="catalogFileName">
+            Hacé clic o arrastrá acá el archivo CSV de catálogo
+          </div>
+          <p class="text-[11px] text-muted-foreground mt-1">Formato admitido: .csv delimitado por punto y coma (;) o coma (,)</p>
+          <input type="file" id="catalogFileInput" accept=".csv,text/csv" class="hidden" />
+        </div>
+
+        <!-- Feedback & Errors Box -->
+        <div id="catalogFeedback" class="hidden rounded-xl p-4 text-xs space-y-2"></div>
+
+        <!-- Modal Footer Actions -->
+        <div class="flex items-center justify-end gap-2.5 pt-2 border-t border-border">
+          <button
+            type="button"
+            onclick="document.getElementById('importCatalogModal').classList.add('hidden')"
+            class="rounded-lg border border-input bg-background px-4 py-2.5 text-xs font-medium text-muted-foreground hover:bg-accent cursor-pointer min-h-[40px]"
+          >
+            Cerrar
+          </button>
+          <button
+            type="button"
+            id="catalogSubmitBtn"
+            class="rounded-lg bg-primary px-5 py-2.5 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors cursor-pointer min-h-[40px] flex items-center gap-1.5"
+          >
+            <span>Verificar e Importar al Catálogo</span>
           </button>
         </div>
       </div>
@@ -1410,6 +1520,166 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       } finally {
         importSubmitBtn.disabled = false;
         importSubmitBtn.textContent = 'Procesar e Importar';
+      }
+    });
+
+    // --- Import Full Catalog (Drag & Drop with Guardrails) ---
+    let selectedCatalogFile = null;
+    const importCatalogModal = document.getElementById('importCatalogModal');
+    const catalogDropZone = document.getElementById('catalogDropZone');
+    const catalogFileInput = document.getElementById('catalogFileInput');
+    const catalogFileName = document.getElementById('catalogFileName');
+    const catalogFeedback = document.getElementById('catalogFeedback');
+    const catalogSubmitBtn = document.getElementById('catalogSubmitBtn');
+    const downloadCatalogTemplateBtn = document.getElementById('downloadCatalogTemplateBtn');
+    const copyAiPromptBtn = document.getElementById('copyAiPromptBtn');
+    const copyAiPromptText = document.getElementById('copyAiPromptText');
+    const promptTextContent = document.getElementById('promptTextContent');
+
+    document.getElementById('openImportCatalogBtn')?.addEventListener('click', () => {
+      selectedCatalogFile = null;
+      if (catalogFileName) catalogFileName.textContent = 'Hacé clic o arrastrá acá el archivo CSV de catálogo';
+      if (catalogFileInput) catalogFileInput.value = '';
+      catalogFeedback?.classList.add('hidden');
+      importCatalogModal?.classList.remove('hidden');
+    });
+
+    downloadCatalogTemplateBtn?.addEventListener('click', async () => {
+      try {
+        const res = await fetch(`${API_URL}/admin/catalog/template`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (!res.ok) throw new Error('No se pudo descargar la plantilla.');
+        const blob = await res.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'plantilla_catalogo_2rodriguez.csv';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+
+    copyAiPromptBtn?.addEventListener('click', () => {
+      const text = promptTextContent?.textContent || '';
+      navigator.clipboard.writeText(text).then(() => {
+        if (copyAiPromptText) copyAiPromptText.textContent = '✓ ¡Copiado al Portapapeles!';
+        setTimeout(() => {
+          if (copyAiPromptText) copyAiPromptText.textContent = 'Copiar Prompt para tu IA (ChatGPT)';
+        }, 2500);
+      }).catch(() => {
+        alert('Copiá el texto directamente desde el cuadro desplegable.');
+      });
+    });
+
+    catalogDropZone?.addEventListener('click', () => catalogFileInput?.click());
+
+    catalogFileInput?.addEventListener('change', (e) => {
+      if (e.target.files?.length) {
+        selectedCatalogFile = e.target.files[0];
+        if (catalogFileName) catalogFileName.textContent = `Archivo seleccionado: ${selectedCatalogFile.name} (${(selectedCatalogFile.size / 1024).toFixed(1)} KB)`;
+      }
+    });
+
+    catalogDropZone?.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      catalogDropZone.classList.add('border-primary', 'bg-primary/5');
+    });
+
+    catalogDropZone?.addEventListener('dragleave', () => {
+      catalogDropZone.classList.remove('border-primary', 'bg-primary/5');
+    });
+
+    catalogDropZone?.addEventListener('drop', (e) => {
+      e.preventDefault();
+      catalogDropZone.classList.remove('border-primary', 'bg-primary/5');
+      if (e.dataTransfer.files?.length) {
+        selectedCatalogFile = e.dataTransfer.files[0];
+        if (catalogFileName) catalogFileName.textContent = `Archivo arrastrado: ${selectedCatalogFile.name} (${(selectedCatalogFile.size / 1024).toFixed(1)} KB)`;
+      }
+    });
+
+    catalogSubmitBtn?.addEventListener('click', async () => {
+      if (!selectedCatalogFile) {
+        alert('Por favor seleccioná o arrastrá un archivo CSV antes de procesar.');
+        return;
+      }
+
+      // Client-side Guardrail: Check file extension & size
+      if (!selectedCatalogFile.name.toLowerCase().endsWith('.csv')) {
+        if (catalogFeedback) {
+          catalogFeedback.className = 'rounded-xl p-4 text-xs bg-destructive/10 text-destructive border border-destructive/20';
+          catalogFeedback.innerHTML = '<strong>Error de Guardarraíl:</strong> El archivo debe tener extensión <code>.csv</code>. Si tenés un Excel (.xlsx), guardalo o exportalo como CSV.';
+          catalogFeedback.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (selectedCatalogFile.size > 5 * 1024 * 1024) {
+        if (catalogFeedback) {
+          catalogFeedback.className = 'rounded-xl p-4 text-xs bg-destructive/10 text-destructive border border-destructive/20';
+          catalogFeedback.innerHTML = '<strong>Error de Guardarraíl:</strong> El archivo supera el tamaño máximo de 5 MB.';
+          catalogFeedback.classList.remove('hidden');
+        }
+        return;
+      }
+
+      catalogSubmitBtn.disabled = true;
+      catalogSubmitBtn.innerHTML = `<span>Procesando e importando...</span>`;
+      catalogFeedback?.classList.add('hidden');
+
+      try {
+        const formData = new FormData();
+        formData.append('file', selectedCatalogFile);
+
+        const res = await fetch(`${API_URL}/admin/catalog/import`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${adminToken}` },
+          body: formData,
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error en la importación de catálogo.');
+        }
+
+        const data = await res.json();
+        if (catalogFeedback) {
+          const hasErrors = data.errors && data.errors.length > 0;
+          catalogFeedback.className = hasErrors
+            ? 'rounded-xl p-4 text-xs bg-amber-500/10 text-amber-900 dark:text-amber-200 border border-amber-500/30'
+            : 'rounded-xl p-4 text-xs bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 border border-emerald-500/30';
+
+          let html = `<div class="font-bold text-sm mb-1">🎉 Procesamiento completado con éxito</div>`;
+          html += `<div><strong>Nuevos creados:</strong> ${data.created_count} | <strong>Existentes actualizados:</strong> ${data.updated_count}</div>`;
+
+          if (hasErrors) {
+            html += `<div class="mt-2 font-semibold">Advertencias / Líneas no importadas (${data.errors.length}):</div>`;
+            html += `<ul class="list-disc list-inside space-y-0.5 mt-1 max-h-36 overflow-y-auto font-mono text-[11px]">`;
+            data.errors.forEach(errItem => {
+              html += `<li>${errItem}</li>`;
+            });
+            html += `</ul>`;
+          }
+
+          catalogFeedback.innerHTML = html;
+          catalogFeedback.classList.remove('hidden');
+        }
+
+        loadAdminProducts();
+      } catch (err) {
+        if (catalogFeedback) {
+          catalogFeedback.className = 'rounded-xl p-4 text-xs bg-destructive/10 text-destructive border border-destructive/20';
+          catalogFeedback.innerHTML = `<strong>Error:</strong> ${err.message}`;
+          catalogFeedback.classList.remove('hidden');
+        }
+      } finally {
+        catalogSubmitBtn.disabled = false;
+        catalogSubmitBtn.innerHTML = `<span>Verificar e Importar al Catálogo</span>`;
       }
     });
 
