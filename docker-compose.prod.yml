@@ -7,6 +7,10 @@ services:
   postgres:
     image: postgres:16-alpine
     container_name: web_2r_postgres
+    ports:
+      # Solo desde el propio host: lo usa el daemon de monitoreo (Guardian)
+      # para el health probe y los backups. No se expone a la red.
+      - "127.0.0.1:5446:5432"
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
