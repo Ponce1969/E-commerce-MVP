@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-
 from src.application.dtos.catalog_dto import ProductPortalItemDTO
 from src.application.dtos.order_dto import (
     OrderCreateDTO,
@@ -36,7 +35,11 @@ async def get_authorized_catalog(
     customer: TokenData = Depends(require_customer),
     session: AsyncSession = Depends(get_db_session),
 ) -> list[ProductPortalItemDTO]:
-    assert customer.commercial_list_id is not None
+    if customer.commercial_list_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cliente no tiene lista comercial asignada.",
+        )
     use_case = PortalCatalogUseCase(session)
     return await use_case.list_catalog(
         commercial_list_id=customer.commercial_list_id,
@@ -57,7 +60,11 @@ async def create_order(
     customer: TokenData = Depends(require_customer),
     session: AsyncSession = Depends(get_db_session),
 ) -> OrderResponseDTO:
-    assert customer.commercial_list_id is not None
+    if customer.commercial_list_id is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Cliente no tiene lista comercial asignada.",
+        )
     use_case = PortalCatalogUseCase(session)
     try:
         return await use_case.create_order(

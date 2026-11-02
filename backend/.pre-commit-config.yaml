@@ -3,8 +3,9 @@ repos:
     rev: v0.17.2
     hooks:
       - id: ruff
-        args: [--fix]
+        args: [--fix, --config=backend/pyproject.toml]
       - id: ruff-format
+        args: [--config=backend/pyproject.toml]
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.11.2
@@ -15,3 +16,12 @@ repos:
           - pydantic-settings
           - sqlalchemy[asyncio]
           - fastapi
+
+  - repo: local
+    hooks:
+      - id: arch-and-secrets-guard
+        name: Hexagonal Architecture & Hardcoded Secrets Guard
+        entry: python scripts/arch_and_secrets_guard.py
+        language: system
+        pass_filenames: false
+        always_run: true

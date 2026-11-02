@@ -21,13 +21,13 @@ class Settings(BaseSettings):
 
     # PostgreSQL Database
     POSTGRES_USER: str = "postgres"
-    POSTGRES_PASSWORD: str = "postgres"
+    POSTGRES_PASSWORD: str = "postgres"  # noqa: S105
     POSTGRES_SERVER: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "web_2r"
 
     # Security
-    SECRET_KEY: str = "dev_secret_key_change_in_production"
+    SECRET_KEY: str = "dev_secret_key_change_in_production"  # noqa: S105
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 480
 
@@ -38,8 +38,8 @@ class Settings(BaseSettings):
     FRONTEND_URL: str = "http://localhost:4321"
 
     # Mercado Pago Uruguay (Checkout Pro)
-    MP_PUBLIC_KEY: str = "PEGAR_AQUI_PUBLIC_KEY"
-    MP_ACCESS_TOKEN: str = "PEGAR_AQUI_ACCESS_TOKEN"
+    MP_PUBLIC_KEY: str = ""
+    MP_ACCESS_TOKEN: str = ""
     MP_WEBHOOK_SECRET: str | None = None
     MP_BACK_URL_SUCCESS: str = "https://2rodriguez.com.uy/checkout/success"
     MP_BACK_URL_PENDING: str = "https://2rodriguez.com.uy/checkout/pending"
@@ -74,7 +74,7 @@ class Settings(BaseSettings):
     def validate_production_security(self) -> "Settings":
         if self.ENVIRONMENT.lower() == "production":
             self.DEBUG = False
-            if self.SECRET_KEY == "dev_secret_key_change_in_production":
+            if self.SECRET_KEY == "dev_secret_key_change_in_production":  # noqa: S105
                 raise ValueError(
                     "CRITICAL SECURITY ERROR: SECRET_KEY must be configured in production via .env and cannot use default dev key."
                 )
@@ -82,7 +82,7 @@ class Settings(BaseSettings):
                 raise ValueError(
                     "CRITICAL SECURITY ERROR: Production SECRET_KEY must be at least 32 characters long."
                 )
-            if self.POSTGRES_PASSWORD == "postgres":
+            if self.POSTGRES_PASSWORD == "postgres":  # noqa: S105
                 logger.warning(
                     "SECURITY WARNING: POSTGRES_PASSWORD is set to default 'postgres' in production. Rotate via ALTER USER and .env."
                 )

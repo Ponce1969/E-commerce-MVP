@@ -8,7 +8,6 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-
 from src.application.dtos.order_dto import (
     BankTransferInfoDTO,
     CheckoutResponseDTO,
@@ -119,7 +118,7 @@ async def create_checkout_order(
                 contact_name="Consumidor Final",
                 phone_whatsapp="099000000",
                 email=GUEST_CHECKOUT_EMAIL,
-                password_hash="!disabled_guest_account!",
+                password_hash="!disabled_guest_account!",  # noqa: S106
                 commercial_list_id=cl.id,
                 crm_status="INVITADO_WEB",
                 is_active=False,

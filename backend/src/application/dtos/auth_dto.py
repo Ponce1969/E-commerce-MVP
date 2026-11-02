@@ -10,7 +10,7 @@ class LoginRequest(BaseModel):
 
 class TokenResponse(BaseModel):
     access_token: str
-    token_type: str = "bearer"
+    token_type: str = "bearer"  # noqa: S105
     role: UserRole
     email: str
     commercial_list_id: int | None = None
