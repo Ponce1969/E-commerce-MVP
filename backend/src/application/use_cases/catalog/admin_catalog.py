@@ -7,6 +7,7 @@ from src.application.dtos.catalog_dto import (
     ProductPriceDetailDTO,
     ProductPriceUpdateItemDTO,
     ProductStockUpdateDTO,
+    ProductUpdateDTO,
 )
 from src.domain.exceptions import (
     BusinessRuleViolationException,
@@ -32,8 +33,10 @@ class AdminCatalogUseCase:
         limit: int = 50,
         offset: int = 0,
     ) -> list[ProductAdminDetailDTO]:
-        query = select(ProductORM).options(
-            selectinload(ProductORM.prices).selectinload(ProductPriceORM.commercial_list)
+        query = (
+            select(ProductORM)
+            .options(selectinload(ProductORM.prices).selectinload(ProductPriceORM.commercial_list))
+            .where(ProductORM.is_active == True)  # noqa: E712
         )
 
         if category:
@@ -397,3 +400,84 @@ class AdminCatalogUseCase:
         )
         result = await self.session.execute(stmt)
         return [str(p).strip() for p in result.scalars().all() if p and str(p).strip()]
+
+    def _to_admin_dto(self, product: ProductORM) -> ProductAdminDetailDTO:
+        prices_dto: list[ProductPriceDetailDTO] = [
+            ProductPriceDetailDTO(
+                commercial_list_id=pr.commercial_list_id,
+                commercial_list_name=(pr.commercial_list.name if pr.commercial_list else ""),
+                cost_iva_inc=pr.cost_iva_inc,
+                markup_percentage=pr.markup_percentage,
+                price_iva_inc=pr.price_iva_inc,
+                has_conflict=pr.has_conflict,
+                conflict_detail=pr.conflict_detail,
+            )
+            for pr in product.prices
+        ]
+
+        missing_price_data = not product.prices or any(
+            pr.cost_iva_inc is None or pr.markup_percentage is None for pr in product.prices
+        )
+        is_draft = (
+            not (product.presentation and product.presentation.strip())
+            or not (product.provider and product.provider.strip())
+            or missing_price_data
+        )
+
+        return ProductAdminDetailDTO(
+            id=product.id,
+            code=product.code,
+            name=product.name,
+            presentation=product.presentation,
+            provider=product.provider,
+            category=product.category,
+            iva_rate=product.iva_rate,
+            is_published=product.is_published,
+            is_pending_draft=is_draft,
+            tech_sheet_url=product.tech_sheet_url,
+            image_url=product.image_url,
+            is_active=product.is_active,
+            current_stock=product.current_stock,
+            min_stock_alert=product.min_stock_alert,
+            allow_backorder=product.allow_backorder,
+            is_low_stock=product.current_stock <= product.min_stock_alert,
+            is_out_of_stock=product.current_stock <= 0,
+            prices=prices_dto,
+        )
+
+    async def update_product_info(
+        self, product_id: int, data: ProductUpdateDTO
+    ) -> ProductAdminDetailDTO:
+        stmt = (
+            select(ProductORM)
+            .where(ProductORM.id == product_id)
+            .options(selectinload(ProductORM.prices).selectinload(ProductPriceORM.commercial_list))
+        )
+        res = await self.session.execute(stmt)
+        product = res.scalar_one_or_none()
+        if not product:
+            raise EntityNotFoundException(f"Producto con ID #{product_id} no encontrado.")
+
+        product.name = data.name.strip()
+        product.category = data.category.strip()
+        product.code = data.code.strip() if data.code else None
+        product.presentation = data.presentation.strip() if data.presentation else None
+        product.provider = data.provider.strip() if data.provider else None
+        if data.iva_rate is not None:
+            product.iva_rate = data.iva_rate
+
+        await self.session.commit()
+        await self.session.refresh(product)
+        return self._to_admin_dto(product)
+
+    async def delete_product(self, product_id: int) -> bool:
+        stmt = select(ProductORM).where(ProductORM.id == product_id)
+        res = await self.session.execute(stmt)
+        product = res.scalar_one_or_none()
+        if not product:
+            raise EntityNotFoundException(f"Producto con ID #{product_id} no encontrado.")
+
+        product.is_active = False
+        product.is_published = False
+        await self.session.commit()
+        return True

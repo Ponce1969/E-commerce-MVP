@@ -53,6 +53,15 @@ class ProductCreateDTO(BaseModel):
     is_published: bool = False
 
 
+class ProductUpdateDTO(BaseModel):
+    name: str = Field(..., min_length=2, description="Nombre del artículo")
+    category: str = Field(..., min_length=1, description="Categoría comercial")
+    code: str | None = Field(None, description="Código de barras o referencia")
+    presentation: str | None = Field(None, description="Presentación comercial (ej. 5L, Bidón)")
+    provider: str | None = Field(None, description="Proveedor o fabricante")
+    iva_rate: Decimal = Field(Decimal("0.22"), description="Tasa de IVA")
+
+
 class ProductPriceUpdateItemDTO(BaseModel):
     commercial_list_id: int
     cost_iva_inc: Decimal

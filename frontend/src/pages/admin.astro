@@ -408,6 +408,81 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     </div> <!-- Close financesSection -->
   </div> <!-- Close adminDashboard -->
 
+    <!-- Modal: Edit Product Details (Categoría, Nombre, Presentación, etc.) -->
+    <div id="editProductModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+      <div class="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4 my-8">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <div>
+            <h3 class="font-bold text-foreground text-sm">Editar Datos del Artículo</h3>
+            <p class="text-[11px] text-muted-foreground">Corregí la categoría, nombre o presentación si hubo un error de carga.</p>
+          </div>
+          <button onclick="document.getElementById('editProductModal').classList.add('hidden')" class="text-muted-foreground hover:text-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <form id="editProductForm" class="space-y-3.5">
+          <input type="hidden" id="editProductTargetId" />
+
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-foreground">Nombre del Artículo *</label>
+            <input type="text" id="editProductName" required placeholder="Ej: Detergente Clorado Ultra" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Categoría *</label>
+              <input type="text" id="editProductCategory" list="adminCategoryDatalist" required placeholder="Ej: Limpieza General" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
+              <datalist id="adminCategoryDatalist"></datalist>
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Presentación</label>
+              <input type="text" id="editProductPresentation" placeholder="Ej: Bidón 5L, Unidad" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Proveedor</label>
+              <input type="text" id="editProductProvider" list="adminProviderDatalist" placeholder="Ej: Químicos del Sur" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
+              <datalist id="adminProviderDatalist"></datalist>
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-semibold text-foreground">Código de Barras / Ref.</label>
+              <input type="text" id="editProductCode" placeholder="Opcional" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
+            </div>
+          </div>
+
+          <div id="editProductError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-2 text-xs text-destructive"></div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-border gap-2">
+            <button
+              type="button"
+              id="deleteProductBtn"
+              class="inline-flex items-center gap-1 text-destructive hover:bg-destructive/10 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer"
+              title="Dar de baja este artículo si fue creado por error"
+            >
+              🗑️ Dar de Baja
+            </button>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                onclick="document.getElementById('editProductModal').classList.add('hidden')"
+                class="rounded-lg border border-input bg-background px-3 py-1.5 text-xs font-medium hover:bg-accent cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                id="saveEditProductBtn"
+                class="rounded-lg bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors cursor-pointer"
+              >
+                Guardar Cambios
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
     <!-- Modal: Edit Prices -->
     <div id="priceModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
       <div class="w-full max-w-md rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4">
@@ -1213,6 +1288,13 @@ Reglas obligatorias:
             <td class="py-2.5 px-3 text-right whitespace-nowrap">
               <div class="flex items-center justify-end gap-1.5">
                 <button
+                  onclick="window.openEditProductModal(${p.id})"
+                  class="inline-flex items-center gap-1 rounded border border-primary/40 bg-primary/10 px-2 py-1 text-[11px] font-semibold text-primary hover:bg-primary/20 transition-colors cursor-pointer"
+                  title="Corregir categoría, nombre o presentación"
+                >
+                  ✏️ Editar
+                </button>
+                <button
                   onclick="window.openAttachmentModal(${p.id})"
                   class="inline-block rounded border border-input bg-background px-2 py-1 text-[11px] font-medium hover:bg-accent cursor-pointer"
                   title="Subir foto o ficha técnica PDF por Drag & Drop"
@@ -1264,6 +1346,132 @@ Reglas obligatorias:
         alert(err.message);
       }
     };
+
+    window.openEditProductModal = function(id) {
+      const prod = allProducts.find((p) => p.id === id);
+      if (!prod) return;
+
+      document.getElementById('editProductTargetId').value = prod.id;
+      document.getElementById('editProductName').value = prod.name || '';
+      document.getElementById('editProductCategory').value = prod.category || '';
+      document.getElementById('editProductPresentation').value = prod.presentation || '';
+      document.getElementById('editProductProvider').value = prod.provider || '';
+      document.getElementById('editProductCode').value = prod.code || '';
+      document.getElementById('editProductError')?.classList.add('hidden');
+
+      // Sugerencias dinámicas para evitar errores tipográficos
+      const catDatalist = document.getElementById('adminCategoryDatalist');
+      if (catDatalist) {
+        const categories = [...new Set(allProducts.map((p) => p.category).filter(Boolean))].sort();
+        catDatalist.innerHTML = categories.map((c) => `<option value="${c}"></option>`).join('');
+      }
+
+      const provDatalist = document.getElementById('adminProviderDatalist');
+      if (provDatalist) {
+        const providers = [...new Set(allProducts.map((p) => p.provider).filter(Boolean))].sort();
+        provDatalist.innerHTML = providers.map((pr) => `<option value="${pr}"></option>`).join('');
+      }
+
+      document.getElementById('editProductModal').classList.remove('hidden');
+    };
+
+    document.getElementById('editProductForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const errorDiv = document.getElementById('editProductError');
+      const submitBtn = document.getElementById('saveEditProductBtn');
+      errorDiv?.classList.add('hidden');
+
+      const id = parseInt(document.getElementById('editProductTargetId').value, 10);
+      const name = document.getElementById('editProductName').value.trim();
+      const category = document.getElementById('editProductCategory').value.trim();
+      const presentation = document.getElementById('editProductPresentation').value.trim();
+      const provider = document.getElementById('editProductProvider').value.trim();
+      const code = document.getElementById('editProductCode').value.trim();
+
+      if (!name || !category) {
+        if (errorDiv) {
+          errorDiv.textContent = 'El nombre y la categoría son obligatorios.';
+          errorDiv.classList.remove('hidden');
+        }
+        return;
+      }
+
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Guardando...';
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/admin/products/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({
+            name,
+            category,
+            presentation: presentation || null,
+            provider: provider || null,
+            code: code || null,
+          }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al actualizar el producto.');
+        }
+
+        const updated = await res.json();
+        const idx = allProducts.findIndex((p) => p.id === id);
+        if (idx !== -1) {
+          allProducts[idx] = updated;
+        }
+
+        document.getElementById('editProductModal').classList.add('hidden');
+        renderProductsTable();
+      } catch (err) {
+        if (errorDiv) {
+          errorDiv.textContent = err.message;
+          errorDiv.classList.remove('hidden');
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Guardar Cambios';
+        }
+      }
+    });
+
+    document.getElementById('deleteProductBtn')?.addEventListener('click', async () => {
+      const id = parseInt(document.getElementById('editProductTargetId').value, 10);
+      const prod = allProducts.find((p) => p.id === id);
+      const prodName = prod ? prod.name : `#${id}`;
+
+      if (!confirm(`¿Estás segura de dar de baja el artículo "${prodName}"?\nNo se mostrará más en el catálogo.`)) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/admin/products/${id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al dar de baja el artículo.');
+        }
+
+        allProducts = allProducts.filter((p) => p.id !== id);
+        document.getElementById('editProductModal').classList.add('hidden');
+        renderProductsTable();
+      } catch (err) {
+        alert(err.message);
+      }
+    });
 
     window.openPriceModal = function(id) {
       const prod = allProducts.find((p) => p.id === id);

@@ -18,6 +18,7 @@ from src.application.dtos.catalog_dto import (
     ProductPriceDetailDTO,
     ProductStockUpdateDTO,
     ProductTogglePublishDTO,
+    ProductUpdateDTO,
     ProductUpdatePricesDTO,
     UploadAttachmentResponseDTO,
 )
@@ -95,6 +96,50 @@ async def create_product(
         details={"name": product.name, "category": product.category},
     )
     return product
+
+
+@router.put("/products/{product_id}", response_model=ProductAdminDetailDTO)
+async def update_product_info(
+    product_id: int,
+    data: ProductUpdateDTO,
+    admin_user: TokenData = Depends(require_admin),
+    session: AsyncSession = Depends(get_db_session),
+) -> ProductAdminDetailDTO:
+    use_case = AdminCatalogUseCase(session)
+    try:
+        updated = await use_case.update_product_info(product_id, data)
+        audit_log(
+            action="UPDATE_PRODUCT_INFO",
+            target_entity="product",
+            target_id=product_id,
+            actor=admin_user,
+            details={"name": data.name, "category": data.category},
+        )
+        return updated
+    except EntityNotFoundException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except BusinessRuleViolationException as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
+
+
+@router.delete("/products/{product_id}")
+async def delete_product(
+    product_id: int,
+    admin_user: TokenData = Depends(require_admin),
+    session: AsyncSession = Depends(get_db_session),
+) -> dict[str, str]:
+    use_case = AdminCatalogUseCase(session)
+    try:
+        await use_case.delete_product(product_id)
+        audit_log(
+            action="DELETE_PRODUCT",
+            target_entity="product",
+            target_id=product_id,
+            actor=admin_user,
+        )
+        return {"status": "success", "message": f"Producto #{product_id} eliminado exitosamente."}
+    except EntityNotFoundException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
 
 
 @router.put("/products/{product_id}/prices", response_model=list[ProductPriceDetailDTO])
