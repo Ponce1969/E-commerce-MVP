@@ -496,39 +496,53 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           <div class="text-xs text-muted-foreground">Ajuste de costo con IVA y margen de recargo en Decimal.</div>
         </div>
 
-        <form id="priceEditForm" class="space-y-3">
+        <form id="priceEditForm" class="space-y-3.5">
           <input type="hidden" id="editProdId" />
           
           <div class="space-y-1">
-            <label class="text-xs font-semibold text-foreground">Lista Comercial</label>
-            <select id="editListId" class="w-full rounded border border-input bg-background p-2 text-xs">
-              <option value="1">Empresas / Limpieza</option>
-              <option value="2">Residenciales</option>
-              <option value="3">Lavandería profesional</option>
-              <option value="4">Lavandería domiciliaria</option>
-              <option value="5">Automotriz</option>
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-foreground">Lista Comercial</label>
+              <label class="inline-flex items-center gap-1.5 text-[11px] text-primary font-medium cursor-pointer">
+                <input type="checkbox" id="editApplyAllLists" class="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5" />
+                <span>Aplicar a todas las 5 listas</span>
+              </label>
+            </div>
+            <select id="editListId" class="w-full rounded-lg border border-input bg-background p-2 text-xs">
+              <option value="1">1 - Empresas / Limpieza</option>
+              <option value="2">2 - Residenciales</option>
+              <option value="3">3 - Lavandería profesional</option>
+              <option value="4">4 - Lavandería domiciliaria</option>
+              <option value="5">5 - Automotriz</option>
             </select>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-foreground">Costo c/IVA ($)</label>
+            <input type="number" step="0.01" id="editCost" required class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
           </div>
 
           <div class="grid grid-cols-2 gap-3">
             <div class="space-y-1">
-              <label class="text-xs font-semibold text-foreground">Costo c/IVA ($)</label>
-              <input type="number" step="0.01" id="editCost" required class="w-full rounded border border-input bg-background p-2 text-xs" />
+              <label class="text-xs font-semibold text-primary">Precio Venta Final ($)</label>
+              <input type="number" step="0.01" id="editFinalPrice" placeholder="Ej: 53.00" class="w-full rounded-lg border border-primary/50 bg-background p-2 text-xs font-bold text-foreground" />
+              <p class="text-[10px] text-muted-foreground">Escribí acá el precio que querés cobrar.</p>
             </div>
             <div class="space-y-1">
               <label class="text-xs font-semibold text-foreground">Recargo (%)</label>
-              <input type="number" step="0.0001" id="editMarkup" required class="w-full rounded border border-input bg-background p-2 text-xs" />
+              <input type="number" step="0.0001" id="editMarkup" required class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
+              <p class="text-[10px] text-muted-foreground">Margen sobre costo.</p>
             </div>
           </div>
 
-          <div class="rounded-lg bg-secondary/50 p-3 text-xs flex justify-between items-center">
-            <span class="text-muted-foreground">Precio Venta Resultante:</span>
+          <div class="rounded-lg bg-primary/10 border border-primary/20 p-2.5 text-xs flex justify-between items-center">
+            <span class="text-muted-foreground">Resultado por Unidad:</span>
             <span id="previewCalculatedPrice" class="font-bold text-primary text-sm">$0.00</span>
           </div>
 
           <button
             type="submit"
-            class="w-full rounded-lg bg-primary py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
+            id="savePriceBtn"
+            class="w-full rounded-lg bg-primary py-2.5 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors min-h-[40px] cursor-pointer"
           >
             Guardar Condición de Precio
           </button>
@@ -1473,30 +1487,92 @@ Reglas obligatorias:
       }
     });
 
+    let currentPricingProd = null;
+
+    function syncPriceModalForList(listId) {
+      if (!currentPricingProd) return;
+      const priceObj = (currentPricingProd.prices || []).find((pr) => pr.commercial_list_id === listId) || {};
+      const cost = priceObj.cost_iva_inc !== undefined && priceObj.cost_iva_inc !== null ? parseFloat(priceObj.cost_iva_inc) : '';
+      const markup = priceObj.markup_percentage !== undefined && priceObj.markup_percentage !== null ? parseFloat(priceObj.markup_percentage) : '';
+      
+      document.getElementById('editCost').value = cost !== '' ? cost : '';
+      document.getElementById('editMarkup').value = markup !== '' ? markup : '';
+
+      if (cost !== '' && markup !== '') {
+        const finalPrice = cost * (1 + markup / 100);
+        document.getElementById('editFinalPrice').value = finalPrice.toFixed(2);
+        document.getElementById('previewCalculatedPrice').textContent = `$${finalPrice.toFixed(2)}`;
+      } else {
+        document.getElementById('editFinalPrice').value = '';
+        document.getElementById('previewCalculatedPrice').textContent = '$0.00';
+      }
+    }
+
     window.openPriceModal = function(id) {
       const prod = allProducts.find((p) => p.id === id);
       if (!prod) return;
+      currentPricingProd = prod;
 
       document.getElementById('editProdId').value = prod.id;
       document.getElementById('priceModalProdName').textContent = `#${prod.id} - ${prod.name}`;
       
-      const firstPrice = prod.prices[0] || {};
-      document.getElementById('editCost').value = firstPrice.cost_iva_inc || '';
-      document.getElementById('editMarkup').value = firstPrice.markup_percentage || '';
-      calcPreview();
+      const listSelect = document.getElementById('editListId');
+      if (listSelect) listSelect.value = '1';
+      const applyAllCheck = document.getElementById('editApplyAllLists');
+      if (applyAllCheck) applyAllCheck.checked = false;
 
+      syncPriceModalForList(1);
       document.getElementById('priceModal').classList.remove('hidden');
     };
 
-    function calcPreview() {
+    document.getElementById('editListId')?.addEventListener('change', (e) => {
+      const listId = parseInt(e.target.value, 10);
+      syncPriceModalForList(listId);
+    });
+
+    // Cálculo Bidireccional:
+    // 1. Cuando Mariana ingresa Precio de Venta deseado (ej. $53.00)
+    document.getElementById('editFinalPrice')?.addEventListener('input', () => {
+      const cost = parseFloat(document.getElementById('editCost').value) || 0;
+      const finalPrice = parseFloat(document.getElementById('editFinalPrice').value);
+
+      if (cost > 0 && !isNaN(finalPrice) && finalPrice >= 0) {
+        const calculatedMarkup = ((finalPrice / cost) - 1) * 100;
+        document.getElementById('editMarkup').value = calculatedMarkup.toFixed(4);
+        document.getElementById('previewCalculatedPrice').textContent = `$${finalPrice.toFixed(2)}`;
+      } else {
+        document.getElementById('previewCalculatedPrice').textContent = '$0.00';
+      }
+    });
+
+    // 2. Cuando se ingresa o modifica el Recargo (%)
+    document.getElementById('editMarkup')?.addEventListener('input', () => {
       const cost = parseFloat(document.getElementById('editCost').value) || 0;
       const markup = parseFloat(document.getElementById('editMarkup').value) || 0;
-      const res = cost * (1 + markup / 100);
-      document.getElementById('previewCalculatedPrice').textContent = `$${res.toFixed(2)}`;
-    }
 
-    document.getElementById('editCost')?.addEventListener('input', calcPreview);
-    document.getElementById('editMarkup')?.addEventListener('input', calcPreview);
+      if (cost > 0) {
+        const finalPrice = cost * (1 + markup / 100);
+        document.getElementById('editFinalPrice').value = finalPrice.toFixed(2);
+        document.getElementById('previewCalculatedPrice').textContent = `$${finalPrice.toFixed(2)}`;
+      }
+    });
+
+    // 3. Cuando cambia el Costo c/IVA
+    document.getElementById('editCost')?.addEventListener('input', () => {
+      const cost = parseFloat(document.getElementById('editCost').value) || 0;
+      const finalPrice = parseFloat(document.getElementById('editFinalPrice').value);
+      const markup = parseFloat(document.getElementById('editMarkup').value);
+
+      if (cost > 0 && !isNaN(finalPrice) && finalPrice > 0) {
+        const calculatedMarkup = ((finalPrice / cost) - 1) * 100;
+        document.getElementById('editMarkup').value = calculatedMarkup.toFixed(4);
+        document.getElementById('previewCalculatedPrice').textContent = `$${finalPrice.toFixed(2)}`;
+      } else if (cost > 0 && !isNaN(markup)) {
+        const calculatedPrice = cost * (1 + markup / 100);
+        document.getElementById('editFinalPrice').value = calculatedPrice.toFixed(2);
+        document.getElementById('previewCalculatedPrice').textContent = `$${calculatedPrice.toFixed(2)}`;
+      }
+    });
 
     document.getElementById('priceEditForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -1504,6 +1580,28 @@ Reglas obligatorias:
       const listId = parseInt(document.getElementById('editListId').value, 10);
       const cost = parseFloat(document.getElementById('editCost').value);
       const markup = parseFloat(document.getElementById('editMarkup').value);
+      const applyAll = Boolean(document.getElementById('editApplyAllLists')?.checked);
+      const saveBtn = document.getElementById('savePriceBtn');
+
+      if (isNaN(cost) || isNaN(markup)) {
+        alert('Por favor complete el costo y el recargo o precio final.');
+        return;
+      }
+
+      if (saveBtn) {
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Guardando...';
+      }
+
+      // Si seleccionó aplicar a las 5 listas comerciales (1 a 5)
+      const targetLists = applyAll ? [1, 2, 3, 4, 5] : [listId];
+      const payload = {
+        prices: targetLists.map((lId) => ({
+          commercial_list_id: lId,
+          cost_iva_inc: cost,
+          markup_percentage: markup,
+        })),
+      };
 
       try {
         const res = await fetch(`${API_URL}/admin/products/${id}/prices`, {
@@ -1512,17 +1610,20 @@ Reglas obligatorias:
             'Content-Type': 'application/json',
             Authorization: `Bearer ${adminToken}`,
           },
-          body: JSON.stringify({
-            prices: [{ commercial_list_id: listId, cost_iva_inc: cost, markup_percentage: markup }],
-          }),
+          body: JSON.stringify(payload),
         });
 
         if (!res.ok) throw new Error('Error al actualizar precios.');
-        alert('Condición de precio actualizada con éxito.');
+        alert(applyAll ? '¡Precio actualizado con éxito en las 5 listas comerciales!' : 'Condición de precio actualizada con éxito.');
         document.getElementById('priceModal').classList.add('hidden');
         loadAdminProducts();
       } catch (err) {
         alert(err.message);
+      } finally {
+        if (saveBtn) {
+          saveBtn.disabled = false;
+          saveBtn.textContent = 'Guardar Condición de Precio';
+        }
       }
     });
 
