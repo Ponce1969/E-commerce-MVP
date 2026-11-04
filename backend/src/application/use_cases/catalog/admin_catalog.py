@@ -1,3 +1,5 @@
+from decimal import ROUND_HALF_UP, Decimal
+
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -240,21 +242,36 @@ class AdminCatalogUseCase:
         price_map = {p.commercial_list_id: p for p in product.prices}
 
         for item in price_updates:
-            calculated_price = PricingService.calculate_price_iva_inc(
-                item.cost_iva_inc, item.markup_percentage
-            )
+            if item.price_iva_inc is not None and item.price_iva_inc > Decimal("0"):
+                calculated_price = item.price_iva_inc.quantize(
+                    PricingService.TWO_PLACES, rounding=ROUND_HALF_UP
+                )
+                markup = (
+                    item.markup_percentage
+                    if item.markup_percentage is not None
+                    else PricingService.calculate_markup_from_price(
+                        item.cost_iva_inc, calculated_price
+                    )
+                )
+            else:
+                markup = (
+                    item.markup_percentage
+                    if item.markup_percentage is not None
+                    else Decimal("0.0000")
+                )
+                calculated_price = PricingService.calculate_price_iva_inc(item.cost_iva_inc, markup)
 
             if item.commercial_list_id in price_map:
                 record = price_map[item.commercial_list_id]
                 record.cost_iva_inc = item.cost_iva_inc
-                record.markup_percentage = item.markup_percentage
+                record.markup_percentage = markup
                 record.price_iva_inc = calculated_price
             else:
                 new_record = ProductPriceORM(
                     product_id=product.id,
                     commercial_list_id=item.commercial_list_id,
                     cost_iva_inc=item.cost_iva_inc,
-                    markup_percentage=item.markup_percentage,
+                    markup_percentage=markup,
                     price_iva_inc=calculated_price,
                     has_conflict=False,
                 )

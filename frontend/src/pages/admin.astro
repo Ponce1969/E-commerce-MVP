@@ -1593,6 +1593,8 @@ Reglas obligatorias:
         saveBtn.textContent = 'Guardando...';
       }
 
+      const finalPrice = parseFloat(document.getElementById('editFinalPrice').value);
+
       // Si seleccionó aplicar a las 5 listas comerciales (1 a 5)
       const targetLists = applyAll ? [1, 2, 3, 4, 5] : [listId];
       const payload = {
@@ -1600,6 +1602,7 @@ Reglas obligatorias:
           commercial_list_id: lId,
           cost_iva_inc: cost,
           markup_percentage: markup,
+          price_iva_inc: !isNaN(finalPrice) && finalPrice > 0 ? finalPrice : null,
         })),
       };
 

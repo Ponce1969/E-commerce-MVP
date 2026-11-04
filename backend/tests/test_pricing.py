@@ -46,3 +46,15 @@ def test_pending_draft_property() -> None:
         ],
     )
     assert prod.is_pending_draft is True
+
+
+def test_calculate_markup_from_price_exact_decimal() -> None:
+    # Caso Mariana Rejilla 33x35: Costo 26.18, Precio final 53.00
+    cost = Decimal("26.18")
+    target_price = Decimal("53.00")
+    markup = PricingService.calculate_markup_from_price(cost, target_price)
+    assert markup == Decimal("102.4446")
+
+    # Verificación de ida y vuelta en Decimal
+    calculated_price = PricingService.calculate_price_iva_inc(cost, markup)
+    assert calculated_price == target_price

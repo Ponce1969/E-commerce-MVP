@@ -65,7 +65,8 @@ class ProductUpdateDTO(BaseModel):
 class ProductPriceUpdateItemDTO(BaseModel):
     commercial_list_id: int
     cost_iva_inc: Decimal
-    markup_percentage: Decimal
+    markup_percentage: Decimal | None = None
+    price_iva_inc: Decimal | None = None
 
 
 class ProductUpdatePricesDTO(BaseModel):

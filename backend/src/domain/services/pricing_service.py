@@ -22,6 +22,21 @@ class PricingService:
         return final_price.quantize(cls.TWO_PLACES, rounding=ROUND_HALF_UP)
 
     @classmethod
+    def calculate_markup_from_price(
+        cls,
+        cost_iva_inc: Decimal,
+        price_iva_inc: Decimal,
+    ) -> Decimal:
+        """
+        Calculates exact markup percentage from target sale price and cost.
+        Formula: round(((price_iva_inc / cost_iva_inc) - 1) * 100, 4)
+        """
+        if cost_iva_inc <= Decimal("0"):
+            return Decimal("0.0000")
+        raw_markup = ((price_iva_inc / cost_iva_inc) - Decimal("1")) * Decimal("100")
+        return raw_markup.quantize(cls.FOUR_PLACES, rounding=ROUND_HALF_UP)
+
+    @classmethod
     def calculate_item_subtotal(
         cls,
         unit_price: Decimal,
