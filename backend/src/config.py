@@ -31,6 +31,10 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 480
 
+    # Credenciales iniciales de Administrador (para seed/setup)
+    INITIAL_ADMIN_EMAIL: str = "mariana@2rodriguez.uy"
+    INITIAL_ADMIN_PASSWORD: str = ""
+
     # Email / Resend API
     RESEND_API_KEY: str | None = None
     RESEND_FROM_EMAIL: str = "2 Rodríguez Distribuidora <onboarding@resend.dev>"

@@ -84,6 +84,7 @@ def main() -> None:
     # Generación de claves seguras con secrets (alta entropía)
     jwt_secret_key = generate_secure_token(48)  # ~64 caracteres
     db_password = generate_secure_token(24)  # ~32 caracteres
+    admin_password = generate_secure_token(16)
     db_user = "web2r_prod_user"
     db_name = "web_2r_prod"
     db_port = args.port
@@ -137,6 +138,10 @@ SECRET_KEY={jwt_secret_key}
 ALGORITHM=HS256
 ACCESS_TOKEN_EXPIRE_MINUTES=480
 
+# Administrador Inicial (Panel Backoffice Mariana)
+INITIAL_ADMIN_EMAIL="mariana@2rodriguez.uy"
+INITIAL_ADMIN_PASSWORD="{admin_password}"
+
 # Correo Transaccional (Resend API)
 RESEND_API_KEY={resend_key}
 RESEND_FROM_EMAIL="2 Rodríguez Distribuidora <onboarding@resend.dev>"
@@ -151,19 +156,16 @@ FRONTEND_URL="{frontend_url}"
     if os.name == "posix":
         try:
             os.chmod(target_env, 0o600)
-            print(
-                "[+] Permisos del archivo blindados a chmod 600 (solo lectura del usuario)."
-            )
+            print("[+] Permisos del archivo blindados a chmod 600 (solo lectura del usuario).")
         except OSError as e:
             print(f"[!] No se pudo aplicar chmod 600: {e}")
 
     print(f"\n[+] Archivo .env generado exitosamente en: {target_env}")
     print("\nCredenciales de Producción Generadas:")
-    print(
-        f"  * Base de Datos: Usuario '{db_user}' | Base '{db_name}' | Puerto {db_port}"
-    )
+    print(f"  * Base de Datos: Usuario '{db_user}' | Base '{db_name}' | Puerto {db_port}")
     print(f"  * Clave de BD:   {db_password}")
     print(f"  * JWT Secret:    {jwt_secret_key[:12]}... (64 bytes de alta entropía)")
+    print(f"  * Admin Mariana: Usuario 'mariana@2rodriguez.uy' | Clave '{admin_password}'")
     print("\nPASO SIGUIENTE OBLIGATORIO:")
     print(f"  Abrí {target_env} y colocá tu clave de Resend en la línea:")
     print("  RESEND_API_KEY=re_tu_clave_aqui\n")

@@ -1,13 +1,12 @@
 import asyncio
 import json
-import os
 from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-
+from src.config import settings
 from src.domain.services.pricing_service import PricingService
 from src.infrastructure.db.models import (
     AdminUserORM,
@@ -50,15 +49,18 @@ def parse_decimal(value: Any) -> Decimal | None:
 
 
 async def _seed_admin_user(session: AsyncSession) -> None:
-    email = os.environ.get("INITIAL_ADMIN_EMAIL", "mariana@2rodriguez.uy")
-    initial_password = os.environ.get("INITIAL_ADMIN_PASSWORD", "Admin2Rodriguez!2026")
+    email = settings.INITIAL_ADMIN_EMAIL
+    initial_pass = settings.INITIAL_ADMIN_PASSWORD
+    if not initial_pass:
+        return
+
     stmt = select(AdminUserORM).where(AdminUserORM.email == email)
     result = await session.execute(stmt)
     admin = result.scalar_one_or_none()
     if not admin:
         admin = AdminUserORM(
             email=email,
-            password_hash=hash_password(initial_password),
+            password_hash=hash_password(initial_pass),
             full_name="Mariana 2 Rodríguez",
             is_active=True,
         )
