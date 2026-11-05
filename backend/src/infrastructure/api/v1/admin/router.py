@@ -13,6 +13,9 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.application.dtos.catalog_dto import (
+    PriceListCreateDTO,
+    PriceListDTO,
+    PriceListUpdateDTO,
     ProductAdminDetailDTO,
     ProductCreateDTO,
     ProductPriceDetailDTO,
@@ -41,6 +44,63 @@ router = APIRouter(
     tags=["Backoffice Mariana (Admin)"],
     dependencies=[Depends(require_admin)],
 )
+
+
+@router.get("/price-lists", response_model=list[PriceListDTO])
+async def list_price_lists(
+    only_active: bool = Query(False, description="Filtrar solo listas activas"),
+    session: AsyncSession = Depends(get_db_session),
+) -> list[PriceListDTO]:
+    """Listar todas las listas de precios dinámicas."""
+    use_case = AdminCatalogUseCase(session)
+    return await use_case.list_price_lists(only_active=only_active)
+
+
+@router.post("/price-lists", response_model=PriceListDTO, status_code=status.HTTP_201_CREATED)
+async def create_price_list(
+    data: PriceListCreateDTO,
+    admin_user: TokenData = Depends(require_admin),
+    session: AsyncSession = Depends(get_db_session),
+) -> PriceListDTO:
+    """Creación autónoma de listas de precios con validación de código único."""
+    use_case = AdminCatalogUseCase(session)
+    try:
+        created = await use_case.create_price_list(data)
+        audit_log(
+            action="CREATE_PRICE_LIST",
+            target_entity="price_list",
+            target_id=created.id,
+            actor=admin_user,
+            details={"code": created.code, "name": created.name},
+        )
+        return created
+    except BusinessRuleViolationException as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
+
+
+@router.patch("/price-lists/{price_list_id}", response_model=PriceListDTO)
+async def update_price_list(
+    price_list_id: int,
+    data: PriceListUpdateDTO,
+    admin_user: TokenData = Depends(require_admin),
+    session: AsyncSession = Depends(get_db_session),
+) -> PriceListDTO:
+    """Actualizar nombre, descripción o activar/desactivar lista de precios."""
+    use_case = AdminCatalogUseCase(session)
+    try:
+        updated = await use_case.update_price_list(price_list_id, data)
+        audit_log(
+            action="UPDATE_PRICE_LIST",
+            target_entity="price_list",
+            target_id=price_list_id,
+            actor=admin_user,
+            details={"name": updated.name, "is_active": updated.is_active},
+        )
+        return updated
+    except EntityNotFoundException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except BusinessRuleViolationException as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
 @router.get("/products", response_model=list[ProductAdminDetailDTO])
@@ -127,17 +187,18 @@ async def delete_product(
     product_id: int,
     admin_user: TokenData = Depends(require_admin),
     session: AsyncSession = Depends(get_db_session),
-) -> dict[str, str]:
+) -> dict[str, Any]:
     use_case = AdminCatalogUseCase(session)
     try:
-        await use_case.delete_product(product_id)
+        result = await use_case.delete_product(product_id)
         audit_log(
             action="DELETE_PRODUCT",
             target_entity="product",
             target_id=product_id,
             actor=admin_user,
+            details=result,
         )
-        return {"status": "success", "message": f"Producto #{product_id} eliminado exitosamente."}
+        return {"status": "success", **result}
     except EntityNotFoundException as e:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
 
@@ -151,13 +212,23 @@ async def update_product_prices(
 ) -> list[ProductPriceDetailDTO]:
     use_case = AdminCatalogUseCase(session)
     try:
-        updated = await use_case.update_prices(product_id, data.prices)
+        updated = await use_case.update_prices(
+            product_id=product_id,
+            price_updates=data.prices,
+            price_list_ids=data.price_list_ids,
+            cost_iva_inc=data.cost_iva_inc,
+            markup_percentage=data.markup_percentage,
+            price_iva_inc=data.price_iva_inc,
+        )
         audit_log(
             action="UPDATE_PRODUCT_PRICES",
             target_entity="product",
             target_id=product_id,
             actor=admin_user,
-            details={"updated_prices_count": len(updated)},
+            details={
+                "updated_prices_count": len(updated),
+                "price_list_ids": data.price_list_ids,
+            },
         )
         return updated
     except EntityNotFoundException as e:

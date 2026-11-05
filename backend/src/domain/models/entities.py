@@ -42,6 +42,24 @@ class CRMStatus(StrEnum):
 
 
 @dataclass
+class PriceList:
+    id: int
+    code: str
+    name: str
+    description: str | None = None
+    is_active: bool = True
+
+
+@dataclass
+class ProductPriceListItem:
+    id: int | None
+    product_id: int
+    price_list_id: int
+    sale_price: Decimal
+    is_active: bool = True
+
+
+@dataclass
 class CommercialList:
     id: int
     name: str
@@ -78,6 +96,7 @@ class Product:
     min_stock_alert: int = 5
     allow_backorder: bool = False
     prices: list[ProductPrice] = field(default_factory=list)
+    price_list_items: list[ProductPriceListItem] = field(default_factory=list)
 
     @property
     def is_low_stock(self) -> bool:

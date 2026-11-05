@@ -28,6 +28,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             <span>+ Nuevo Artículo</span>
           </button>
           <button
+            id="openPriceListsBtn"
+            onclick="window.openPriceListsModal()"
+            class="inline-flex items-center justify-center rounded-lg border border-primary/30 bg-primary/10 px-3.5 py-2 text-xs font-semibold text-primary shadow-xs hover:bg-primary/20 transition-all min-h-[38px] gap-1.5 cursor-pointer"
+            title="Administrar segmentos y listas de clientes"
+          >
+            <span>🏷️ Listas de Clientes</span>
+          </button>
+          <button
             id="openQuoteModalBtn"
             class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-all min-h-[38px] gap-1.5 cursor-pointer"
           >
@@ -499,21 +507,19 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         <form id="priceEditForm" class="space-y-3.5">
           <input type="hidden" id="editProdId" />
           
-          <div class="space-y-1">
+          <div class="space-y-1.5">
             <div class="flex items-center justify-between">
-              <label class="text-xs font-semibold text-foreground">Lista Comercial</label>
-              <label class="inline-flex items-center gap-1.5 text-[11px] text-primary font-medium cursor-pointer">
-                <input type="checkbox" id="editApplyAllLists" class="rounded border-input text-primary focus:ring-primary h-3.5 w-3.5" />
-                <span>Aplicar a todas las 5 listas</span>
-              </label>
+              <label class="text-xs font-semibold text-foreground">Listas de Clientes Asignadas (N:M)</label>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="window.toggleAllPriceModalLists(true)" class="text-[11px] text-primary hover:underline font-semibold cursor-pointer">Marcar todas</button>
+                <span class="text-muted-foreground text-[10px]">|</span>
+                <button type="button" onclick="window.toggleAllPriceModalLists(false)" class="text-[11px] text-muted-foreground hover:underline font-semibold cursor-pointer">Desmarcar</button>
+              </div>
             </div>
-            <select id="editListId" class="w-full rounded-lg border border-input bg-background p-2 text-xs">
-              <option value="1">1 - Empresas / Limpieza</option>
-              <option value="2">2 - Residenciales</option>
-              <option value="3">3 - Lavandería profesional</option>
-              <option value="4">4 - Lavandería domiciliaria</option>
-              <option value="5">5 - Automotriz</option>
-            </select>
+            <div id="priceModalCheckboxes" class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-2.5 rounded-lg border border-input bg-muted/20 max-h-44 overflow-y-auto">
+              <!-- Renderizado dinámico desde GET /api/v1/admin/price-lists -->
+            </div>
+            <p class="text-[10px] text-muted-foreground">Tildá libremente las listas donde querés que este artículo participe.</p>
           </div>
 
           <div class="space-y-1">
@@ -547,6 +553,119 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             Guardar Condición de Precio
           </button>
         </form>
+      </div>
+    </div>
+
+    <!-- Modal: ABM de Listas de Precios (Autonomía de Mariana SPEC-004) -->
+    <div id="priceListsAdminModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+      <div class="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4 my-8">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <div>
+            <h3 class="font-bold text-foreground text-sm">Listas de Clientes (Segmentos)</h3>
+            <p class="text-[11px] text-muted-foreground">Creá o gestioná listas de precios para segmentar tus clientes de forma autónoma.</p>
+          </div>
+          <button onclick="document.getElementById('priceListsAdminModal').classList.add('hidden')" class="text-muted-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <!-- Formulario Alta de Lista -->
+        <form id="createPriceListForm" class="space-y-3 bg-muted/20 p-3.5 rounded-xl border border-border">
+          <div class="text-xs font-bold text-foreground">Crear Nueva Lista de Clientes</div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div class="space-y-1">
+              <label class="text-[11px] font-semibold text-foreground">Nombre de Lista *</label>
+              <input
+                type="text"
+                id="newPriceListName"
+                required
+                placeholder="Ej: Veterinarias"
+                class="w-full rounded border border-input bg-background p-2 text-xs"
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-[11px] font-semibold text-foreground">Código Único *</label>
+              <input
+                type="text"
+                id="newPriceListCode"
+                required
+                placeholder="VETERINARIAS"
+                class="w-full rounded border border-input bg-background p-2 text-xs font-mono uppercase"
+              />
+            </div>
+          </div>
+          <div class="space-y-1">
+            <label class="text-[11px] font-semibold text-foreground">Descripción (Opcional)</label>
+            <input
+              type="text"
+              id="newPriceListDesc"
+              placeholder="Ej: Clínicas veterinarias y pet shops"
+              class="w-full rounded border border-input bg-background p-2 text-xs"
+            />
+          </div>
+          <button
+            type="submit"
+            id="createPriceListBtn"
+            class="w-full rounded-lg bg-primary py-2 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors cursor-pointer"
+          >
+            + Crear Nueva Lista
+          </button>
+        </form>
+
+        <!-- Listado de Listas Existentes -->
+        <div class="space-y-1.5">
+          <div class="text-xs font-bold text-foreground">Listas Registradas</div>
+          <div class="max-h-56 overflow-y-auto rounded-lg border border-border">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-muted/50 text-muted-foreground border-b border-border">
+                <tr>
+                  <th class="py-2 px-3">Código</th>
+                  <th class="py-2 px-3">Nombre</th>
+                  <th class="py-2 px-3 text-center">Estado</th>
+                  <th class="py-2 px-3 text-right">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="priceListsTableBody" class="divide-y divide-border">
+                <!-- Filas renderizadas dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Doble Confirmación Preventiva de Eliminación (SPEC-004 RF-05) -->
+    <div id="deleteConfirmModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
+      <div class="w-full max-w-sm rounded-2xl border border-destructive/30 bg-card p-6 shadow-2xl space-y-4">
+        <div class="flex items-center gap-3 text-destructive">
+          <div class="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center text-xl shrink-0">⚠️</div>
+          <div>
+            <h3 class="font-bold text-foreground text-sm">¿Estás segura de eliminar este artículo?</h3>
+            <p class="text-[11px] text-muted-foreground">Esta acción retirará el producto del catálogo.</p>
+          </div>
+        </div>
+
+        <div class="p-3 bg-muted/40 rounded-lg text-xs space-y-0.5 border border-border">
+          <div class="text-muted-foreground text-[10px]">Artículo seleccionado:</div>
+          <div id="deleteTargetProdName" class="font-bold text-foreground"></div>
+        </div>
+
+        <input type="hidden" id="deleteTargetProdId" />
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t border-border">
+          <button
+            type="button"
+            onclick="document.getElementById('deleteConfirmModal').classList.add('hidden')"
+            class="rounded-lg border border-input bg-background px-3 py-1.5 text-xs font-semibold hover:bg-accent cursor-pointer"
+          >
+            Cancelar
+          </button>
+          <button
+            type="button"
+            id="confirmDeleteBtn"
+            class="rounded-lg bg-destructive text-destructive-foreground px-4 py-1.5 text-xs font-semibold shadow hover:bg-destructive/90 transition-colors cursor-pointer"
+          >
+            Sí, eliminar artículo
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1161,6 +1280,7 @@ Reglas obligatorias:
       if (!adminToken) return;
 
       try {
+        await loadPriceLists();
         const res = await fetch(`${API_URL}/admin/products?limit=2000`, {
           headers: { Authorization: `Bearer ${adminToken}` },
         });
@@ -1328,6 +1448,13 @@ Reglas obligatorias:
                 >
                   Precios
                 </button>
+                <button
+                  onclick="window.openDeleteConfirmModal(${p.id})"
+                  class="inline-block rounded border border-destructive/40 bg-destructive/10 text-destructive px-2 py-1 text-[11px] font-semibold hover:bg-destructive/20 transition-colors cursor-pointer"
+                  title="Eliminar artículo del catálogo"
+                >
+                  🗑️ Eliminar
+                </button>
               </div>
             </td>
           </tr>
@@ -1488,25 +1615,146 @@ Reglas obligatorias:
     });
 
     let currentPricingProd = null;
+    let allPriceLists = [
+      { id: 1, code: 'EMPRESAS_LIMPIEZA', name: 'Empresas / Limpieza', is_active: true },
+      { id: 2, code: 'RESIDENCIALES', name: 'Residenciales', is_active: true },
+      { id: 3, code: 'LAVANDERIA_PRO', name: 'Lavandería profesional', is_active: true },
+      { id: 4, code: 'LAVANDERIA_DOM', name: 'Lavandería domiciliaria', is_active: true },
+      { id: 5, code: 'AUTOMOTRIZ', name: 'Automotriz', is_active: true },
+    ];
 
-    function syncPriceModalForList(listId) {
-      if (!currentPricingProd) return;
-      const priceObj = (currentPricingProd.prices || []).find((pr) => pr.commercial_list_id === listId) || {};
-      const cost = priceObj.cost_iva_inc !== undefined && priceObj.cost_iva_inc !== null ? parseFloat(priceObj.cost_iva_inc) : '';
-      const markup = priceObj.markup_percentage !== undefined && priceObj.markup_percentage !== null ? parseFloat(priceObj.markup_percentage) : '';
-      
-      document.getElementById('editCost').value = cost !== '' ? cost : '';
-      document.getElementById('editMarkup').value = markup !== '' ? markup : '';
-
-      if (cost !== '' && markup !== '') {
-        const finalPrice = cost * (1 + markup / 100);
-        document.getElementById('editFinalPrice').value = finalPrice.toFixed(2);
-        document.getElementById('previewCalculatedPrice').textContent = `$${finalPrice.toFixed(2)}`;
-      } else {
-        document.getElementById('editFinalPrice').value = '';
-        document.getElementById('previewCalculatedPrice').textContent = '$0.00';
+    async function loadPriceLists() {
+      if (!adminToken) return;
+      try {
+        const res = await fetch(`${API_URL}/admin/price-lists`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (res.ok) {
+          allPriceLists = await res.json();
+          renderPriceListsTable();
+        }
+      } catch (err) {
+        console.warn('Uso de listas locales como fallback:', err);
       }
     }
+
+    function renderPriceListsTable() {
+      const tbody = document.getElementById('priceListsTableBody');
+      if (!tbody) return;
+      if (!allPriceLists || allPriceLists.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="py-4 text-center text-muted-foreground">No hay listas registradas.</td></tr>';
+        return;
+      }
+      tbody.innerHTML = allPriceLists.map((pl) => `
+        <tr class="hover:bg-muted/30">
+          <td class="py-2 px-3 font-mono text-[11px] font-bold text-primary">${pl.code}</td>
+          <td class="py-2 px-3 font-medium text-foreground">${pl.name}</td>
+          <td class="py-2 px-3 text-center">
+            <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-semibold ${pl.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-muted text-muted-foreground'}">
+              ${pl.is_active ? 'Activa' : 'Pausada'}
+            </span>
+          </td>
+          <td class="py-2 px-3 text-right">
+            <button
+              type="button"
+              onclick="window.togglePriceListActive(${pl.id}, ${pl.is_active})"
+              class="px-2 py-1 rounded text-[10px] font-semibold border ${pl.is_active ? 'border-amber-300 text-amber-800 bg-amber-50 hover:bg-amber-100' : 'border-emerald-300 text-emerald-800 bg-emerald-50 hover:bg-emerald-100'} cursor-pointer"
+            >
+              ${pl.is_active ? 'Pausar' : 'Activar'}
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    window.openPriceListsModal = async function() {
+      await loadPriceLists();
+      document.getElementById('priceListsAdminModal')?.classList.remove('hidden');
+    };
+
+    window.togglePriceListActive = async function(id, currentStatus) {
+      try {
+        const res = await fetch(`${API_URL}/admin/price-lists/${id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ is_active: !currentStatus }),
+        });
+        if (!res.ok) throw new Error('Error al actualizar estado de la lista.');
+        await loadPriceLists();
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    // Auto-generación de código limpio en mayúsculas para listas
+    document.getElementById('newPriceListName')?.addEventListener('input', (e) => {
+      const val = e.target.value || '';
+      const codeInput = document.getElementById('newPriceListCode');
+      if (codeInput && !codeInput.dataset.manual) {
+        const code = val.trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase().replace(/[^A-Z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+        codeInput.value = code;
+      }
+    });
+
+    document.getElementById('newPriceListCode')?.addEventListener('input', (e) => {
+      e.target.dataset.manual = 'true';
+    });
+
+    document.getElementById('createPriceListForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const name = document.getElementById('newPriceListName')?.value.trim();
+      const code = document.getElementById('newPriceListCode')?.value.trim().toUpperCase();
+      const desc = document.getElementById('newPriceListDesc')?.value.trim();
+      const btn = document.getElementById('createPriceListBtn');
+
+      if (!name || !code) return;
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Creando...';
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/admin/price-lists`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ code, name, description: desc || null, is_active: true }),
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al crear la lista de clientes.');
+        }
+
+        alert(`¡Lista "${name}" creada con éxito!`);
+        document.getElementById('createPriceListForm')?.reset();
+        const codeInput = document.getElementById('newPriceListCode');
+        if (codeInput) delete codeInput.dataset.manual;
+        await loadPriceLists();
+        if (currentPricingProd) {
+          window.openPriceModal(currentPricingProd.id);
+        }
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = '+ Crear Nueva Lista';
+        }
+      }
+    });
+
+    // Checkboxes dinámicos y cálculo bidireccional en Modal Precios
+    window.toggleAllPriceModalLists = function(check) {
+      document.querySelectorAll('input[name="priceListOption"]').forEach((cb) => {
+        cb.checked = check;
+      });
+    };
 
     window.openPriceModal = function(id) {
       const prod = allProducts.find((p) => p.id === id);
@@ -1515,73 +1763,105 @@ Reglas obligatorias:
 
       document.getElementById('editProdId').value = prod.id;
       document.getElementById('priceModalProdName').textContent = `#${prod.id} - ${prod.name}`;
-      
-      const listSelect = document.getElementById('editListId');
-      if (listSelect) listSelect.value = '1';
-      const applyAllCheck = document.getElementById('editApplyAllLists');
-      if (applyAllCheck) applyAllCheck.checked = false;
 
-      syncPriceModalForList(1);
+      // Determinar listas activas previas
+      const activeIds = (prod.active_price_list_ids && prod.active_price_list_ids.length > 0)
+        ? prod.active_price_list_ids
+        : (prod.price_list_items && prod.price_list_items.length > 0)
+          ? prod.price_list_items.map((pli) => pli.price_list_id)
+          : (prod.prices || []).map((p) => p.commercial_list_id);
+
+      // Renderizar checkboxes dinámicos
+      const container = document.getElementById('priceModalCheckboxes');
+      if (container) {
+        container.innerHTML = allPriceLists.map((pl) => {
+          const isChecked = activeIds.includes(pl.id);
+          return `
+            <label class="inline-flex items-center gap-2 text-xs font-medium text-foreground cursor-pointer p-1.5 rounded hover:bg-background/80 transition-colors">
+              <input
+                type="checkbox"
+                name="priceListOption"
+                value="${pl.id}"
+                class="rounded border-input text-primary focus:ring-primary h-4 w-4"
+                ${isChecked ? 'checked' : ''}
+              />
+              <span class="truncate" title="${pl.name}">${pl.name}</span>
+            </label>
+          `;
+        }).join('');
+      }
+
+      // Cargar valores iniciales de costo y margen
+      const firstPrice = (prod.prices || [])[0] || {};
+      const cost = (firstPrice.cost_iva_inc !== undefined && firstPrice.cost_iva_inc !== null) ? parseFloat(firstPrice.cost_iva_inc) : '';
+      const markup = (firstPrice.markup_percentage !== undefined && firstPrice.markup_percentage !== null) ? parseFloat(firstPrice.markup_percentage) : 50;
+
+      document.getElementById('editCost').value = cost !== '' ? cost : '';
+      document.getElementById('editMarkup').value = markup !== '' ? markup : '';
+
+      if (cost !== '' && !isNaN(cost) && cost > 0) {
+        // Redondeo comercial UYU entero
+        const integerPrice = Math.round(cost * (1 + markup / 100));
+        document.getElementById('editFinalPrice').value = integerPrice.toFixed(2);
+        document.getElementById('previewCalculatedPrice').textContent = `$${integerPrice.toFixed(2)}`;
+      } else {
+        document.getElementById('editFinalPrice').value = '';
+        document.getElementById('previewCalculatedPrice').textContent = '$0.00';
+      }
+
       document.getElementById('priceModal').classList.remove('hidden');
     };
 
-    document.getElementById('editListId')?.addEventListener('change', (e) => {
-      const listId = parseInt(e.target.value, 10);
-      syncPriceModalForList(listId);
-    });
+    // Redondeo Comercial UYU en Tiempo Real (ROUND_HALF_UP a enteros)
+    function applyRealtimeRounding(trigger) {
+      const costEl = document.getElementById('editCost');
+      const markupEl = document.getElementById('editMarkup');
+      const finalPriceEl = document.getElementById('editFinalPrice');
+      const previewEl = document.getElementById('previewCalculatedPrice');
 
-    // Cálculo Bidireccional:
-    // 1. Cuando Mariana ingresa Precio de Venta deseado (ej. $53.00)
-    document.getElementById('editFinalPrice')?.addEventListener('input', () => {
-      const cost = parseFloat(document.getElementById('editCost').value) || 0;
-      const finalPrice = parseFloat(document.getElementById('editFinalPrice').value);
+      const cost = parseFloat(costEl?.value) || 0;
 
-      if (cost > 0 && !isNaN(finalPrice) && finalPrice >= 0) {
-        const calculatedMarkup = ((finalPrice / cost) - 1) * 100;
-        document.getElementById('editMarkup').value = calculatedMarkup.toFixed(4);
-        document.getElementById('previewCalculatedPrice').textContent = `$${finalPrice.toFixed(2)}`;
+      if (trigger === 'finalPrice') {
+        const rawFinal = parseFloat(finalPriceEl?.value);
+        if (cost > 0 && !isNaN(rawFinal) && rawFinal >= 0) {
+          const integerPrice = Math.round(rawFinal);
+          const markup = ((integerPrice / cost) - 1) * 100;
+          if (markupEl) markupEl.value = markup.toFixed(4);
+          if (previewEl) previewEl.textContent = `$${integerPrice.toFixed(2)}`;
+        } else if (previewEl) {
+          previewEl.textContent = '$0.00';
+        }
       } else {
-        document.getElementById('previewCalculatedPrice').textContent = '$0.00';
+        const markup = parseFloat(markupEl?.value) || 0;
+        if (cost > 0) {
+          const integerPrice = Math.round(cost * (1 + markup / 100));
+          if (finalPriceEl) finalPriceEl.value = integerPrice.toFixed(2);
+          if (previewEl) previewEl.textContent = `$${integerPrice.toFixed(2)}`;
+        } else if (previewEl) {
+          previewEl.textContent = '$0.00';
+        }
       }
-    });
+    }
 
-    // 2. Cuando se ingresa o modifica el Recargo (%)
-    document.getElementById('editMarkup')?.addEventListener('input', () => {
-      const cost = parseFloat(document.getElementById('editCost').value) || 0;
-      const markup = parseFloat(document.getElementById('editMarkup').value) || 0;
-
-      if (cost > 0) {
-        const finalPrice = cost * (1 + markup / 100);
-        document.getElementById('editFinalPrice').value = finalPrice.toFixed(2);
-        document.getElementById('previewCalculatedPrice').textContent = `$${finalPrice.toFixed(2)}`;
-      }
-    });
-
-    // 3. Cuando cambia el Costo c/IVA
-    document.getElementById('editCost')?.addEventListener('input', () => {
-      const cost = parseFloat(document.getElementById('editCost').value) || 0;
-      const finalPrice = parseFloat(document.getElementById('editFinalPrice').value);
-      const markup = parseFloat(document.getElementById('editMarkup').value);
-
-      if (cost > 0 && !isNaN(finalPrice) && finalPrice > 0) {
-        const calculatedMarkup = ((finalPrice / cost) - 1) * 100;
-        document.getElementById('editMarkup').value = calculatedMarkup.toFixed(4);
-        document.getElementById('previewCalculatedPrice').textContent = `$${finalPrice.toFixed(2)}`;
-      } else if (cost > 0 && !isNaN(markup)) {
-        const calculatedPrice = cost * (1 + markup / 100);
-        document.getElementById('editFinalPrice').value = calculatedPrice.toFixed(2);
-        document.getElementById('previewCalculatedPrice').textContent = `$${calculatedPrice.toFixed(2)}`;
-      }
-    });
+    document.getElementById('editFinalPrice')?.addEventListener('input', () => applyRealtimeRounding('finalPrice'));
+    document.getElementById('editMarkup')?.addEventListener('input', () => applyRealtimeRounding('markup'));
+    document.getElementById('editCost')?.addEventListener('input', () => applyRealtimeRounding('cost'));
 
     document.getElementById('priceEditForm')?.addEventListener('submit', async (e) => {
       e.preventDefault();
       const id = parseInt(document.getElementById('editProdId').value, 10);
-      const listId = parseInt(document.getElementById('editListId').value, 10);
       const cost = parseFloat(document.getElementById('editCost').value);
       const markup = parseFloat(document.getElementById('editMarkup').value);
-      const applyAll = Boolean(document.getElementById('editApplyAllLists')?.checked);
       const saveBtn = document.getElementById('savePriceBtn');
+
+      const selectedListIds = Array.from(
+        document.querySelectorAll('input[name="priceListOption"]:checked')
+      ).map((cb) => parseInt(cb.value, 10));
+
+      if (selectedListIds.length === 0) {
+        alert('Por favor tildá al menos una lista comercial para asignar el producto.');
+        return;
+      }
 
       if (isNaN(cost) || isNaN(markup)) {
         alert('Por favor complete el costo y el recargo o precio final.');
@@ -1593,17 +1873,13 @@ Reglas obligatorias:
         saveBtn.textContent = 'Guardando...';
       }
 
-      const finalPrice = parseFloat(document.getElementById('editFinalPrice').value);
+      const finalPrice = Math.round(parseFloat(document.getElementById('editFinalPrice').value) || 0);
 
-      // Si seleccionó aplicar a las 5 listas comerciales (1 a 5)
-      const targetLists = applyAll ? [1, 2, 3, 4, 5] : [listId];
       const payload = {
-        prices: targetLists.map((lId) => ({
-          commercial_list_id: lId,
-          cost_iva_inc: cost,
-          markup_percentage: markup,
-          price_iva_inc: !isNaN(finalPrice) && finalPrice > 0 ? finalPrice : null,
-        })),
+        price_list_ids: selectedListIds,
+        cost_iva_inc: cost,
+        markup_percentage: markup,
+        price_iva_inc: finalPrice,
       };
 
       try {
@@ -1616,16 +1892,61 @@ Reglas obligatorias:
           body: JSON.stringify(payload),
         });
 
-        if (!res.ok) throw new Error('Error al actualizar precios.');
-        alert(applyAll ? '¡Precio actualizado con éxito en las 5 listas comerciales!' : 'Condición de precio actualizada con éxito.');
+        if (!res.ok) throw new Error('Error al actualizar precios y asignación de listas.');
+        alert(`¡Condición de precio actualizada y propagada a ${selectedListIds.length} listas comerciales!`);
         document.getElementById('priceModal').classList.add('hidden');
-        loadAdminProducts();
+        await loadAdminProducts();
       } catch (err) {
         alert(err.message);
       } finally {
         if (saveBtn) {
           saveBtn.disabled = false;
           saveBtn.textContent = 'Guardar Condición de Precio';
+        }
+      }
+    });
+
+    // Modal de Doble Confirmación Preventiva para Eliminación
+    window.openDeleteConfirmModal = function(id) {
+      const prod = allProducts.find((p) => p.id === id);
+      if (!prod) return;
+      document.getElementById('deleteTargetProdId').value = prod.id;
+      document.getElementById('deleteTargetProdName').textContent = `#${prod.id} - ${prod.name}`;
+      document.getElementById('deleteConfirmModal')?.classList.remove('hidden');
+    };
+
+    document.getElementById('confirmDeleteBtn')?.addEventListener('click', async () => {
+      const id = parseInt(document.getElementById('deleteTargetProdId').value, 10);
+      if (!id) return;
+      const btn = document.getElementById('confirmDeleteBtn');
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Eliminando...';
+      }
+
+      try {
+        const res = await fetch(`${API_URL}/admin/products/${id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          throw new Error(err.detail || 'Error al eliminar el artículo.');
+        }
+
+        const data = await res.json();
+        allProducts = allProducts.filter((p) => p.id !== id);
+        document.getElementById('deleteConfirmModal')?.classList.add('hidden');
+        renderProductsTable();
+        updateKpis();
+        alert(data.message || 'Artículo retirado del catálogo.');
+      } catch (err) {
+        alert(err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = 'Sí, eliminar artículo';
         }
       }
     });

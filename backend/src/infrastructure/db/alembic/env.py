@@ -5,14 +5,15 @@ from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
-
 from src.config import settings
 from src.infrastructure.db.models import (  # noqa: F401 - ensure models are imported
     CommercialListORM,
     CustomerORM,
     OrderItemORM,
     OrderORM,
+    PriceListORM,
     ProductORM,
+    ProductPriceListItemORM,
     ProductPriceORM,
 )
 from src.infrastructure.db.session import Base

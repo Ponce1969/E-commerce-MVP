@@ -15,7 +15,6 @@ from sqlalchemy import (
     func,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-
 from src.infrastructure.db.session import Base
 
 
@@ -79,6 +78,55 @@ class ProductORM(Base):
     prices: Mapped[list["ProductPriceORM"]] = relationship(
         "ProductPriceORM", back_populates="product", cascade="all, delete-orphan"
     )
+    price_list_items: Mapped[list["ProductPriceListItemORM"]] = relationship(
+        "ProductPriceListItemORM", back_populates="product", cascade="all, delete-orphan"
+    )
+
+
+class PriceListORM(Base):
+    __tablename__ = "price_lists"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    code: Mapped[str] = mapped_column(String(50), unique=True, nullable=False, index=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
+    )
+
+    items: Mapped[list["ProductPriceListItemORM"]] = relationship(
+        "ProductPriceListItemORM", back_populates="price_list", cascade="all, delete-orphan"
+    )
+
+
+class ProductPriceListItemORM(Base):
+    __tablename__ = "product_price_list_items"
+    __table_args__ = (
+        UniqueConstraint("product_id", "price_list_id", name="uq_product_price_list"),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    product_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    price_list_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("price_lists.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
+    sale_price: Mapped[Decimal] = mapped_column(Numeric(10, 2), nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
+    )
+
+    product: Mapped["ProductORM"] = relationship("ProductORM", back_populates="price_list_items")
+    price_list: Mapped["PriceListORM"] = relationship("PriceListORM", back_populates="items")
 
 
 class ProductPriceORM(Base):

@@ -5,7 +5,9 @@ from src.infrastructure.db.models.orm import (
     ExpenseORM,
     OrderItemORM,
     OrderORM,
+    PriceListORM,
     ProductORM,
+    ProductPriceListItemORM,
     ProductPriceORM,
 )
 
@@ -16,6 +18,8 @@ __all__ = [
     "ExpenseORM",
     "OrderItemORM",
     "OrderORM",
+    "PriceListORM",
     "ProductORM",
+    "ProductPriceListItemORM",
     "ProductPriceORM",
 ]

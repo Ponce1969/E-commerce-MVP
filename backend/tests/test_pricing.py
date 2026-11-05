@@ -1,15 +1,50 @@
 from decimal import Decimal
 
+import pytest
 from src.domain.models import Product, ProductPrice
-from src.domain.services.pricing_service import PricingService
+from src.domain.services.pricing_service import PricingService, round_commercial_uyu
+
+
+@pytest.mark.parametrize(
+    ("input_amount", "expected_amount"),
+    [
+        (Decimal("150.00"), Decimal("150.00")),
+        (Decimal("150.01"), Decimal("150.00")),
+        (Decimal("150.49"), Decimal("150.00")),
+        (Decimal("150.50"), Decimal("151.00")),
+        (Decimal("150.51"), Decimal("151.00")),
+        (Decimal("150.99"), Decimal("151.00")),
+        (Decimal("0.49"), Decimal("0.00")),
+        (Decimal("0.50"), Decimal("1.00")),
+        (Decimal("10.004"), Decimal("10.00")),
+        (Decimal("10.500"), Decimal("11.00")),
+    ],
+)
+def test_round_commercial_uyu_edge_cases(input_amount: Decimal, expected_amount: Decimal) -> None:
+    result = round_commercial_uyu(input_amount)
+    assert result == expected_amount
+    assert str(result).endswith(".00")
 
 
 def test_pricing_calculation_exact_decimal() -> None:
-    # Test formula: round(cost * (1 + markup/100), 2)
+    # Test formula: round_commercial_uyu(cost * (1 + markup/100))
     cost = Decimal("273.00")
     markup = Decimal("55.6777")
     price = PricingService.calculate_price_iva_inc(cost, markup)
     assert price == Decimal("425.00")
+
+
+def test_pricing_calculation_rounds_commercial_uyu_integer() -> None:
+    # 100 * 1.5049 = 150.49 -> 150.00
+    cost = Decimal("100.00")
+    markup_down = Decimal("50.49")
+    price_down = PricingService.calculate_price_iva_inc(cost, markup_down)
+    assert price_down == Decimal("150.00")
+
+    # 100 * 1.5050 = 150.50 -> 151.00
+    markup_up = Decimal("50.50")
+    price_up = PricingService.calculate_price_iva_inc(cost, markup_up)
+    assert price_up == Decimal("151.00")
 
 
 def test_pricing_with_zero_discount() -> None:
