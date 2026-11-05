@@ -152,13 +152,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       <div id="catalogSection" class="space-y-6">
         <!-- 5 Top KPI Cards -->
       <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+        <div class="rounded-xl border border-border bg-card p-4 shadow-xs cursor-pointer hover:border-primary/50 hover:bg-muted/30 transition-all" onclick="window.applyFilter('all')" title="Ver todos los artículos">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Artículos Maestros</div>
           <div id="kpiTotalProducts" class="text-2xl sm:text-3xl font-black text-foreground mt-1">311</div>
           <div class="text-[11px] text-muted-foreground mt-0.5">Catálogo consolidado</div>
         </div>
 
-        <div class="rounded-xl border border-destructive/30 bg-destructive/5 p-4 shadow-xs cursor-pointer hover:bg-destructive/10 transition-colors" onclick="window.applyFilter('low_stock')">
+        <div class="rounded-xl border border-destructive/30 bg-destructive/5 p-4 shadow-xs cursor-pointer hover:bg-destructive/10 transition-all" onclick="window.applyFilter('low_stock')" title="Filtrar por stock crítico">
           <div class="text-xs font-semibold text-destructive uppercase tracking-wider flex items-center justify-between">
             <span>Stock Crítico</span>
             <span class="w-2 h-2 rounded-full bg-destructive animate-pulse"></span>
@@ -167,19 +167,19 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           <div class="text-[11px] text-destructive/80 mt-0.5">Alertas de reposición</div>
         </div>
 
-        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+        <div class="rounded-xl border border-amber-300/40 bg-amber-50/20 p-4 shadow-xs cursor-pointer hover:border-amber-400 hover:bg-amber-50/50 transition-all" onclick="window.applyFilter('incomplete')" title="Filtrar fichas incompletas">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Fichas Incompletas</div>
           <div id="kpiIncomplete" class="text-2xl sm:text-3xl font-black text-amber-600 mt-1">57</div>
           <div class="text-[11px] text-muted-foreground mt-0.5">Requieren costo/recargo</div>
         </div>
 
-        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+        <div class="rounded-xl border border-primary/30 bg-primary/5 p-4 shadow-xs cursor-pointer hover:border-primary hover:bg-primary/10 transition-all" onclick="window.applyFilter('moizo')" title="Filtrar proveedor Moizo">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Proveedor Moizo</div>
           <div id="kpiMoizo" class="text-2xl sm:text-3xl font-black text-primary mt-1">49</div>
           <div class="text-[11px] text-muted-foreground mt-0.5">Artículos de línea directa</div>
         </div>
 
-        <div class="rounded-xl border border-border bg-card p-4 shadow-xs">
+        <div class="rounded-xl border border-destructive/20 bg-destructive/5 p-4 shadow-xs cursor-pointer hover:border-destructive hover:bg-destructive/10 transition-all" onclick="window.applyFilter('conflicts')" title="Filtrar conflictos históricos">
           <div class="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Conflictos Históricos</div>
           <div id="kpiConflicts" class="text-2xl sm:text-3xl font-black text-destructive mt-1">19</div>
           <div class="text-[11px] text-muted-foreground mt-0.5">Márgenes protegidos intactos</div>
