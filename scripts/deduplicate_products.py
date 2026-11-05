@@ -20,12 +20,18 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-# Agregar backend al PYTHONPATH
+# Agregar backend al PYTHONPATH de forma agnóstica (local o dentro del contenedor)
 SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent
-BACKEND_DIR = PROJECT_ROOT / "backend"
+if (Path("/app/src")).exists():
+    BACKEND_DIR = Path("/app")
+elif (SCRIPT_DIR.parent / "backend" / "src").exists():
+    BACKEND_DIR = SCRIPT_DIR.parent / "backend"
+else:
+    BACKEND_DIR = SCRIPT_DIR
+
 sys.path.insert(0, str(BACKEND_DIR))
-os.chdir(BACKEND_DIR)
+if BACKEND_DIR.exists():
+    os.chdir(BACKEND_DIR)
 
 
 def normalize_text(text: str | None) -> str:
