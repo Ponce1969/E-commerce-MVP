@@ -1,4 +1,5 @@
 from src.domain.models.entities import (
+    Category,
     CommercialList,
     CRMStatus,
     Customer,
@@ -17,6 +18,7 @@ from src.domain.models.entities import (
 )
 
 __all__ = [
+    "Category",
     "CommercialList",
     "CRMStatus",
     "Customer",

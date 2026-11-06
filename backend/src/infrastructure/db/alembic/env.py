@@ -7,6 +7,7 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 from src.config import settings
 from src.infrastructure.db.models import (  # noqa: F401 - ensure models are imported
+    CategoryORM,
     CommercialListORM,
     CustomerORM,
     OrderItemORM,
@@ -15,6 +16,7 @@ from src.infrastructure.db.models import (  # noqa: F401 - ensure models are imp
     ProductORM,
     ProductPriceListItemORM,
     ProductPriceORM,
+    product_categories,
 )
 from src.infrastructure.db.session import Base
 

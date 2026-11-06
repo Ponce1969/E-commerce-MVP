@@ -13,6 +13,9 @@ from fastapi import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.application.dtos.catalog_dto import (
+    CategoryCreateDTO,
+    CategoryDTO,
+    CategoryUpdateDTO,
     PriceListCreateDTO,
     PriceListDTO,
     PriceListUpdateDTO,
@@ -103,6 +106,95 @@ async def update_price_list(
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
 
 
+# =============================================================================
+# CATEGORÍAS (ABM Y GESTIÓN MULTICATEGORÍA)
+# =============================================================================
+
+
+@router.get("/categories", response_model=list[CategoryDTO])
+async def list_categories(
+    session: AsyncSession = Depends(get_db_session),
+) -> list[CategoryDTO]:
+    """Listar todas las categorías ordenadas alfabéticamente con su conteo de productos asociados."""
+    use_case = AdminCatalogUseCase(session)
+    return await use_case.get_categories()
+
+
+@router.post(
+    "/categories",
+    response_model=CategoryDTO,
+    status_code=status.HTTP_201_CREATED,
+)
+async def create_category(
+    data: CategoryCreateDTO,
+    admin_user: TokenData = Depends(require_admin),
+    session: AsyncSession = Depends(get_db_session),
+) -> CategoryDTO:
+    """Alta de nueva categoría con sanitización de nombre."""
+    use_case = AdminCatalogUseCase(session)
+    try:
+        created = await use_case.create_category(data)
+        audit_log(
+            action="CREATE_CATEGORY",
+            target_entity="category",
+            target_id=created.id,
+            actor=admin_user,
+            details={"name": created.name},
+        )
+        return created
+    except BusinessRuleViolationException as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
+
+
+@router.put("/categories/{category_id}", response_model=CategoryDTO)
+async def update_category(
+    category_id: int,
+    data: CategoryUpdateDTO,
+    admin_user: TokenData = Depends(require_admin),
+    session: AsyncSession = Depends(get_db_session),
+) -> CategoryDTO:
+    """Renombrar o actualizar categoría de forma autónoma."""
+    use_case = AdminCatalogUseCase(session)
+    try:
+        updated = await use_case.update_category(category_id, data)
+        audit_log(
+            action="UPDATE_CATEGORY",
+            target_entity="category",
+            target_id=category_id,
+            actor=admin_user,
+            details={"name": updated.name, "is_active": updated.is_active},
+        )
+        return updated
+    except EntityNotFoundException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except BusinessRuleViolationException as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
+
+
+@router.delete("/categories/{category_id}")
+async def delete_category(
+    category_id: int,
+    admin_user: TokenData = Depends(require_admin),
+    session: AsyncSession = Depends(get_db_session),
+) -> dict[str, Any]:
+    """Eliminación controlada de categoría (desvincula productos asociados)."""
+    use_case = AdminCatalogUseCase(session)
+    try:
+        res = await use_case.delete_category(category_id)
+        audit_log(
+            action="DELETE_CATEGORY",
+            target_entity="category",
+            target_id=category_id,
+            actor=admin_user,
+            details=res,
+        )
+        return res
+    except EntityNotFoundException as e:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(e)) from e
+    except BusinessRuleViolationException as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)) from e
+
+
 @router.get("/products", response_model=list[ProductAdminDetailDTO])
 async def list_products(
     category: str | None = Query(None, description="Filtrar por categoría"),
@@ -173,7 +265,11 @@ async def update_product_info(
             target_entity="product",
             target_id=product_id,
             actor=admin_user,
-            details={"name": data.name, "category": data.category},
+            details={
+                "name": data.name,
+                "category": updated.category,
+                "category_ids": data.category_ids,
+            },
         )
         return updated
     except EntityNotFoundException as e:

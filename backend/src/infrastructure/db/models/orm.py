@@ -3,6 +3,7 @@ from decimal import Decimal
 
 from sqlalchemy import (
     Boolean,
+    Column,
     Date,
     DateTime,
     Enum,
@@ -10,12 +11,51 @@ from sqlalchemy import (
     Integer,
     Numeric,
     String,
+    Table,
     Text,
     UniqueConstraint,
     func,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.infrastructure.db.session import Base
+
+product_categories = Table(
+    "product_categories",
+    Base.metadata,
+    Column(
+        "product_id",
+        Integer,
+        ForeignKey("products.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+    Column(
+        "category_id",
+        Integer,
+        ForeignKey("categories.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+)
+
+
+class CategoryORM(Base):
+    __tablename__ = "categories"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    name: Mapped[str] = mapped_column(String(100), unique=True, nullable=False, index=True)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), nullable=False
+    )
+    updated_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False
+    )
+
+    products: Mapped[list["ProductORM"]] = relationship(
+        "ProductORM",
+        secondary=product_categories,
+        back_populates="categories",
+    )
 
 
 class AdminUserORM(Base):
@@ -55,8 +95,8 @@ class ProductORM(Base):
     name: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
     presentation: Mapped[str | None] = mapped_column(String(100), nullable=True)
     provider: Mapped[str | None] = mapped_column(String(100), nullable=True, index=True)
-    category: Mapped[str] = mapped_column(
-        String(100), nullable=False, default="General", index=True
+    category: Mapped[str | None] = mapped_column(
+        String(100), nullable=True, default="General", index=True
     )
     iva_rate: Mapped[Decimal] = mapped_column(
         Numeric(4, 2), nullable=False, default=Decimal("0.22")
@@ -80,6 +120,9 @@ class ProductORM(Base):
     )
     price_list_items: Mapped[list["ProductPriceListItemORM"]] = relationship(
         "ProductPriceListItemORM", back_populates="product", cascade="all, delete-orphan"
+    )
+    categories: Mapped[list["CategoryORM"]] = relationship(
+        "CategoryORM", secondary=product_categories, back_populates="products"
     )
 
 

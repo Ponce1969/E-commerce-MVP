@@ -1,10 +1,13 @@
 from decimal import Decimal
 from typing import Any
 
-from sqlalchemy import func, select
+from sqlalchemy import func, or_, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 from src.application.dtos.catalog_dto import (
+    CategoryCreateDTO,
+    CategoryDTO,
+    CategoryUpdateDTO,
     PriceListCreateDTO,
     PriceListDTO,
     PriceListUpdateDTO,
@@ -22,12 +25,14 @@ from src.domain.exceptions import (
 )
 from src.domain.services.pricing_service import PricingService, round_commercial_uyu
 from src.infrastructure.db.models import (
+    CategoryORM,
     CommercialListORM,
     OrderItemORM,
     PriceListORM,
     ProductORM,
     ProductPriceListItemORM,
     ProductPriceORM,
+    product_categories,
 )
 
 
@@ -163,12 +168,18 @@ class AdminCatalogUseCase:
                 selectinload(ProductORM.price_list_items).selectinload(
                     ProductPriceListItemORM.price_list
                 ),
+                selectinload(ProductORM.categories),
             )
             .where(ProductORM.is_active == True)  # noqa: E712
         )
 
         if category:
-            query = query.where(ProductORM.category == category)
+            query = query.where(
+                or_(
+                    ProductORM.categories.any(CategoryORM.name.ilike(f"%{category}%")),
+                    ProductORM.category.ilike(f"%{category}%"),
+                )
+            )
         if provider:
             query = query.where(ProductORM.provider == provider)
         if is_published is not None:
@@ -227,19 +238,35 @@ class AdminCatalogUseCase:
         )
         can_publish = bool(data.is_published and has_complete_fields)
 
+        # Categorías N:M
+        selected_cats: list[CategoryORM] = []
+        if data.category_ids:
+            cats_stmt = select(CategoryORM).where(CategoryORM.id.in_(data.category_ids))
+            cats_res = await self.session.execute(cats_stmt)
+            cats_by_id = {c.id: c for c in cats_res.scalars().all()}
+            selected_cats = [cats_by_id[cid] for cid in data.category_ids if cid in cats_by_id]
+
+        primary_cat = (
+            selected_cats[0].name
+            if selected_cats
+            else (data.category.strip() if data.category else "General")
+        )
+
         product = ProductORM(
             id=new_id,
             name=data.name.strip(),
             code=data.code.strip() if data.code else None,
             presentation=data.presentation.strip() if data.presentation else None,
             provider=data.provider.strip() if data.provider else None,
-            category=data.category.strip() if data.category else "General",
+            category=primary_cat,
             iva_rate=data.iva_rate,
             is_published=can_publish,
             current_stock=data.current_stock,
             min_stock_alert=5,
             allow_backorder=False,
         )
+        if selected_cats:
+            product.categories = selected_cats
         self.session.add(product)
         await self.session.flush()
 
@@ -461,6 +488,7 @@ class AdminCatalogUseCase:
                 selectinload(ProductORM.price_list_items).selectinload(
                     ProductPriceListItemORM.price_list
                 ),
+                selectinload(ProductORM.categories),
             )
         )
         res = await self.session.execute(stmt)
@@ -469,12 +497,37 @@ class AdminCatalogUseCase:
             raise EntityNotFoundException(f"Producto con ID #{product_id} no encontrado.")
 
         product.name = data.name.strip()
-        product.category = data.category.strip()
         product.code = data.code.strip() if data.code else None
         product.presentation = data.presentation.strip() if data.presentation else None
         product.provider = data.provider.strip() if data.provider else None
         if data.iva_rate is not None:
             product.iva_rate = data.iva_rate
+
+        # Sincronización atómica de relación N:M y categoría principal
+        if data.category_ids is not None:
+            if data.category_ids:
+                cats_stmt = select(CategoryORM).where(CategoryORM.id.in_(data.category_ids))
+                cats_res = await self.session.execute(cats_stmt)
+                cats_by_id = {c.id: c for c in cats_res.scalars().all()}
+                ordered_cats = [cats_by_id[cid] for cid in data.category_ids if cid in cats_by_id]
+                product.categories = ordered_cats
+                if ordered_cats:
+                    product.category = ordered_cats[0].name
+            else:
+                product.categories = []
+                if data.category:
+                    product.category = data.category.strip()
+        elif data.category:
+            product.category = data.category.strip()
+            # Si no tenía categorías asignadas, vincular con la categoría correspondiente por nombre
+            if not product.categories:
+                cat_match_stmt = select(CategoryORM).where(
+                    CategoryORM.name == data.category.strip()
+                )
+                cat_match_res = await self.session.execute(cat_match_stmt)
+                matching_cat = cat_match_res.scalar_one_or_none()
+                if matching_cat:
+                    product.categories = [matching_cat]
 
         await self.session.commit()
         await self.session.refresh(product)
@@ -634,25 +687,208 @@ class AdminCatalogUseCase:
             or missing_price_data
         )
 
+        categories_dto: list[CategoryDTO] = []
+        category_ids: list[int] = []
+        if hasattr(product, "categories") and product.categories:
+            for cat in sorted(product.categories, key=lambda c: c.name):
+                category_ids.append(cat.id)
+                categories_dto.append(
+                    CategoryDTO(
+                        id=cat.id,
+                        name=cat.name,
+                        description=cat.description,
+                        is_active=cat.is_active,
+                    )
+                )
+
+        curr_stock = product.current_stock if product.current_stock is not None else 0
+        min_alert = product.min_stock_alert if product.min_stock_alert is not None else 5
+
         return ProductAdminDetailDTO(
             id=product.id,
             code=product.code,
             name=product.name,
             presentation=product.presentation,
             provider=product.provider,
-            category=product.category,
-            iva_rate=product.iva_rate,
-            is_published=product.is_published,
+            category=product.category or (categories_dto[0].name if categories_dto else "General"),
+            iva_rate=product.iva_rate if product.iva_rate is not None else Decimal("0.22"),
+            is_published=bool(product.is_published),
             is_pending_draft=is_draft,
             tech_sheet_url=product.tech_sheet_url,
             image_url=product.image_url,
-            is_active=product.is_active,
-            current_stock=product.current_stock,
-            min_stock_alert=product.min_stock_alert,
-            allow_backorder=product.allow_backorder,
-            is_low_stock=product.current_stock <= product.min_stock_alert,
-            is_out_of_stock=product.current_stock <= 0,
+            is_active=True if product.is_active is None else bool(product.is_active),
+            current_stock=curr_stock,
+            min_stock_alert=min_alert,
+            allow_backorder=bool(product.allow_backorder),
+            is_low_stock=curr_stock <= min_alert,
+            is_out_of_stock=curr_stock <= 0,
             prices=prices_dto,
             price_list_items=price_list_items_dto,
             active_price_list_ids=active_list_ids,
+            category_ids=category_ids,
+            categories=categories_dto,
         )
+
+    # =========================================================================
+    # GESTIÓN DE CATEGORÍAS (ABM N:M)
+    # =========================================================================
+    async def get_categories(self) -> list[CategoryDTO]:
+        """Listar todas las categorías ordenadas alfabéticamente con su conteo de productos asociados."""
+        subq = (
+            select(
+                product_categories.c.category_id,
+                func.count(product_categories.c.product_id).label("prod_count"),
+            )
+            .group_by(product_categories.c.category_id)
+            .subquery()
+        )
+        stmt = (
+            select(
+                CategoryORM,
+                func.coalesce(subq.c.prod_count, 0).label("product_count"),
+            )
+            .outerjoin(subq, CategoryORM.id == subq.c.category_id)
+            .order_by(CategoryORM.name.asc())
+        )
+        res = await self.session.execute(stmt)
+        categories: list[CategoryDTO] = []
+        for cat, count in res.all():
+            categories.append(
+                CategoryDTO(
+                    id=cat.id,
+                    name=cat.name,
+                    description=cat.description,
+                    is_active=cat.is_active,
+                    product_count=int(count),
+                )
+            )
+        return categories
+
+    async def create_category(self, data: CategoryCreateDTO) -> CategoryDTO:
+        """Alta de nueva categoría con sanitización y verificación de unicidad."""
+        clean_name = data.name.strip()
+        if not clean_name:
+            raise BusinessRuleViolationException("El nombre de la categoría no puede estar vacío.")
+
+        stmt = select(CategoryORM).where(func.lower(CategoryORM.name) == clean_name.lower())
+        res = await self.session.execute(stmt)
+        if res.scalar_one_or_none():
+            raise BusinessRuleViolationException(
+                f"Ya existe una categoría con el nombre '{clean_name}'."
+            )
+
+        # Obtener siguiente ID
+        max_id_stmt = select(func.max(CategoryORM.id))
+        max_res = await self.session.execute(max_id_stmt)
+        max_id = max_res.scalar() or 0
+        new_id = max_id + 1
+
+        category = CategoryORM(
+            id=new_id,
+            name=clean_name,
+            description=data.description.strip() if data.description else None,
+            is_active=True,
+        )
+        self.session.add(category)
+        await self.session.commit()
+        await self.session.refresh(category)
+        return CategoryDTO(
+            id=category.id,
+            name=category.name,
+            description=category.description,
+            is_active=category.is_active,
+            product_count=0,
+        )
+
+    async def update_category(self, category_id: int, data: CategoryUpdateDTO) -> CategoryDTO:
+        """Renombrar o actualizar categoría con sincronización en productos asociados."""
+        stmt = select(CategoryORM).where(CategoryORM.id == category_id)
+        res = await self.session.execute(stmt)
+        category = res.scalar_one_or_none()
+        if not category:
+            raise EntityNotFoundException(f"Categoría con ID #{category_id} no encontrada.")
+
+        old_name = category.name
+        if data.name is not None:
+            clean_name = data.name.strip()
+            if not clean_name:
+                raise BusinessRuleViolationException("El nombre no puede estar vacío.")
+            dup_stmt = select(CategoryORM).where(
+                func.lower(CategoryORM.name) == clean_name.lower(),
+                CategoryORM.id != category_id,
+            )
+            dup_res = await self.session.execute(dup_stmt)
+            if dup_res.scalar_one_or_none():
+                raise BusinessRuleViolationException(
+                    f"Ya existe otra categoría llamada '{clean_name}'."
+                )
+
+            category.name = clean_name
+            # Sincronizar columna plana en productos donde figure el nombre viejo
+            if clean_name != old_name:
+                update_prods_stmt = (
+                    update(ProductORM)
+                    .where(ProductORM.category == old_name)
+                    .values(category=clean_name)
+                )
+                await self.session.execute(update_prods_stmt)
+
+        if data.description is not None:
+            category.description = data.description.strip() if data.description else None
+        if data.is_active is not None:
+            category.is_active = data.is_active
+
+        await self.session.commit()
+        await self.session.refresh(category)
+
+        count_stmt = select(func.count(product_categories.c.product_id)).where(
+            product_categories.c.category_id == category_id
+        )
+        count_res = await self.session.execute(count_stmt)
+        prod_count = count_res.scalar() or 0
+
+        return CategoryDTO(
+            id=category.id,
+            name=category.name,
+            description=category.description,
+            is_active=category.is_active,
+            product_count=int(prod_count),
+        )
+
+    async def delete_category(self, category_id: int) -> dict[str, Any]:
+        """Eliminación controlada desvinculando de productos y actualizando primary category."""
+        stmt = select(CategoryORM).where(CategoryORM.id == category_id)
+        res = await self.session.execute(stmt)
+        category = res.scalar_one_or_none()
+        if not category:
+            raise EntityNotFoundException(f"Categoría con ID #{category_id} no encontrada.")
+
+        cat_name = category.name
+
+        # Desvincular productos asociados en product_categories
+        del_links = product_categories.delete().where(
+            product_categories.c.category_id == category_id
+        )
+        await self.session.execute(del_links)
+
+        # Si había productos con products.category == cat_name, reasignar a su siguiente categoría o 'General'
+        prods_stmt = (
+            select(ProductORM)
+            .where(ProductORM.category == cat_name)
+            .options(selectinload(ProductORM.categories))
+        )
+        prods_res = await self.session.execute(prods_stmt)
+        for p in prods_res.scalars().all():
+            if p.categories:
+                p.category = p.categories[0].name
+            else:
+                p.category = "General"
+
+        await self.session.delete(category)
+        await self.session.commit()
+        return {
+            "action": "deleted",
+            "category_id": category_id,
+            "name": cat_name,
+            "message": f"Categoría '{cat_name}' eliminada y desvinculada exitosamente.",
+        }

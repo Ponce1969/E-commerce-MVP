@@ -28,6 +28,27 @@ class PriceListUpdateDTO(BaseModel):
     is_active: bool | None = None
 
 
+class CategoryDTO(BaseModel):
+    id: int
+    name: str
+    description: str | None = None
+    is_active: bool = True
+    product_count: int = 0
+
+
+class CategoryCreateDTO(BaseModel):
+    name: str = Field(..., min_length=1, max_length=100, description="Nombre de la categoría")
+    description: str | None = Field(None, description="Descripción opcional")
+
+
+class CategoryUpdateDTO(BaseModel):
+    name: str | None = Field(
+        None, min_length=1, max_length=100, description="Nombre de la categoría"
+    )
+    description: str | None = Field(None, description="Descripción opcional")
+    is_active: bool | None = Field(None, description="Estado activo")
+
+
 class ProductPriceDetailDTO(BaseModel):
     commercial_list_id: int
     commercial_list_name: str
@@ -67,6 +88,8 @@ class ProductAdminDetailDTO(BaseModel):
     prices: list[ProductPriceDetailDTO] = []
     price_list_items: list[ProductPriceListItemDetailDTO] = []
     active_price_list_ids: list[int] = []
+    category_ids: list[int] = []
+    categories: list[CategoryDTO] = []
 
 
 class ProductStockUpdateDTO(BaseModel):
@@ -81,6 +104,9 @@ class ProductCreateDTO(BaseModel):
     presentation: str | None = None
     provider: str | None = None
     category: str = "General"
+    category_ids: list[int] = Field(
+        default_factory=list, description="IDs de categorías asociadas (N:M)"
+    )
     iva_rate: Decimal = Decimal("0.22")
     cost_iva_inc: Decimal | None = Field(None, ge=0)
     markup_percentage: Decimal | None = Field(None, ge=0)
@@ -93,7 +119,8 @@ class ProductCreateDTO(BaseModel):
 
 class ProductUpdateDTO(BaseModel):
     name: str = Field(..., min_length=2, description="Nombre del artículo")
-    category: str = Field(..., min_length=1, description="Categoría comercial")
+    category: str | None = Field(None, description="Categoría comercial principal (legacy)")
+    category_ids: list[int] | None = Field(None, description="IDs de categorías asociadas (N:M)")
     code: str | None = Field(None, description="Código de barras o referencia")
     presentation: str | None = Field(None, description="Presentación comercial (ej. 5L, Bidón)")
     provider: str | None = Field(None, description="Proveedor o fabricante")

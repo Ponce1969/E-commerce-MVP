@@ -80,6 +80,14 @@ class ProductPrice:
 
 
 @dataclass
+class Category:
+    id: int
+    name: str
+    description: str | None = None
+    is_active: bool = True
+
+
+@dataclass
 class Product:
     id: int
     name: str
@@ -97,6 +105,7 @@ class Product:
     allow_backorder: bool = False
     prices: list[ProductPrice] = field(default_factory=list)
     price_list_items: list[ProductPriceListItem] = field(default_factory=list)
+    categories: list[Category] = field(default_factory=list)
 
     @property
     def is_low_stock(self) -> bool:

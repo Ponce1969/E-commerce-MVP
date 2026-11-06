@@ -3,7 +3,6 @@ from decimal import Decimal
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
-
 from src.application.dtos.catalog_dto import ProductPortalItemDTO
 from src.application.dtos.order_dto import (
     OrderCreateDTO,
@@ -60,7 +59,7 @@ class PortalCatalogUseCase:
                 id=prod.id,
                 name=prod.name,
                 presentation=prod.presentation,
-                category=prod.category,
+                category=prod.category or "General",
                 price_iva_inc=price.price_iva_inc,  # type: ignore[arg-type]
                 iva_rate=prod.iva_rate,
                 image_url=prod.image_url,

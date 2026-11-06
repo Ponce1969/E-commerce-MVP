@@ -1,5 +1,6 @@
 from src.infrastructure.db.models.orm import (
     AdminUserORM,
+    CategoryORM,
     CommercialListORM,
     CustomerORM,
     ExpenseORM,
@@ -9,10 +10,12 @@ from src.infrastructure.db.models.orm import (
     ProductORM,
     ProductPriceListItemORM,
     ProductPriceORM,
+    product_categories,
 )
 
 __all__ = [
     "AdminUserORM",
+    "CategoryORM",
     "CommercialListORM",
     "CustomerORM",
     "ExpenseORM",
@@ -22,4 +25,5 @@ __all__ = [
     "ProductORM",
     "ProductPriceListItemORM",
     "ProductPriceORM",
+    "product_categories",
 ]

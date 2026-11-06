@@ -36,6 +36,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             <span>🏷️ Listas de Clientes</span>
           </button>
           <button
+            id="openCategoriesBtn"
+            onclick="window.openCategoriesManagerModal()"
+            class="inline-flex items-center justify-center rounded-lg border border-purple-300 dark:border-purple-800 bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 px-3.5 py-2 text-xs font-semibold shadow-xs hover:bg-purple-100 dark:hover:bg-purple-900/40 transition-all min-h-[38px] gap-1.5 cursor-pointer"
+            title="Administrar categorías del catálogo (alta, renombrado y desvinculación)"
+          >
+            <span>🗂️ Categorías</span>
+          </button>
+          <button
             id="openQuoteModalBtn"
             class="inline-flex items-center justify-center rounded-lg bg-emerald-600 px-3.5 py-2 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-all min-h-[38px] gap-1.5 cursor-pointer"
           >
@@ -248,6 +256,16 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
               <option value="">Todos los Proveedores</option>
             </select>
           </div>
+
+          <div class="flex items-center gap-1.5 pl-2 border-l border-border">
+            <label for="adminCategorySelect" class="text-xs font-semibold text-muted-foreground whitespace-nowrap">Categoría:</label>
+            <select
+              id="adminCategorySelect"
+              class="rounded-lg border border-input bg-background px-2.5 py-1 text-xs font-semibold text-foreground hover:border-primary cursor-pointer min-h-[32px]"
+            >
+              <option value="">Todas las Categorías</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -435,28 +453,45 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             <input type="text" id="editProductName" required placeholder="Ej: Detergente Clorado Ultra" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div class="space-y-1">
-              <label class="text-xs font-semibold text-foreground">Categoría *</label>
-              <input type="text" id="editProductCategory" list="adminCategoryDatalist" required placeholder="Ej: Limpieza General" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
-              <datalist id="adminCategoryDatalist"></datalist>
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold text-foreground">Categorías Asignadas (Multicategoría N:M) *</label>
+              <button
+                type="button"
+                onclick="window.openCategoriesManagerModal()"
+                class="text-[11px] text-primary hover:underline font-semibold cursor-pointer"
+              >
+                + Gestionar Categorías
+              </button>
             </div>
-            <div class="space-y-1">
-              <label class="text-xs font-semibold text-foreground">Presentación</label>
-              <input type="text" id="editProductPresentation" placeholder="Ej: Bidón 5L, Unidad" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
+            <div
+              id="editProductCategoriesContainer"
+              class="grid grid-cols-1 sm:grid-cols-2 gap-2 p-2.5 rounded-lg border border-input bg-muted/20 max-h-44 overflow-y-auto"
+            >
+              <!-- Checkboxes dinámicos cargados desde GET /api/v1/admin/categories -->
             </div>
+            <div class="flex items-center justify-between text-[11px] text-muted-foreground pt-0.5">
+              <span>Categoría Principal: <strong id="editProductPrimaryCategoryLabel" class="text-foreground">-</strong></span>
+              <span class="text-[10px] text-muted-foreground">La 1ª categoría tildada se sincroniza para Excel</span>
+            </div>
+            <input type="hidden" id="editProductCategory" />
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div class="space-y-1">
-              <label class="text-xs font-semibold text-foreground">Proveedor</label>
-              <input type="text" id="editProductProvider" list="adminProviderDatalist" placeholder="Ej: Químicos del Sur" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
-              <datalist id="adminProviderDatalist"></datalist>
+              <label class="text-xs font-semibold text-foreground">Presentación</label>
+              <input type="text" id="editProductPresentation" placeholder="Ej: Bidón 5L, Unidad" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
             </div>
             <div class="space-y-1">
               <label class="text-xs font-semibold text-foreground">Código de Barras / Ref.</label>
               <input type="text" id="editProductCode" placeholder="Opcional" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
             </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-foreground">Proveedor</label>
+            <input type="text" id="editProductProvider" list="adminProviderDatalist" placeholder="Ej: Químicos del Sur" class="w-full rounded-lg border border-input bg-background p-2 text-xs" />
+            <datalist id="adminProviderDatalist"></datalist>
           </div>
 
           <div id="editProductError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-2 text-xs text-destructive"></div>
@@ -628,6 +663,64 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: Category Management (ABM de Categorías Multicategoría) -->
+    <div id="categoriesManagerModal" class="fixed inset-0 z-50 hidden bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+      <div class="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-xl space-y-4 my-8">
+        <div class="flex items-center justify-between border-b border-border pb-2">
+          <div>
+            <h3 class="font-bold text-foreground text-sm">Gestión de Categorías</h3>
+            <p class="text-[11px] text-muted-foreground">Creá nuevas categorías, renombralas o eliminalas del catálogo.</p>
+          </div>
+          <button onclick="document.getElementById('categoriesManagerModal').classList.add('hidden')" class="text-muted-foreground hover:text-foreground text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <!-- Formulario Alta de Categoría -->
+        <form id="createCategoryForm" class="space-y-2 border border-border/80 bg-muted/20 p-3 rounded-xl">
+          <div class="text-xs font-semibold text-foreground">Crear Nueva Categoría</div>
+          <div class="flex gap-2">
+            <input
+              type="text"
+              id="newCategoryName"
+              required
+              placeholder="Ej: Cocina y Gastronomía"
+              class="flex-1 rounded-lg border border-input bg-background p-2 text-xs"
+            />
+            <button
+              type="submit"
+              id="createCategoryBtn"
+              class="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground shadow hover:bg-primary/90 transition-colors cursor-pointer whitespace-nowrap"
+            >
+              + Agregar
+            </button>
+          </div>
+          <div id="categoryManagerError" class="hidden rounded-lg bg-destructive/10 border border-destructive/20 p-2 text-xs text-destructive"></div>
+        </form>
+
+        <!-- Listado de Categorías Existentes -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-foreground">Categorías del Catálogo (<span id="categoriesCountHeader">0</span>)</span>
+            <span class="text-[10px] text-muted-foreground">Ordenadas alfabéticamente</span>
+          </div>
+          <div class="max-h-72 overflow-y-auto rounded-xl border border-border divide-y divide-border bg-background">
+            <div id="categoriesListContainer" class="p-1 space-y-1">
+              <!-- Renderizado dinámico desde GET /api/v1/admin/categories -->
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end pt-2 border-t border-border">
+          <button
+            type="button"
+            onclick="document.getElementById('categoriesManagerModal').classList.add('hidden')"
+            class="rounded-lg border border-input bg-background px-4 py-2 text-xs font-medium hover:bg-accent cursor-pointer"
+          >
+            Cerrar
+          </button>
         </div>
       </div>
     </div>
@@ -1138,6 +1231,7 @@ Reglas obligatorias:
     const baseOrigin = isLocalDev ? 'http://localhost:8000' : '';
     let adminToken = localStorage.getItem('admin_token') || '';
     let allProducts = [];
+    let allCategories = [];
     let activeFilter = 'all';
     let currentAdminTab = 'catalog';
 
@@ -1254,6 +1348,38 @@ Reglas obligatorias:
       if (lowPill) lowPill.textContent = String(lowStockCount);
     }
 
+    async function loadCategories() {
+      if (!adminToken) return;
+      try {
+        const res = await fetch(`${API_URL}/admin/categories`, {
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (res.ok) {
+          allCategories = await res.json();
+          renderCategorySelect();
+          renderCategoriesManagerList();
+        }
+      } catch (err) {
+        console.warn('Error cargando categorías:', err);
+      }
+    }
+
+    function renderCategorySelect() {
+      const select = document.getElementById('adminCategorySelect');
+      if (select) {
+        const currentVal = select.value;
+        select.innerHTML = '<option value="">Todas las Categorías</option>' +
+          allCategories.map((c) => `<option value="${c.id}">${c.name} (${c.product_count})</option>`).join('');
+        select.value = currentVal;
+      }
+      const countHeader = document.getElementById('categoriesCountHeader');
+      if (countHeader) countHeader.textContent = String(allCategories.length);
+    }
+
+    document.getElementById('adminCategorySelect')?.addEventListener('change', () => {
+      renderProductsTable();
+    });
+
     async function loadProviders() {
       if (!adminToken) return;
       try {
@@ -1281,6 +1407,7 @@ Reglas obligatorias:
 
       try {
         await loadPriceLists();
+        await loadCategories();
         const res = await fetch(`${API_URL}/admin/products?limit=2000`, {
           headers: { Authorization: `Bearer ${adminToken}` },
         });
@@ -1313,6 +1440,7 @@ Reglas obligatorias:
       if (!productsTableBody) return;
       const query = (adminSearchInput?.value || '').toLowerCase().trim();
       const selectedProvider = document.getElementById('adminProviderSelect')?.value || '';
+      const selectedCategory = document.getElementById('adminCategorySelect')?.value || '';
 
       const filtered = allProducts.filter((p) => {
         const matchesQuery = !query || p.name.toLowerCase().includes(query) || String(p.id).includes(query);
@@ -1320,6 +1448,13 @@ Reglas obligatorias:
 
         if (selectedProvider && p.provider !== selectedProvider) {
           return false;
+        }
+
+        if (selectedCategory) {
+          const catId = parseInt(selectedCategory, 10);
+          const hasCat = (p.category_ids && p.category_ids.includes(catId)) ||
+            (p.categories && p.categories.some((c) => c.id === catId));
+          if (!hasCat) return false;
         }
 
         if (activeFilter === 'low_stock') {
@@ -1381,13 +1516,17 @@ Reglas obligatorias:
           mediaBadges += `<a href="${API_URL.replace('/api/v1', '')}${p.tech_sheet_url}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-[10px] bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300 px-1.5 py-0.5 rounded font-semibold hover:underline" title="Abrir ficha técnica PDF">📄 Ficha PDF</a>`;
         }
 
+        const categoryBadges = (p.categories && p.categories.length > 0)
+          ? p.categories.map((c) => `<span class="inline-flex items-center bg-purple-100 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800 px-1.5 py-0.2 rounded font-semibold text-[10px]">${c.name}</span>`).join(' ')
+          : `<span class="inline-flex items-center bg-muted text-muted-foreground px-1.5 py-0.2 rounded font-semibold text-[10px]">${p.category || 'General'}</span>`;
+
         return `
           <tr class="hover:bg-muted/40 transition-colors">
             <td class="py-2.5 px-3 font-mono font-bold text-center text-muted-foreground">${p.id}</td>
             <td class="py-2.5 px-3">
               <div class="font-bold text-foreground text-xs leading-snug">${p.name}</div>
               <div class="text-[11px] text-muted-foreground flex flex-wrap items-center gap-1.5 mt-0.5">
-                <span>${p.category}</span>
+                ${categoryBadges}
                 ${mediaBadges}
                 ${hasConflict ? `<span class="bg-destructive/10 text-destructive px-1.5 py-0.2 rounded font-semibold text-[10px]" title="${conflictDetail}">Conflicto Histórico</span>` : ''}
                 ${p.is_pending_draft ? '<span class="bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded font-semibold text-[10px]">Ficha Incompleta</span>' : ''}
@@ -1488,6 +1627,20 @@ Reglas obligatorias:
       }
     };
 
+    window.updateEditProductPrimaryCategoryLabel = function() {
+      const checkedBoxes = Array.from(document.querySelectorAll('input[name="editProductCategoryCheckbox"]:checked'));
+      const label = document.getElementById('editProductPrimaryCategoryLabel');
+      const hiddenInput = document.getElementById('editProductCategory');
+      if (checkedBoxes.length > 0) {
+        const primaryName = checkedBoxes[0].getAttribute('data-name');
+        if (label) label.textContent = primaryName;
+        if (hiddenInput) hiddenInput.value = primaryName;
+      } else {
+        if (label) label.textContent = 'Ninguna (seleccioná al menos una)';
+        if (hiddenInput) hiddenInput.value = '';
+      }
+    };
+
     window.openEditProductModal = function(id) {
       const prod = allProducts.find((p) => p.id === id);
       if (!prod) return;
@@ -1500,12 +1653,43 @@ Reglas obligatorias:
       document.getElementById('editProductCode').value = prod.code || '';
       document.getElementById('editProductError')?.classList.add('hidden');
 
-      // Sugerencias dinámicas para evitar errores tipográficos
-      const catDatalist = document.getElementById('adminCategoryDatalist');
-      if (catDatalist) {
-        const categories = [...new Set(allProducts.map((p) => p.category).filter(Boolean))].sort();
-        catDatalist.innerHTML = categories.map((c) => `<option value="${c}"></option>`).join('');
+      // Grilla dinámica de checkboxes multicategoría N:M
+      const assignedIds = new Set(
+        (prod.category_ids && prod.category_ids.length > 0)
+          ? prod.category_ids
+          : ((prod.categories || []).map((c) => c.id))
+      );
+      if (assignedIds.size === 0 && prod.category) {
+        const matched = allCategories.find((c) => c.name.toLowerCase() === prod.category.toLowerCase());
+        if (matched) assignedIds.add(matched.id);
       }
+
+      const catContainer = document.getElementById('editProductCategoriesContainer');
+      if (catContainer) {
+        if (!allCategories || allCategories.length === 0) {
+          catContainer.innerHTML = '<div class="text-xs text-muted-foreground col-span-2 py-2 text-center">No hay categorías cargadas. Creá una desde "+ Gestionar Categorías".</div>';
+        } else {
+          catContainer.innerHTML = allCategories.map((cat) => {
+            const isChecked = assignedIds.has(cat.id);
+            return `
+              <label class="flex items-center gap-2 p-1.5 rounded-md hover:bg-muted/60 cursor-pointer text-xs border border-transparent hover:border-border transition-colors">
+                <input
+                  type="checkbox"
+                  name="editProductCategoryCheckbox"
+                  value="${cat.id}"
+                  data-name="${cat.name}"
+                  ${isChecked ? 'checked' : ''}
+                  onchange="window.updateEditProductPrimaryCategoryLabel()"
+                  class="rounded border-input text-primary focus:ring-primary w-3.5 h-3.5 cursor-pointer"
+                />
+                <span class="font-medium text-foreground truncate flex-1">${cat.name}</span>
+                <span class="text-[10px] text-muted-foreground font-mono">(${cat.product_count})</span>
+              </label>
+            `;
+          }).join('');
+        }
+      }
+      window.updateEditProductPrimaryCategoryLabel();
 
       const provDatalist = document.getElementById('adminProviderDatalist');
       if (provDatalist) {
@@ -1524,14 +1708,17 @@ Reglas obligatorias:
 
       const id = parseInt(document.getElementById('editProductTargetId').value, 10);
       const name = document.getElementById('editProductName').value.trim();
-      const category = document.getElementById('editProductCategory').value.trim();
       const presentation = document.getElementById('editProductPresentation').value.trim();
       const provider = document.getElementById('editProductProvider').value.trim();
       const code = document.getElementById('editProductCode').value.trim();
 
-      if (!name || !category) {
+      const checkedCategoryBoxes = Array.from(document.querySelectorAll('input[name="editProductCategoryCheckbox"]:checked'));
+      const category_ids = checkedCategoryBoxes.map((cb) => parseInt(cb.value, 10));
+      const category = document.getElementById('editProductCategory').value.trim();
+
+      if (!name || category_ids.length === 0) {
         if (errorDiv) {
-          errorDiv.textContent = 'El nombre y la categoría son obligatorios.';
+          errorDiv.textContent = 'El nombre y al menos una categoría seleccionada son obligatorios.';
           errorDiv.classList.remove('hidden');
         }
         return;
@@ -1551,7 +1738,8 @@ Reglas obligatorias:
           },
           body: JSON.stringify({
             name,
-            category,
+            category: category || null,
+            category_ids,
             presentation: presentation || null,
             provider: provider || null,
             code: code || null,
@@ -1568,6 +1756,10 @@ Reglas obligatorias:
         if (idx !== -1) {
           allProducts[idx] = updated;
         }
+
+        await loadCategories();
+        renderProductsTable();
+        document.getElementById('editProductModal').classList.add('hidden');
 
         document.getElementById('editProductModal').classList.add('hidden');
         renderProductsTable();
@@ -1748,6 +1940,145 @@ Reglas obligatorias:
         }
       }
     });
+
+    // =========================================================================
+    // GESTIÓN Y ABM DE CATEGORÍAS (MULTICATEGORÍA N:M)
+    // =========================================================================
+    window.openCategoriesManagerModal = async function() {
+      await loadCategories();
+      const err = document.getElementById('categoryManagerError');
+      if (err) err.classList.add('hidden');
+      document.getElementById('categoriesManagerModal')?.classList.remove('hidden');
+    };
+
+    function renderCategoriesManagerList() {
+      const container = document.getElementById('categoriesListContainer');
+      if (!container) return;
+      if (!allCategories || allCategories.length === 0) {
+        container.innerHTML = '<div class="p-4 text-center text-xs text-muted-foreground">No hay categorías cargadas.</div>';
+        return;
+      }
+      container.innerHTML = allCategories.map((c) => `
+        <div class="flex items-center justify-between p-2 hover:bg-muted/40 rounded-lg text-xs gap-2">
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <span class="font-bold text-foreground truncate" id="catNameSpan_${c.id}">${c.name}</span>
+            <span class="text-[10px] bg-muted px-1.5 py-0.5 rounded font-mono text-muted-foreground whitespace-nowrap">${c.product_count} arts</span>
+          </div>
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button
+              type="button"
+              onclick="window.renameCategory(${c.id}, '${c.name.replace(/'/g, "\\'")}')"
+              class="px-2 py-1 rounded text-[10px] font-semibold border border-input hover:bg-accent text-foreground cursor-pointer"
+              title="Renombrar categoría"
+            >
+              ✏️ Renombrar
+            </button>
+            <button
+              type="button"
+              onclick="window.deleteCategory(${c.id}, '${c.name.replace(/'/g, "\\'")}', ${c.product_count})"
+              class="px-2 py-1 rounded text-[10px] font-semibold border border-destructive/30 text-destructive hover:bg-destructive/10 cursor-pointer"
+              title="Eliminar categoría"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('createCategoryForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('newCategoryName');
+      const errDiv = document.getElementById('categoryManagerError');
+      const submitBtn = document.getElementById('createCategoryBtn');
+      errDiv?.classList.add('hidden');
+      const name = input?.value.trim();
+      if (!name) return;
+
+      if (submitBtn) submitBtn.disabled = true;
+      try {
+        const res = await fetch(`${API_URL}/admin/categories`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ name }),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.detail || 'Error al crear categoría.');
+        }
+        input.value = '';
+        await loadCategories();
+        // Si el modal de edición de producto está abierto, refrescar sus checkboxes
+        const editTargetId = parseInt(document.getElementById('editProductTargetId')?.value, 10);
+        if (editTargetId && !document.getElementById('editProductModal')?.classList.contains('hidden')) {
+          window.openEditProductModal(editTargetId);
+        }
+      } catch (err) {
+        if (errDiv) {
+          errDiv.textContent = err.message;
+          errDiv.classList.remove('hidden');
+        }
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+
+    window.renameCategory = async function(id, currentName) {
+      const newName = prompt(`Renombrar categoría "${currentName}" a:`, currentName);
+      if (!newName || newName.trim() === currentName) return;
+
+      try {
+        const res = await fetch(`${API_URL}/admin/categories/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${adminToken}`,
+          },
+          body: JSON.stringify({ name: newName.trim() }),
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.detail || 'Error al renombrar categoría.');
+        }
+        await loadCategories();
+        await loadAdminProducts();
+        const editTargetId = parseInt(document.getElementById('editProductTargetId')?.value, 10);
+        if (editTargetId && !document.getElementById('editProductModal')?.classList.contains('hidden')) {
+          window.openEditProductModal(editTargetId);
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+    };
+
+    window.deleteCategory = async function(id, name, productCount) {
+      const confirmMsg = productCount > 0
+        ? `La categoría "${name}" está asociada a ${productCount} productos.\n\nAl eliminarla se desvinculará de todos ellos automáticamente.\n¿Deseas continuar?`
+        : `¿Eliminar la categoría "${name}"?`;
+      if (!confirm(confirmMsg)) return;
+
+      try {
+        const res = await fetch(`${API_URL}/admin/categories/${id}`, {
+          method: 'DELETE',
+          headers: { Authorization: `Bearer ${adminToken}` },
+        });
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.detail || 'Error al eliminar categoría.');
+        }
+        await loadCategories();
+        await loadAdminProducts();
+        const editTargetId = parseInt(document.getElementById('editProductTargetId')?.value, 10);
+        if (editTargetId && !document.getElementById('editProductModal')?.classList.contains('hidden')) {
+          window.openEditProductModal(editTargetId);
+        }
+      } catch (err) {
+        alert(err.message);
+      }
+    };
 
     // Checkboxes dinámicos y cálculo bidireccional en Modal Precios
     window.toggleAllPriceModalLists = function(check) {
