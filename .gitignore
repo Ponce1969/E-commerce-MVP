@@ -42,6 +42,7 @@ env/
 # Node / Frontend
 node_modules/
 .astro/
+.engram/
 dist/
 
 # Uploads & local data exports
