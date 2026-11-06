@@ -10,8 +10,11 @@ ENV UV_LINK_MODE=copy
 # Ensure uploads and temporary dirs exist
 ENV PYTHONUNBUFFERED=1
 
-# Create unprivileged system user and group (UID/GID 10001) for ISO 27001 / SOC 2 hardening
-RUN groupadd -g 10001 appgroup && \
+# Install curl for container healthcheck and create unprivileged system user/group (UID/GID 10001)
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends curl && \
+    rm -rf /var/lib/apt/lists/* && \
+    groupadd -g 10001 appgroup && \
     useradd -u 10001 -g appgroup -s /bin/bash -m appuser
 
 # Copy dependency files

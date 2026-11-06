@@ -287,8 +287,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
             </thead>
             <tbody id="productsTableBody" class="divide-y divide-border">
               <tr>
-                <td colspan="8" class="py-12 text-center text-muted-foreground">
-                  Cargando catálogo administrativo...
+                <td colspan="8" class="py-16 text-center text-muted-foreground">
+                  <div class="inline-flex flex-col items-center gap-3">
+                    <div class="w-7 h-7 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <span class="text-xs font-semibold">Cargando catálogo administrativo...</span>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -1405,24 +1408,69 @@ Reglas obligatorias:
     async function loadAdminProducts() {
       if (!adminToken) return;
 
+      if (productsTableBody) {
+        productsTableBody.innerHTML = `
+          <tr>
+            <td colspan="8" class="py-16 text-center text-muted-foreground">
+              <div class="inline-flex flex-col items-center gap-3">
+                <div class="w-7 h-7 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                <span class="text-xs font-semibold">Sincronizando catálogo con el servidor...</span>
+              </div>
+            </td>
+          </tr>
+        `;
+      }
+
       try {
-        await loadPriceLists();
-        await loadCategories();
+        await Promise.allSettled([loadPriceLists(), loadCategories()]);
         const res = await fetch(`${API_URL}/admin/products?limit=2000`, {
           headers: { Authorization: `Bearer ${adminToken}` },
         });
 
-        if (!res.ok) throw new Error('Error al consultar catálogo.');
+        if (!res.ok) {
+          const detail = (res.status === 502 || res.status === 503)
+            ? 'El servidor backend se está iniciando tras una actualización (502/503).'
+            : `Error del servidor (${res.status}): ${res.statusText || 'No disponible'}`;
+          throw new Error(detail);
+        }
         allProducts = await res.json();
         updateKpis();
         loadProviders();
         renderProductsTable();
       } catch (err) {
         if (productsTableBody) {
-          productsTableBody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-destructive">${err.message}</td></tr>`;
+          const isNetworkOr50x = err.message.includes('502') || err.message.includes('503') || err.message.includes('Failed to fetch') || err.name === 'TypeError';
+          const title = isNetworkOr50x ? 'Servidor temporalmente no disponible' : 'Error al consultar catálogo';
+          const msg = isNetworkOr50x
+            ? 'El servicio backend se está reiniciando o aplicando migraciones. Aguardá unos segundos y reintentá.'
+            : (err.message || 'Ocurrió un problema de comunicación con la API.');
+
+          productsTableBody.innerHTML = `
+            <tr>
+              <td colspan="8" class="py-12 text-center">
+                <div class="inline-flex flex-col items-center max-w-md mx-auto p-6 rounded-2xl border border-destructive/20 bg-destructive/5 space-y-3">
+                  <div class="w-10 h-10 rounded-full bg-destructive/10 text-destructive flex items-center justify-center text-lg font-bold">
+                    ⚠️
+                  </div>
+                  <div class="space-y-1">
+                    <h4 class="text-sm font-bold text-foreground">${title}</h4>
+                    <p class="text-xs text-muted-foreground leading-relaxed">${msg}</p>
+                  </div>
+                  <button
+                    type="button"
+                    onclick="window.loadAdminProducts()"
+                    class="inline-flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-lg bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm cursor-pointer transition-all active:scale-95"
+                  >
+                    <span>🔄 Reintentar conexión</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
         }
       }
     }
+    window.loadAdminProducts = loadAdminProducts;
 
     window.applyFilter = function(filter) {
       activeFilter = filter;
